@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impressum — KernelKompass</title>
+<meta name="robots" content="noindex, follow">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0d08;
+  --panel:#12160e;
+  --border:#262c1b;
+  --border2:#333a24;
+  --amber:#e3a94a;
+  --amber-soft:#a9863f;
+  --teal:#5fb8a6;
+  --teal-soft:#25453d;
+  --text:#eae6d8;
+  --text-dim:#9a9682;
+  --text-dim2:#6f6c5c;
+  --mono:'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans:'Inter', system-ui, -apple-system, sans-serif;
+  --r:8px;
+}
+body.theme-light{
+  --bg:#f2efe2;
+  --panel:#ffffff;
+  --border:#e2dcc6;
+  --amber:#a8672a;
+  --amber-soft:#8a5c1f;
+  --teal:#276b5c;
+  --text:#2a2b21;
+  --text-dim:#69664f;
+  --text-dim2:#918d76;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--sans);}
+body{min-height:100vh;}
+.wrap{ max-width:760px; margin:0 auto; padding:48px 24px 100px;}
+.topbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:34px; flex-wrap:wrap; gap:12px;}
+.back-link{
+  font-family:var(--mono); font-size:12.5px; color:var(--teal); text-decoration:none;
+  border:1px solid var(--border2); border-radius:20px; padding:6px 14px; transition:background .12s;
+}
+.back-link:hover{ background:rgba(95,184,166,0.1);}
+.theme-toggle{
+  font-family:var(--mono); font-size:11.5px; color:var(--text-dim); background:none;
+  border:1px solid var(--border2); border-radius:20px; cursor:pointer; padding:6px 12px;
+}
+.theme-toggle:hover{ background:rgba(227,169,74,0.08); color:var(--text);}
+
+.eyebrow{ font-family:var(--mono); font-size:12px; color:var(--teal); letter-spacing:.08em; text-transform:uppercase; margin-bottom:6px;}
+h1{ font-family:var(--mono); font-size:28px; font-weight:700; letter-spacing:-0.02em; margin:0 0 24px; color:var(--text);}
+
+.tabs{ display:flex; gap:8px; margin-bottom:28px; border-bottom:1px solid var(--border); padding-bottom:0;}
+.tab-btn{
+  font-family:var(--mono); font-size:13px; color:var(--text-dim); background:none; border:none;
+  border-bottom:2px solid transparent; padding:8px 4px; cursor:pointer; margin-right:14px;
+}
+.tab-btn:hover{ color:var(--text);}
+.tab-btn.active{ color:var(--amber); border-bottom-color:var(--amber); font-weight:600;}
+
+.lang-panel{ display:none; }
+.lang-panel.active{ display:block; animation:fadein .2s ease;}
+@keyframes fadein{ from{opacity:0;} to{opacity:1;} }
+
+.notice{
+  font-family:var(--mono); font-size:12px; color:var(--text-dim2); background:var(--panel);
+  border:1px solid var(--border); border-left:3px solid var(--amber-soft); border-radius:0 var(--r) var(--r) 0;
+  padding:10px 14px; margin-bottom:28px; line-height:1.6;
+}
+
+section.block{ margin-bottom:28px;}
+section.block h2{
+  font-family:var(--mono); font-size:15px; font-weight:600; color:var(--text);
+  border-bottom:1px solid var(--border); padding-bottom:8px; margin:0 0 12px;
+}
+section.block p{ font-size:14.5px; line-height:1.7; color:var(--text); margin:0 0 8px;}
+section.block a{ color:var(--teal); }
+.addr{ font-family:var(--mono); font-size:14px; line-height:1.8; color:var(--text);}
+.addr .name{ font-weight:700; color:var(--text); font-family:var(--sans); font-size:15px; display:block; margin-bottom:4px;}
+
+footer.foot{
+  font-family:var(--mono); font-size:11px; color:var(--text-dim2); margin-top:50px;
+  padding-top:18px; border-top:1px solid var(--border);
+}
+</style>
+</head>
+<body class="theme-light">
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="back-link" href="index.html">← zurück / geri / back</a>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙 Koyu tema / Dark mode</button>
+  </div>
+
+  <div class="eyebrow">Legal notice</div>
+  <h1>Impressum</h1>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-lang="de" onclick="showLang('de')">Deutsch</button>
+    <button class="tab-btn" data-lang="tr" onclick="showLang('tr')">Türkçe</button>
+    <button class="tab-btn" data-lang="en" onclick="showLang('en')">English</button>
+  </div>
+
+  <!-- ============ DEUTSCH (rechtlich maßgeblich) ============ -->
+  <div class="lang-panel active" id="lang-de">
+    <div class="notice">
+      Diese deutsche Fassung ist die rechtlich maßgebliche Version dieses Impressums.
+      Die türkische und englische Fassung dienen ausschließlich der Information; im
+      Falle von Abweichungen gilt der deutsche Text.
+    </div>
+
+    <section class="block">
+      <h2>Angaben gemäß § 5 Digitale-Dienste-Gesetz (DDG)</h2>
+      <p class="addr">
+        <span class="name">Muhammed Enes Çetin</span>
+        Tiefer Weg 3<br>
+        46514 Schermbeck<br>
+        Deutschland
+      </p>
+    </section>
+
+    <section class="block">
+      <h2>Kontakt</h2>
+      <p>E-Mail: <a href="mailto:cetin.m.ens@gmail.com">cetin.m.ens@gmail.com</a></p>
+    </section>
+
+    <section class="block">
+      <h2>Haftung für Inhalte</h2>
+      <p>
+        Als Diensteanbieter bin ich gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen
+        Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG bin
+        ich als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte
+        fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine
+        rechtswidrige Tätigkeit hinweisen.
+      </p>
+      <p>
+        Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach
+        den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung
+        ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung
+        möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden
+        betroffene Inhalte umgehend entfernt.
+      </p>
+    </section>
+
+    <section class="block">
+      <h2>Haftung für Links</h2>
+      <p>
+        Dieses Angebot enthält gegebenenfalls Links zu externen Webseiten Dritter, auf
+        deren Inhalte ich keinen Einfluss habe. Deshalb kann ich für diese fremden
+        Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist
+        stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.
+      </p>
+    </section>
+
+    <section class="block">
+      <h2>Urheberrecht</h2>
+      <p>
+        Der Quellcode dieses Projekts steht unter der <em>PolyForm Noncommercial
+        License 1.0.0</em>, die Lerninhalte stehen unter <em>Creative Commons
+        BY-NC-ND 4.0</em>. Details siehe <code>LICENSE-CODE.md</code> und
+        <code>LICENSE-CONTENT.md</code> im Projekt-Repository. Eine kommerzielle
+        Nutzung, Vervielfältigung oder Bearbeitung ohne Zustimmung des Autors ist
+        nicht gestattet.
+      </p>
+    </section>
+  </div>
+
+  <!-- ============ TÜRKÇE (sadece bilgilendirme) ============ -->
+  <div class="lang-panel" id="lang-tr">
+    <div class="notice">
+      Bu sayfanın hukuken bağlayıcı asıl metni Almanca sürümdür. Türkçe ve İngilizce
+      sürümler yalnızca bilgilendirme amaçlıdır; çeviriler arasında bir farklılık
+      olması durumunda Almanca metin geçerlidir.
+    </div>
+
+    <section class="block">
+      <h2>§5 DDG (Alman Dijital Hizmetler Yasası) uyarınca zorunlu bilgiler</h2>
+      <p class="addr">
+        <span class="name">Muhammed Enes Çetin</span>
+        Tiefer Weg 3<br>
+        46514 Schermbeck<br>
+        Almanya
+      </p>
+    </section>
+
+    <section class="block">
+      <h2>İletişim</h2>
+      <p>E-posta: <a href="mailto:cetin.m.ens@gmail.com">cetin.m.ens@gmail.com</a></p>
+    </section>
+
+    <section class="block">
+      <h2>İçerik sorumluluğu</h2>
+      <p>
+        Hizmet sağlayıcısı olarak, bu sayfalardaki kendi içeriğimden genel yasalar
+        çerçevesinde sorumluyum. Ancak §§8-10 DDG uyarınca, iletilen veya depolanan
+        üçüncü taraf bilgilerini izleme veya hukuka aykırı bir faaliyete işaret eden
+        durumları araştırma yükümlülüğüm bulunmamaktadır. Somut bir hak ihlalinden
+        haberdar olunduğunda ilgili içerik derhal kaldırılır.
+      </p>
+    </section>
+
+    <section class="block">
+      <h2>Bağlantılar (linkler) için sorumluluk</h2>
+      <p>
+        Bu site, içeriği üzerinde etkim olmayan üçüncü taraf harici web sitelerine
+        bağlantılar içerebilir. Bu nedenle bu tür içerikler için herhangi bir sorumluluk
+        üstlenemem. Bağlantılı sayfaların içeriğinden her zaman ilgili sağlayıcı veya
+        işletmeci sorumludur.
+      </p>
+    </section>
+
+    <section class="block">
+      <h2>Telif hakkı</h2>
+      <p>
+        Bu projenin kaynak kodu <em>PolyForm Noncommercial License 1.0.0</em> altında,
+        ders içerikleri ise <em>Creative Commons BY-NC-ND 4.0</em> altında lisanslıdır.
+        Ayrıntılar için proje deposundaki <code>LICENSE-CODE.md</code> ve
+        <code>LICENSE-CONTENT.md</code> dosyalarına bakınız. Yazarın izni olmadan
+        ticari kullanım, çoğaltma veya değiştirme yapılamaz.
+      </p>
+    </section>
+  </div>
+
+  <!-- ============ ENGLISH (informational only) ============ -->
+  <div class="lang-panel" id="lang-en">
+    <div class="notice">
+      The German version of this page is the legally binding text. The Turkish and
+      English versions are provided for information only; in case of any discrepancy,
+      the German text prevails.
+    </div>
+
+    <section class="block">
+      <h2>Information according to § 5 DDG (German Digital Services Act)</h2>
+      <p class="addr">
+        <span class="name">Muhammed Enes Çetin</span>
+        Tiefer Weg 3<br>
+        46514 Schermbeck<br>
+        Germany
+      </p>
+    </section>
+
+    <section class="block">
+      <h2>Contact</h2>
+      <p>Email: <a href="mailto:cetin.m.ens@gmail.com">cetin.m.ens@gmail.com</a></p>
+    </section>
+
+    <section class="block">
+      <h2>Liability for content</h2>
+      <p>
+        As a service provider, I am responsible for my own content on these pages in
+        accordance with general law. However, under §§8-10 DDG, I am not obligated to
+        monitor transmitted or stored third-party information or to investigate
+        circumstances indicating unlawful activity. Upon becoming aware of a specific
+        infringement, the affected content will be removed immediately.
+      </p>
+    </section>
+
+    <section class="block">
+      <h2>Liability for links</h2>
+      <p>
+        This site may contain links to external third-party websites over whose
+        content I have no influence. Therefore, I cannot accept any liability for
+        this external content. The respective provider or operator of the linked
+        pages is always responsible for their content.
+      </p>
+    </section>
+
+    <section class="block">
+      <h2>Copyright</h2>
+      <p>
+        The source code of this project is licensed under the <em>PolyForm
+        Noncommercial License 1.0.0</em>, and the learning content is licensed under
+        <em>Creative Commons BY-NC-ND 4.0</em>. See <code>LICENSE-CODE.md</code> and
+        <code>LICENSE-CONTENT.md</code> in the project repository for details.
+        Commercial use, reproduction, or modification without the author's consent
+        is not permitted.
+      </p>
+    </section>
+  </div>
+
+  <footer class="foot">KernelKompass — kernelkompass.de</footer>
+</div>
+
+<script>
+function showLang(lang){
+  document.querySelectorAll('.lang-panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('lang-' + lang).classList.add('active');
+  document.querySelector('.tab-btn[data-lang="' + lang + '"]').classList.add('active');
+}
+function toggleTheme(){
+  var isLight = document.body.classList.toggle('theme-light');
+  document.getElementById('themeBtn').textContent = isLight ? '🌙 Koyu tema / Dark mode' : '☀️ Açık tema / Light mode';
+}
+</script>
+</body>
+</html>

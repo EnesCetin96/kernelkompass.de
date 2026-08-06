@@ -1,0 +1,22 @@
+# Yerel geliştirme/test için örnek override dosyası.
+#
+# Kullanımı:
+#   cp docker-compose.override.yml.example docker-compose.override.yml
+#   docker compose up -d db backend   (nginx'i başlatmaya gerek yok, o certbot/domain ister)
+#
+# docker-compose.override.yml, docker-compose.yml ile otomatik birleşir
+# (Docker Compose'un standart davranışı) — nginx/production dosyasını
+# hiç değiştirmemize gerek kalmadan sadece "backend" servisinin 8000
+# portunu doğrudan localhost'a açıyoruz, böylece webapp/index.html
+# (KK_API_BASE = 'http://localhost:8000') buna direkt ulaşabiliyor.
+#
+# Bu dosyayı ASLA production'a taşıma / git'e commit etme (sadece yerel test içindir).
+
+services:
+  backend:
+    ports:
+      - "8000:8000"
+    environment:
+      # Yerelde test ederken CORS'u geniş tut. Production'da bunu
+      # kernelkompass.de'ye daraltacağız (.env üzerinden CORS_ORIGINS).
+      CORS_ORIGINS: "*"

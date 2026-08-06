@@ -1,0 +1,320 @@
+      <div class="eyebrow">$ cd part-04/</div>
+      <h1 class="h-en">Using Package Managers</h1>
+      <p class="h-tr">Paket Yöneticileri Kullanımı</p>
+      <p class="h-de">Paketmanager verwenden</p>
+      <div class="purpose">
+        <p class="en">Purpose: understand what a package manager is and use yum/dnf (Amazon Linux, Fedora) and apt (Ubuntu/Debian) to install, update, and remove software.</p>
+        <p class="tr">Amaç: paket yöneticisinin ne olduğunu anlamak, yazılım yüklemek/güncellemek/kaldırmak için yum/dnf (Amazon Linux, Fedora) ve apt (Ubuntu/Debian) kullanmak.</p>
+        <p class="de">Zweck: verstehen, was ein Paketmanager ist, und yum/dnf (Amazon Linux, Fedora) sowie apt (Ubuntu/Debian) verwenden, um Software zu installieren, zu aktualisieren und zu entfernen.</p>
+      </div>
+
+      <details class="notebox">
+        <summary>✎ Notlarım — Paket Yöneticileri</summary>
+        <textarea placeholder="Bu bölümle ilgili notların... buraya yaz." data-note="p4"></textarea>
+      </details>
+
+      <div class="topic">
+        <h3><span class="tag">kavram</span> What is a Package Manager? <span class="title-tr">— Paket yöneticisi nedir?</span><span class="title-de">— Was ist ein Paketmanager?</span></h3>
+        <p class="en">Think of a package manager as an "office assistant" that fetches, installs, and organizes software for you — instead of manually downloading files from random websites, you just say "install git" and it handles dependencies, versions, and configuration.</p>
+        <p class="tr"><span class="flag">TR</span>Paket yöneticisini, senin için yazılım getirip kuran ve düzenleyen bir "ofis asistanı" gibi düşün — rastgele internet sitelerinden dosya indirip kurmak yerine sadece "git'i kur" dersin, o senin için bağımlılıkları (dependencies), sürümleri ve ayarları hallederder.</p>
+        <p class="de"><span class="flag">DE</span>Stell dir einen Paketmanager wie einen "Büroassistenten" vor, der Software für dich beschafft, installiert und organisiert — statt Dateien manuell von zufälligen Webseiten herunterzuladen, sagst du einfach "installiere git", und er kümmert sich um Abhängigkeiten, Versionen und Konfiguration.</p>
+        <div class="svg-wrap svg-wrap-tr">
+          <svg viewBox="0 0 640 130" xmlns="http://www.w3.org/2000/svg">
+            <style>.b{fill:#161b10;stroke:#333a24;} .t{font-family:'JetBrains Mono',monospace;font-size:11.5px;fill:#eae6d8;} .ar{stroke:#e3a94a;stroke-width:1.4;marker-end:url(#ah3tr);}</style>
+            <defs><marker id="ah3tr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e3a94a"/></marker></defs>
+            <rect class="b" x="10" y="45" width="130" height="40" rx="6"/><text x="75" y="69" text-anchor="middle" class="t">install git</text>
+            <line x1="140" y1="65" x2="180" y2="65" class="ar"/>
+            <rect class="b" x="180" y="45" width="140" height="40" rx="6"/><text x="250" y="69" text-anchor="middle" class="t">Paket Yöneticisi</text>
+            <line x1="320" y1="65" x2="360" y2="65" class="ar"/>
+            <rect class="b" x="360" y="45" width="140" height="40" rx="6"/><text x="430" y="69" text-anchor="middle" class="t">Repository (depo)</text>
+            <line x1="500" y1="65" x2="540" y2="65" class="ar"/>
+            <rect class="b" x="540" y="45" width="90" height="40" rx="6"/><text x="585" y="69" text-anchor="middle" class="t">Kurulu ✓</text>
+          </svg>
+          <div class="svg-cap">Paket + bağımlılıkları otomatik bulunur, indirilir, kurulur</div>
+        </div>
+        <div class="svg-wrap svg-wrap-de">
+          <svg viewBox="0 0 640 130" xmlns="http://www.w3.org/2000/svg">
+            <style>.b{fill:#161b10;stroke:#333a24;} .t{font-family:'JetBrains Mono',monospace;font-size:11.5px;fill:#eae6d8;} .ar{stroke:#e3a94a;stroke-width:1.4;marker-end:url(#ah3de);}</style>
+            <defs><marker id="ah3de" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e3a94a"/></marker></defs>
+            <rect class="b" x="10" y="45" width="130" height="40" rx="6"/><text x="75" y="69" text-anchor="middle" class="t">install git</text>
+            <line x1="140" y1="65" x2="180" y2="65" class="ar"/>
+            <rect class="b" x="180" y="45" width="140" height="40" rx="6"/><text x="250" y="69" text-anchor="middle" class="t">Paketmanager</text>
+            <line x1="320" y1="65" x2="360" y2="65" class="ar"/>
+            <rect class="b" x="360" y="45" width="140" height="40" rx="6"/><text x="430" y="69" text-anchor="middle" class="t">Repository</text>
+            <line x1="500" y1="65" x2="540" y2="65" class="ar"/>
+            <rect class="b" x="540" y="45" width="90" height="40" rx="6"/><text x="585" y="69" text-anchor="middle" class="t">Installiert ✓</text>
+          </svg>
+          <div class="svg-cap">Paket + Abhängigkeiten werden automatisch gefunden, heruntergeladen, installiert</div>
+        </div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">format</span> Package Formats by Distro <span class="title-tr">— Dağıtıma göre paket formatları</span><span class="title-de">— Paketformate nach Distribution</span></h3>
+        <table class="tbl tbl-en">
+          <tr><th>Operating System</th><th>Format</th><th>Tool(s)</th></tr>
+          <tr><td>Debian / Ubuntu</td><td><code>.deb</code></td><td>apt, apt-get, dpkg</td></tr>
+          <tr><td>CentOS / Amazon Linux 2</td><td><code>.rpm</code></td><td>yum</td></tr>
+          <tr><td>Fedora / Amazon Linux 2023</td><td><code>.rpm</code></td><td>dnf</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>İşletim Sistemi</th><th>Format</th><th>Araç(lar)</th></tr>
+          <tr><td>Debian / Ubuntu</td><td><code>.deb</code></td><td>apt, apt-get, dpkg</td></tr>
+          <tr><td>CentOS / Amazon Linux 2</td><td><code>.rpm</code></td><td>yum</td></tr>
+          <tr><td>Fedora / Amazon Linux 2023</td><td><code>.rpm</code></td><td>dnf</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Betriebssystem</th><th>Format</th><th>Werkzeug(e)</th></tr>
+          <tr><td>Debian / Ubuntu</td><td><code>.deb</code></td><td>apt, apt-get, dpkg</td></tr>
+          <tr><td>CentOS / Amazon Linux 2</td><td><code>.rpm</code></td><td>yum</td></tr>
+          <tr><td>Fedora / Amazon Linux 2023</td><td><code>.rpm</code></td><td>dnf</td></tr>
+        </table>
+        <div class="svg-wrap svg-wrap-tr">
+          <svg viewBox="0 0 640 150" xmlns="http://www.w3.org/2000/svg">
+            <style>.b{fill:#161b10;stroke:#333a24;} .t{font-family:'JetBrains Mono',monospace;font-size:12px;fill:#eae6d8;} .l{stroke:#333a24;} .hi{fill:#161b10;stroke:#5fb8a6;}</style>
+            <rect class="b" x="30" y="10" width="160" height="34" rx="6"/><text x="110" y="32" text-anchor="middle" class="t">Ubuntu / Debian</text>
+            <rect class="hi" x="30" y="60" width="160" height="34" rx="6"/><text x="110" y="82" text-anchor="middle" class="t" fill="#5fb8a6">apt (yüksek seviye)</text>
+            <rect class="b" x="30" y="110" width="160" height="34" rx="6"/><text x="110" y="132" text-anchor="middle" class="t">dpkg (düşük seviye)</text>
+            <line class="l" x1="110" y1="44" x2="110" y2="60"/><line class="l" x1="110" y1="94" x2="110" y2="110"/>
+
+            <rect class="b" x="240" y="10" width="160" height="34" rx="6"/><text x="320" y="32" text-anchor="middle" class="t">Amazon Linux 2</text>
+            <rect class="hi" x="240" y="60" width="160" height="34" rx="6"/><text x="320" y="82" text-anchor="middle" class="t" fill="#5fb8a6">yum (yüksek seviye)</text>
+            <rect class="b" x="240" y="110" width="160" height="34" rx="6"/><text x="320" y="132" text-anchor="middle" class="t">rpm (düşük seviye)</text>
+            <line class="l" x1="320" y1="44" x2="320" y2="60"/><line class="l" x1="320" y1="94" x2="320" y2="110"/>
+
+            <rect class="b" x="450" y="10" width="160" height="34" rx="6"/><text x="530" y="32" text-anchor="middle" class="t">Fedora / AL2023</text>
+            <rect class="hi" x="450" y="60" width="160" height="34" rx="6"/><text x="530" y="82" text-anchor="middle" class="t" fill="#5fb8a6">dnf (yüksek seviye)</text>
+            <rect class="b" x="450" y="110" width="160" height="34" rx="6"/><text x="530" y="132" text-anchor="middle" class="t">rpm (düşük seviye)</text>
+            <line class="l" x1="530" y1="44" x2="530" y2="60"/><line class="l" x1="530" y1="94" x2="530" y2="110"/>
+          </svg>
+          <div class="svg-cap">Yüksek seviye araçlar (apt/yum/dnf), düşük seviye araçların (dpkg/rpm) üzerine kuruludur ve bağımlılıkları otomatik çözer</div>
+        </div>
+        <div class="svg-wrap svg-wrap-de">
+          <svg viewBox="0 0 640 150" xmlns="http://www.w3.org/2000/svg">
+            <style>.b{fill:#161b10;stroke:#333a24;} .t{font-family:'JetBrains Mono',monospace;font-size:12px;fill:#eae6d8;} .l{stroke:#333a24;} .hi{fill:#161b10;stroke:#5fb8a6;}</style>
+            <rect class="b" x="30" y="10" width="160" height="34" rx="6"/><text x="110" y="32" text-anchor="middle" class="t">Ubuntu / Debian</text>
+            <rect class="hi" x="30" y="60" width="160" height="34" rx="6"/><text x="110" y="82" text-anchor="middle" class="t" fill="#5fb8a6">apt (hohe Ebene)</text>
+            <rect class="b" x="30" y="110" width="160" height="34" rx="6"/><text x="110" y="132" text-anchor="middle" class="t">dpkg (niedrige Ebene)</text>
+            <line class="l" x1="110" y1="44" x2="110" y2="60"/><line class="l" x1="110" y1="94" x2="110" y2="110"/>
+
+            <rect class="b" x="240" y="10" width="160" height="34" rx="6"/><text x="320" y="32" text-anchor="middle" class="t">Amazon Linux 2</text>
+            <rect class="hi" x="240" y="60" width="160" height="34" rx="6"/><text x="320" y="82" text-anchor="middle" class="t" fill="#5fb8a6">yum (hohe Ebene)</text>
+            <rect class="b" x="240" y="110" width="160" height="34" rx="6"/><text x="320" y="132" text-anchor="middle" class="t">rpm (niedrige Ebene)</text>
+            <line class="l" x1="320" y1="44" x2="320" y2="60"/><line class="l" x1="320" y1="94" x2="320" y2="110"/>
+
+            <rect class="b" x="450" y="10" width="160" height="34" rx="6"/><text x="530" y="32" text-anchor="middle" class="t">Fedora / AL2023</text>
+            <rect class="hi" x="450" y="60" width="160" height="34" rx="6"/><text x="530" y="82" text-anchor="middle" class="t" fill="#5fb8a6">dnf (hohe Ebene)</text>
+            <rect class="b" x="450" y="110" width="160" height="34" rx="6"/><text x="530" y="132" text-anchor="middle" class="t">rpm (niedrige Ebene)</text>
+            <line class="l" x1="530" y1="44" x2="530" y2="60"/><line class="l" x1="530" y1="94" x2="530" y2="110"/>
+          </svg>
+          <div class="svg-cap">Werkzeuge auf hoher Ebene (apt/yum/dnf) bauen auf Werkzeugen auf niedriger Ebene (dpkg/rpm) auf und lösen Abhängigkeiten automatisch</div>
+        </div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">yum/dnf</span> yum &amp; dnf Deep Dive <span class="title-tr">— yum ve dnf komutları</span><span class="title-de">— yum- und dnf-Befehle</span></h3>
+        <table class="tbl tbl-en">
+          <tr><th>Command</th><th>What it does</th></tr>
+          <tr><td><code>yum install package</code></td><td>Installs the package</td></tr>
+          <tr><td><code>yum install package -y</code></td><td>Installs without asking for confirmation</td></tr>
+          <tr><td><code>yum remove package</code></td><td>Removes the package</td></tr>
+          <tr><td><code>yum autoremove package</code></td><td>Removes the package and its unused dependencies</td></tr>
+          <tr><td><code>yum update package</code></td><td>Updates a specific package</td></tr>
+          <tr><td><code>yum update</code></td><td>Updates all installed packages</td></tr>
+          <tr><td><code>yum info package</code></td><td>Shows information about the package</td></tr>
+          <tr><td><code>yum list installed</code></td><td>Lists all installed packages</td></tr>
+          <tr><td><code>yum --showduplicates list package</code></td><td>Lists all available versions of the package</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Komut</th><th>Ne yapar</th></tr>
+          <tr><td><code>yum install paket</code></td><td>Paketi kurar</td></tr>
+          <tr><td><code>yum install paket -y</code></td><td>Onay sormadan kurar</td></tr>
+          <tr><td><code>yum remove paket</code></td><td>Paketi kaldırır</td></tr>
+          <tr><td><code>yum autoremove paket</code></td><td>Paketi ve kullanılmayan bağımlılıklarını kaldırır</td></tr>
+          <tr><td><code>yum update paket</code></td><td>Belirli bir paketi günceller</td></tr>
+          <tr><td><code>yum update</code></td><td>Tüm kurulu paketleri günceller</td></tr>
+          <tr><td><code>yum info paket</code></td><td>Paket hakkında bilgi verir</td></tr>
+          <tr><td><code>yum list installed</code></td><td>Kurulu tüm paketleri listeler</td></tr>
+          <tr><td><code>yum --showduplicates list paket</code></td><td>Paketin tüm mevcut sürümlerini listeler</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Befehl</th><th>Was er macht</th></tr>
+          <tr><td><code>yum install paket</code></td><td>Installiert das Paket</td></tr>
+          <tr><td><code>yum install paket -y</code></td><td>Installiert ohne Bestätigung zu fragen</td></tr>
+          <tr><td><code>yum remove paket</code></td><td>Entfernt das Paket</td></tr>
+          <tr><td><code>yum autoremove paket</code></td><td>Entfernt das Paket und seine nicht genutzten Abhängigkeiten</td></tr>
+          <tr><td><code>yum update paket</code></td><td>Aktualisiert ein bestimmtes Paket</td></tr>
+          <tr><td><code>yum update</code></td><td>Aktualisiert alle installierten Pakete</td></tr>
+          <tr><td><code>yum info paket</code></td><td>Zeigt Informationen über das Paket</td></tr>
+          <tr><td><code>yum list installed</code></td><td>Listet alle installierten Pakete auf</td></tr>
+          <tr><td><code>yum --showduplicates list paket</code></td><td>Listet alle verfügbaren Versionen des Pakets auf</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>sudo yum install git -y      <span class="c"># git'i onaysız kur</span>
+git --version                <span class="c"># sürümü kontrol et</span>
+sudo yum autoremove git -y   <span class="c"># git'i bağımlılıklarıyla kaldır</span></pre></div>
+        <p class="en">The equivalent on Ubuntu: <span class="mono-inline">sudo apt update</span> (updates the repository list), <span class="mono-inline">sudo apt install git -y</span>, <span class="mono-inline">sudo apt remove git -y</span>.</p>
+        <p class="tr"><span class="flag">TR</span>Ubuntu tarafında karşılığı: <span class="mono-inline">sudo apt update</span> (depo listesini günceller), <span class="mono-inline">sudo apt install git -y</span>, <span class="mono-inline">sudo apt remove git -y</span>.</p>
+        <p class="de"><span class="flag">DE</span>Das Gegenstück unter Ubuntu: <span class="mono-inline">sudo apt update</span> (aktualisiert die Repository-Liste), <span class="mono-inline">sudo apt install git -y</span>, <span class="mono-inline">sudo apt remove git -y</span>.</p>
+      </div>
+
+
+      <div class="topic">
+        <h3><span class="tag">apt</span> The Full APT Toolbox <span class="title-tr">— APT'nin tam alet çantası</span><span class="title-de">— Der komplette APT-Werkzeugkasten</span></h3>
+        <p class="en">Install and remove are just the beginning. Professional Debian/Ubuntu administration uses the whole APT verb set — especially <span class="mono-inline">search</span> and <span class="mono-inline">show</span> <i>before</i> installing anything.</p>
+        <p class="tr"><span class="flag">TR</span>Kurmak ve kaldırmak yalnızca başlangıçtır. Profesyonel Debian/Ubuntu yönetimi APT'nin tüm fiil setini kullanır — özellikle bir şey kurmadan <i>önce</i> <span class="mono-inline">search</span> ve <span class="mono-inline">show</span>.</p>
+        <p class="de"><span class="flag">DE</span>Installieren und Entfernen sind nur der Anfang. Professionelle Debian/Ubuntu-Administration nutzt das gesamte APT-Verbenset — besonders <span class="mono-inline">search</span> und <span class="mono-inline">show</span>, <i>bevor</i> man etwas installiert.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Command</th><th>What it does</th></tr>
+          <tr><td><code>apt update</code></td><td>Refresh the package index (doesn't install anything!)</td></tr>
+          <tr><td><code>apt upgrade</code></td><td>Upgrade all installed packages</td></tr>
+          <tr><td><code>apt search nginx</code></td><td>Search available packages by keyword</td></tr>
+          <tr><td><code>apt show nginx</code></td><td>Details before installing: version, size, dependencies</td></tr>
+          <tr><td><code>apt remove nginx</code></td><td>Remove the package, KEEP its config files</td></tr>
+          <tr><td><code>apt purge nginx</code></td><td>Remove package AND its config files</td></tr>
+          <tr><td><code>apt autoremove</code></td><td>Sweep out dependencies nothing needs anymore</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Komut</th><th>Ne yapar</th></tr>
+          <tr><td><code>apt update</code></td><td>Paket dizinini yenile (hiçbir şey kurmaz!)</td></tr>
+          <tr><td><code>apt upgrade</code></td><td>Kurulu tüm paketleri yükselt</td></tr>
+          <tr><td><code>apt search nginx</code></td><td>Mevcut paketlerde anahtar kelimeyle ara</td></tr>
+          <tr><td><code>apt show nginx</code></td><td>Kurmadan önce ayrıntılar: sürüm, boyut, bağımlılıklar</td></tr>
+          <tr><td><code>apt remove nginx</code></td><td>Paketi kaldır, yapılandırma dosyalarını TUT</td></tr>
+          <tr><td><code>apt purge nginx</code></td><td>Paketi VE yapılandırma dosyalarını kaldır</td></tr>
+          <tr><td><code>apt autoremove</code></td><td>Artık kimsenin ihtiyaç duymadığı bağımlılıkları süpür</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Befehl</th><th>Was er tut</th></tr>
+          <tr><td><code>apt update</code></td><td>Paketindex aktualisieren (installiert nichts!)</td></tr>
+          <tr><td><code>apt upgrade</code></td><td>Alle installierten Pakete aktualisieren</td></tr>
+          <tr><td><code>apt search nginx</code></td><td>Verfügbare Pakete per Stichwort durchsuchen</td></tr>
+          <tr><td><code>apt show nginx</code></td><td>Details vor der Installation: Version, Größe, Abhängigkeiten</td></tr>
+          <tr><td><code>apt remove nginx</code></td><td>Paket entfernen, Konfigurationsdateien BEHALTEN</td></tr>
+          <tr><td><code>apt purge nginx</code></td><td>Paket UND Konfigurationsdateien entfernen</td></tr>
+          <tr><td><code>apt autoremove</code></td><td>Nicht mehr benötigte Abhängigkeiten ausfegen</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>sudo apt update
+sudo apt install htop        <span class="c"># kur</span>
+apt list                     <span class="c"># kurulu paketleri gör</span>
+sudo apt purge htop          <span class="c"># yapılandırmasıyla birlikte kaldır</span></pre></div>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>apt search web server        <span class="c"># kelimeyle paket ara</span>
+apt show nginx               <span class="c"># kurmadan önce künyesine bak</span>
+sudo apt autoremove          <span class="c"># sahipsiz kalan bağımlılıkları temizle</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> <span class="mono-inline">update</span> vs <span class="mono-inline">upgrade</span> confuses everyone at first: <i>update</i> refreshes the CATALOG, <i>upgrade</i> installs the new versions. Always run them in that order.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">update</span> ile <span class="mono-inline">upgrade</span> başta herkesi karıştırır: <i>update</i> KATALOĞU yeniler, <i>upgrade</i> yeni sürümleri kurar. Her zaman bu sırayla çalıştır.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> <span class="mono-inline">update</span> vs. <span class="mono-inline">upgrade</span> verwirrt anfangs jeden: <i>update</i> aktualisiert den KATALOG, <i>upgrade</i> installiert die neuen Versionen. Führe sie immer in dieser Reihenfolge aus.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">depo</span> Repositories: Where Packages Come From <span class="title-tr">— Depolar: paketler nereden gelir</span><span class="title-de">— Repositories: Woher Pakete kommen</span></h3>
+        <p class="en">A package manager doesn't magically know about software — it reads a list of <b>repositories</b>: trusted servers that host packages plus an index. Each repo is cryptographically signed with a <b>GPG key</b>, so a tampered package is detected before it ever installs.</p>
+        <p class="tr"><span class="flag">TR</span>Bir paket yöneticisi yazılımları sihirle bilmez — bir <b>depo (repository)</b> listesi okur: paketleri ve bir dizini barındıran güvenilir sunucular. Her depo bir <b>GPG anahtarıyla</b> kriptografik olarak imzalanır; böylece kurcalanmış bir paket daha kurulmadan tespit edilir.</p>
+        <p class="de"><span class="flag">DE</span>Ein Paketmanager kennt Software nicht durch Magie — er liest eine Liste von <b>Repositories</b>: vertrauenswürdige Server, die Pakete plus einen Index hosten. Jedes Repo ist mit einem <b>GPG-Schlüssel</b> kryptografisch signiert, sodass ein manipuliertes Paket erkannt wird, bevor es je installiert wird.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Distro family</th><th>Repo definitions live in</th></tr>
+          <tr><td>Debian / Ubuntu</td><td><code>/etc/apt/sources.list</code> + <code>/etc/apt/sources.list.d/*.list</code></td></tr>
+          <tr><td>Fedora / RHEL</td><td><code>/etc/yum.repos.d/*.repo</code></td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Dağıtım ailesi</th><th>Depo tanımları nerede</th></tr>
+          <tr><td>Debian / Ubuntu</td><td><code>/etc/apt/sources.list</code> + <code>/etc/apt/sources.list.d/*.list</code></td></tr>
+          <tr><td>Fedora / RHEL</td><td><code>/etc/yum.repos.d/*.repo</code></td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Distributionsfamilie</th><th>Repo-Definitionen liegen in</th></tr>
+          <tr><td>Debian / Ubuntu</td><td><code>/etc/apt/sources.list</code> + <code>/etc/apt/sources.list.d/*.list</code></td></tr>
+          <tr><td>Fedora / RHEL</td><td><code>/etc/yum.repos.d/*.repo</code></td></tr>
+        </table>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>cat /etc/apt/sources.list             <span class="c"># hangi depolardan besleniyorsun?</span>
+ls /etc/apt/sources.list.d/           <span class="c"># eklenmiş üçüncü parti depolar</span>
+sudo add-apt-repository ppa:deadsnakes/ppa   <span class="c"># örnek: yeni depo ekle</span>
+sudo apt update                       <span class="c"># yeni deponun dizinini çek</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> Only add repositories you trust. A repo can ship an update for ANY package on your system — full trust, full risk.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Yalnızca güvendiğin depoları ekle. Bir depo, sistemindeki HERHANGİ bir paket için güncelleme gönderebilir — tam güven, tam risk.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Füge nur Repositories hinzu, denen du vertraust. Ein Repo kann ein Update für JEDES Paket auf deinem System ausliefern — volles Vertrauen, volles Risiko.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">evrensel</span> Universal Packages: Snap, Flatpak, AppImage <span class="title-tr">— Evrensel paketler</span><span class="title-de">— Universelle Pakete</span></h3>
+        <p class="en">Classic .deb/.rpm packages are built per-distro. A newer generation of formats bundles the app <i>with its dependencies</i> so the same file runs on any distro — at the cost of larger downloads.</p>
+        <p class="tr"><span class="flag">TR</span>Klasik .deb/.rpm paketleri dağıtıma özel derlenir. Daha yeni nesil formatlar, uygulamayı <i>bağımlılıklarıyla birlikte</i> paketler; böylece aynı dosya her dağıtımda çalışır — bedeli daha büyük indirme boyutlarıdır.</p>
+        <p class="de"><span class="flag">DE</span>Klassische .deb/.rpm-Pakete werden pro Distribution gebaut. Eine neuere Generation von Formaten bündelt die App <i>mit ihren Abhängigkeiten</i>, sodass dieselbe Datei auf jeder Distribution läuft — um den Preis größerer Downloads.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Format</th><th>Backed by</th><th>Character</th></tr>
+          <tr><td><b>Snap</b></td><td>Canonical (Ubuntu)</td><td>Central store, auto-updates, snapd daemon required</td></tr>
+          <tr><td><b>Flatpak</b></td><td>Community / Red Hat</td><td>Sandboxed, per-app permissions, Flathub store</td></tr>
+          <tr><td><b>AppImage</b></td><td>Community</td><td>One portable file — download, make executable, run. No install</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Format</th><th>Arkasındaki</th><th>Karakteri</th></tr>
+          <tr><td><b>Snap</b></td><td>Canonical (Ubuntu)</td><td>Merkezi mağaza, otomatik güncelleme, snapd daemon gerekli</td></tr>
+          <tr><td><b>Flatpak</b></td><td>Topluluk / Red Hat</td><td>Sandbox'lı, uygulama bazlı izinler, Flathub mağazası</td></tr>
+          <tr><td><b>AppImage</b></td><td>Topluluk</td><td>Tek taşınabilir dosya — indir, çalıştırılabilir yap, çalıştır. Kurulum yok</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Format</th><th>Getragen von</th><th>Charakter</th></tr>
+          <tr><td><b>Snap</b></td><td>Canonical (Ubuntu)</td><td>Zentraler Store, Auto-Updates, snapd-Daemon erforderlich</td></tr>
+          <tr><td><b>Flatpak</b></td><td>Community / Red Hat</td><td>Sandboxed, App-basierte Berechtigungen, Flathub-Store</td></tr>
+          <tr><td><b>AppImage</b></td><td>Community</td><td>Eine portable Datei — herunterladen, ausführbar machen, starten. Keine Installation</td></tr>
+        </table>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>sudo snap install spotify          <span class="c"># Snap ile kur</span>
+snap list                          <span class="c"># kurulu snap'leri gör</span>
+flatpak install flathub org.gimp.GIMP   <span class="c"># Flatpak ile kur</span>
+chmod +x Krita.AppImage
+./Krita.AppImage                   <span class="c"># AppImage: kurulumsuz çalıştır</span></pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">bakım</span> Maintenance &amp; Troubleshooting <span class="title-tr">— Bakım ve sorun giderme</span><span class="title-de">— Wartung &amp; Fehlerbehebung</span></h3>
+        <p class="en">Package systems occasionally jam: a download dies mid-install, disk fills with cached .deb files, or a second apt process holds the lock. These three rescue moves fix 90% of real-world package trouble.</p>
+        <p class="tr"><span class="flag">TR</span>Paket sistemleri ara sıra sıkışır: bir indirme kurulumun ortasında ölür, disk önbelleğe alınmış .deb dosyalarıyla dolar ya da ikinci bir apt süreci kilidi tutar. Bu üç kurtarma hamlesi, gerçek dünyadaki paket sorunlarının %90'ını çözer.</p>
+        <p class="de"><span class="flag">DE</span>Paketsysteme verklemmen sich gelegentlich: Ein Download stirbt mitten in der Installation, die Festplatte füllt sich mit gecachten .deb-Dateien, oder ein zweiter apt-Prozess hält die Sperre. Diese drei Rettungszüge beheben 90 % der realen Paketprobleme.</p>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>sudo apt clean                    <span class="c"># indirilen paket önbelleğini boşalt (yer aç)</span>
+sudo apt --fix-broken install     <span class="c"># yarım kalmış/bozuk bağımlılıkları onar</span>
+<span class="c"># "Could not get lock /var/lib/dpkg/lock-frontend" hatası:</span>
+<span class="c">#   → başka bir apt/güncelleyici çalışıyor demektir. Bitmesini bekle;</span>
+<span class="c">#     kilidi elle silmek SON çaredir ve yarıda kesilmiş işlem bırakabilir.</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> The lock error is usually just Ubuntu's automatic updater running in the background — wait two minutes before assuming something is broken.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Kilit hatası genellikle Ubuntu'nun arka planda çalışan otomatik güncelleyicisidir — bir şeyin bozuk olduğunu varsaymadan önce iki dakika bekle.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Der Sperrfehler ist meist nur Ubuntus automatischer Updater im Hintergrund — warte zwei Minuten, bevor du annimmst, dass etwas kaputt ist.</div>
+      </div>
+
+
+      <div class="scen-box" data-scen="p4-proje1">
+        <div class="scen-head"><span class="tag">proje 1/3</span> Install a Web Server <span class="title-tr">— web sunucusu kur</span><span class="title-de">— Webserver installieren</span></div>
+        <p class="en">Install the <span class="mono-inline">nginx</span> package.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">nginx</span> paketini kur.</p>
+        <p class="de"><span class="flag">DE</span>Installiere das Paket <span class="mono-inline">nginx</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p4-proje1')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p4-proje1')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p4-proje1"></div>
+      </div>
+      <div class="scen-box" data-scen="p4-proje2">
+        <div class="scen-head"><span class="tag">proje 2/3</span> Install and Remove <span class="title-tr">— kur ve kaldır</span><span class="title-de">— installieren und entfernen</span></div>
+        <p class="en">Install both <span class="mono-inline">git</span> and <span class="mono-inline">curl</span>. Then you realize you don't need <span class="mono-inline">curl</span> — remove just that one.</p>
+        <p class="tr"><span class="flag">TR</span>Hem <span class="mono-inline">git</span> hem <span class="mono-inline">curl</span>'ü kur. Sonra <span class="mono-inline">curl</span>'e ihtiyacın olmadığını fark ediyorsun — sadece onu kaldır.</p>
+        <p class="de"><span class="flag">DE</span>Installiere sowohl <span class="mono-inline">git</span> als auch <span class="mono-inline">curl</span>. Dann merkst du, dass du <span class="mono-inline">curl</span> nicht brauchst — entferne nur dieses.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p4-proje2')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p4-proje2')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p4-proje2"></div>
+      </div>
+      <div class="scen-box" data-scen="p4-proje3">
+        <div class="scen-head"><span class="tag">proje 3/3</span> Save the Package List <span class="title-tr">— paket listesini kaydet</span><span class="title-de">— Paketliste speichern</span></div>
+        <p class="en">Install <span class="mono-inline">htop</span>, then save the list of installed packages into <span class="mono-inline">kurulu.txt</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">htop</span>'u kur, sonra kurulu paketlerin listesini <span class="mono-inline">kurulu.txt</span>'ye kaydet.</p>
+        <p class="de"><span class="flag">DE</span>Installiere <span class="mono-inline">htop</span> und speichere dann die Liste der installierten Pakete in <span class="mono-inline">kurulu.txt</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p4-proje3')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p4-proje3')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p4-proje3"></div>
+      </div>

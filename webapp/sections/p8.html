@@ -1,0 +1,291 @@
+      <div class="eyebrow">$ cd part-08/</div>
+      <h1 class="h-en">Linux File Permissions</h1>
+      <p class="h-tr">Linux Dosya İzinleri</p>
+      <p class="h-de">Linux-Dateiberechtigungen</p>
+      <div class="purpose">
+        <p class="en">Purpose: understand the owner/group/others permission model, read/write/execute meaning, numeric vs symbolic notation, and change ownership/permissions safely.</p>
+        <p class="tr">Amaç: sahip/grup/diğerleri izin modelini, okuma/yazma/çalıştırma anlamlarını, sayısal ve sembolik gösterimi anlamak ve izin/sahiplik değişikliklerini güvenle yapmak.</p>
+        <p class="de">Zweck: das Eigentümer/Gruppe/Andere-Berechtigungsmodell, die Bedeutung von Lesen/Schreiben/Ausführen, numerische vs. symbolische Notation verstehen und Eigentümer/Berechtigungen sicher ändern.</p>
+      </div>
+
+      <details class="notebox">
+        <summary>✎ Notlarım — Dosya İzinleri</summary>
+        <textarea placeholder="Bu bölümle ilgili notların... buraya yaz." data-note="p8"></textarea>
+      </details>
+
+      <div class="topic">
+        <h3><span class="tag">rwx</span> Anatomy of a Permission String <span class="title-tr">— İzin dizesinin anatomisi</span><span class="title-de">— Anatomie einer Berechtigungszeichenkette</span></h3>
+        <p class="en">Every file has an owner and a group. <span class="mono-inline">ls -l</span> shows a 10-character string: 1 for file type, then three groups of three (owner / group / others), each meaning read (r), write (w), execute (x).</p>
+        <p class="tr"><span class="flag">TR</span>Her dosyanın bir sahibi (owner) ve bir grubu vardır. <span class="mono-inline">ls -l</span> komutu 10 karakterlik bir dize gösterir: ilk karakter dosya türü, sonra üçer üçer üç grup (sahip / grup / diğerleri), her biri okuma (r), yazma (w), çalıştırma (x) anlamına gelir.</p>
+        <p class="de"><span class="flag">DE</span>Jede Datei hat einen Eigentümer und eine Gruppe. <span class="mono-inline">ls -l</span> zeigt eine 10-Zeichen-Kette: 1 Zeichen für den Dateityp, dann drei Dreiergruppen (Eigentümer / Gruppe / Andere), jede bedeutet Lesen (r), Schreiben (w), Ausführen (x).</p>
+        <div class="svg-wrap svg-wrap-tr">
+          <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg">
+            <style>.ch{fill:#161b10;stroke:#333a24;} .cht{font-family:'JetBrains Mono',monospace;font-size:20px;fill:#e3a94a;font-weight:700;} .lbl{font-family:Inter,sans-serif;font-size:11px;fill:#9a9682;text-anchor:middle;} .grp{fill:none;stroke:#5fb8a6;stroke-width:1.3;}</style>
+            <rect class="ch" x="10" y="20" width="50" height="46" rx="6"/><text x="35" y="52" text-anchor="middle" class="cht">-</text>
+            <rect class="ch" x="65" y="20" width="50" height="46" rx="6"/><text x="90" y="52" text-anchor="middle" class="cht">r</text>
+            <rect class="ch" x="115" y="20" width="50" height="46" rx="6"/><text x="140" y="52" text-anchor="middle" class="cht">w</text>
+            <rect class="ch" x="165" y="20" width="50" height="46" rx="6"/><text x="190" y="52" text-anchor="middle" class="cht">x</text>
+            <rect class="ch" x="220" y="20" width="50" height="46" rx="6"/><text x="245" y="52" text-anchor="middle" class="cht">r</text>
+            <rect class="ch" x="270" y="20" width="50" height="46" rx="6"/><text x="295" y="52" text-anchor="middle" class="cht">-</text>
+            <rect class="ch" x="320" y="20" width="50" height="46" rx="6"/><text x="345" y="52" text-anchor="middle" class="cht">x</text>
+            <rect class="ch" x="375" y="20" width="50" height="46" rx="6"/><text x="400" y="52" text-anchor="middle" class="cht">r</text>
+            <rect class="ch" x="425" y="20" width="50" height="46" rx="6"/><text x="450" y="52" text-anchor="middle" class="cht">-</text>
+            <rect class="ch" x="475" y="20" width="50" height="46" rx="6"/><text x="500" y="52" text-anchor="middle" class="cht">-</text>
+
+            <text x="35" y="90" class="lbl">tür</text>
+            <rect class="grp" x="62" y="78" width="156" height="18" rx="9"/><text x="140" y="112" class="lbl">USER (sahip)</text>
+            <rect class="grp" x="217" y="78" width="156" height="18" rx="9"/><text x="295" y="112" class="lbl">GROUP (grup)</text>
+            <rect class="grp" x="372" y="78" width="156" height="18" rx="9"/><text x="450" y="112" class="lbl">OTHERS (diğerleri)</text>
+
+            <text x="140" y="140" class="lbl" font-family="'JetBrains Mono',monospace" fill="#eae6d8">rwx = 4+2+1 = 7</text>
+            <text x="295" y="140" class="lbl" font-family="'JetBrains Mono',monospace" fill="#eae6d8">r-x = 4+0+1 = 5</text>
+            <text x="450" y="140" class="lbl" font-family="'JetBrains Mono',monospace" fill="#eae6d8">r-- = 4+0+0 = 4</text>
+            <text x="295" y="170" class="lbl" font-size="13" fill="#e3a94a" font-family="'JetBrains Mono',monospace">chmod 754 dosya</text>
+          </svg>
+          <div class="svg-cap">-rwxr-xr-- örneği: sahip her şeyi yapabilir, grup okur+çalıştırır, diğerleri sadece okur</div>
+        </div>
+        <div class="svg-wrap svg-wrap-de">
+          <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg">
+            <style>.ch{fill:#161b10;stroke:#333a24;} .cht{font-family:'JetBrains Mono',monospace;font-size:20px;fill:#e3a94a;font-weight:700;} .lbl{font-family:Inter,sans-serif;font-size:11px;fill:#9a9682;text-anchor:middle;} .grp{fill:none;stroke:#5fb8a6;stroke-width:1.3;}</style>
+            <rect class="ch" x="10" y="20" width="50" height="46" rx="6"/><text x="35" y="52" text-anchor="middle" class="cht">-</text>
+            <rect class="ch" x="65" y="20" width="50" height="46" rx="6"/><text x="90" y="52" text-anchor="middle" class="cht">r</text>
+            <rect class="ch" x="115" y="20" width="50" height="46" rx="6"/><text x="140" y="52" text-anchor="middle" class="cht">w</text>
+            <rect class="ch" x="165" y="20" width="50" height="46" rx="6"/><text x="190" y="52" text-anchor="middle" class="cht">x</text>
+            <rect class="ch" x="220" y="20" width="50" height="46" rx="6"/><text x="245" y="52" text-anchor="middle" class="cht">r</text>
+            <rect class="ch" x="270" y="20" width="50" height="46" rx="6"/><text x="295" y="52" text-anchor="middle" class="cht">-</text>
+            <rect class="ch" x="320" y="20" width="50" height="46" rx="6"/><text x="345" y="52" text-anchor="middle" class="cht">x</text>
+            <rect class="ch" x="375" y="20" width="50" height="46" rx="6"/><text x="400" y="52" text-anchor="middle" class="cht">r</text>
+            <rect class="ch" x="425" y="20" width="50" height="46" rx="6"/><text x="450" y="52" text-anchor="middle" class="cht">-</text>
+            <rect class="ch" x="475" y="20" width="50" height="46" rx="6"/><text x="500" y="52" text-anchor="middle" class="cht">-</text>
+
+            <text x="35" y="90" class="lbl">Typ</text>
+            <rect class="grp" x="62" y="78" width="156" height="18" rx="9"/><text x="140" y="112" class="lbl">USER (Eigentümer)</text>
+            <rect class="grp" x="217" y="78" width="156" height="18" rx="9"/><text x="295" y="112" class="lbl">GROUP (Gruppe)</text>
+            <rect class="grp" x="372" y="78" width="156" height="18" rx="9"/><text x="450" y="112" class="lbl">OTHERS (Andere)</text>
+
+            <text x="140" y="140" class="lbl" font-family="'JetBrains Mono',monospace" fill="#eae6d8">rwx = 4+2+1 = 7</text>
+            <text x="295" y="140" class="lbl" font-family="'JetBrains Mono',monospace" fill="#eae6d8">r-x = 4+0+1 = 5</text>
+            <text x="450" y="140" class="lbl" font-family="'JetBrains Mono',monospace" fill="#eae6d8">r-- = 4+0+0 = 4</text>
+            <text x="295" y="170" class="lbl" font-size="13" fill="#e3a94a" font-family="'JetBrains Mono',monospace">chmod 754 datei</text>
+          </svg>
+          <div class="svg-cap">Beispiel -rwxr-xr--: Eigentümer kann alles, Gruppe liest+führt aus, Andere lesen nur</div>
+        </div>
+        <table class="tbl tbl-en">
+          <tr><th>Symbol</th><th>Meaning</th><th>Numeric value</th></tr>
+          <tr><td><code>r</code></td><td>read</td><td>4</td></tr>
+          <tr><td><code>w</code></td><td>write</td><td>2</td></tr>
+          <tr><td><code>x</code></td><td>execute (on directories: enter it)</td><td>1</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Sembol</th><th>Anlamı</th><th>Sayısal değer</th></tr>
+          <tr><td><code>r</code></td><td>read — okuma</td><td>4</td></tr>
+          <tr><td><code>w</code></td><td>write — yazma</td><td>2</td></tr>
+          <tr><td><code>x</code></td><td>execute — çalıştırma (dizinlerde: içine girme)</td><td>1</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Symbol</th><th>Bedeutung</th><th>Numerischer Wert</th></tr>
+          <tr><td><code>r</code></td><td>read — lesen</td><td>4</td></tr>
+          <tr><td><code>w</code></td><td>write — schreiben</td><td>2</td></tr>
+          <tr><td><code>x</code></td><td>execute — ausführen (bei Verzeichnissen: hineingehen)</td><td>1</td></tr>
+        </table>
+        <div class="tip tip-en"><b>💡 Tip:</b> Without <span class="mono-inline">x</span> permission on a directory, you can't go INTO it (can't cd) — <span class="mono-inline">r</span> only lists file names but you can't enter.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Bir dizinde <span class="mono-inline">x</span> izni olmadan, o dizinin İÇİNE giremezsin (cd yapamazsın) — <span class="mono-inline">r</span> sadece dosya isimlerini listeler ama içine giremezsin.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Ohne <span class="mono-inline">x</span>-Berechtigung auf ein Verzeichnis kannst du nicht HINEIN (kein cd) — <span class="mono-inline">r</span> listet nur die Dateinamen auf, aber du kannst nicht hineingehen.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">chmod</span> Changing Permissions <span class="title-tr">— İzin değiştirme</span><span class="title-de">— Berechtigungen ändern</span></h3>
+        <table class="tbl tbl-en">
+          <tr><th>Numeric</th><th>Symbolic</th><th>Meaning</th></tr>
+          <tr><td><code>chmod 700 file</code></td><td><code>chmod u=rwx,g=,o= file</code></td><td>Only the owner can do anything</td></tr>
+          <tr><td><code>chmod 644 file</code></td><td><code>chmod u=rw,g=r,o=r file</code></td><td>Owner reads/writes, others can only read</td></tr>
+          <tr><td><code>chmod 755 file</code></td><td><code>chmod u=rwx,g=rx,o=rx file</code></td><td>Owner does everything, others read+execute (common script permission)</td></tr>
+          <tr><td><code>chmod 600 file</code></td><td><code>chmod u=rw,g=,o= file</code></td><td>Only the owner reads/writes — for sensitive files</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Sayısal (numeric)</th><th>Sembolik (symbolic)</th><th>Anlamı</th></tr>
+          <tr><td><code>chmod 700 dosya</code></td><td><code>chmod u=rwx,g=,o= dosya</code></td><td>Sadece sahip her şey yapabilir</td></tr>
+          <tr><td><code>chmod 644 dosya</code></td><td><code>chmod u=rw,g=r,o=r dosya</code></td><td>Sahip okur/yazar, diğerleri sadece okur</td></tr>
+          <tr><td><code>chmod 755 dosya</code></td><td><code>chmod u=rwx,g=rx,o=rx dosya</code></td><td>Sahip her şey, diğerleri okur+çalıştırır (yaygın script izni)</td></tr>
+          <tr><td><code>chmod 600 dosya</code></td><td><code>chmod u=rw,g=,o= dosya</code></td><td>Sadece sahip okur/yazar — hassas dosyalar için</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Numerisch</th><th>Symbolisch</th><th>Bedeutung</th></tr>
+          <tr><td><code>chmod 700 datei</code></td><td><code>chmod u=rwx,g=,o= datei</code></td><td>Nur der Eigentümer kann alles</td></tr>
+          <tr><td><code>chmod 644 datei</code></td><td><code>chmod u=rw,g=r,o=r datei</code></td><td>Eigentümer liest/schreibt, Andere können nur lesen</td></tr>
+          <tr><td><code>chmod 755 datei</code></td><td><code>chmod u=rwx,g=rx,o=rx datei</code></td><td>Eigentümer alles, Andere lesen+ausführen (übliche Skript-Berechtigung)</td></tr>
+          <tr><td><code>chmod 600 datei</code></td><td><code>chmod u=rw,g=,o= datei</code></td><td>Nur der Eigentümer liest/schreibt — für sensible Dateien</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>echo "Top secret info" &gt; secret.txt
+chmod 600 secret.txt      <span class="c"># sadece sahip okur/yazar</span>
+ls -l secret.txt          <span class="c"># kontrol et: -rw------- olmalı</span></pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">chown</span> Copying &amp; Ownership <span class="title-tr">— Kopyalama ve sahiplik</span><span class="title-de">— Kopieren und Eigentümerschaft</span></h3>
+        <p class="en"><span class="mono-inline">cp</span> alone does NOT preserve original permissions — use <span class="mono-inline">cp -p</span> to keep them.</p>
+        <p class="tr"><span class="flag">TR</span>Tek başına <span class="mono-inline">cp</span> orijinal izinleri KORUMAZ — izinleri korumak için <span class="mono-inline">cp -p</span> kullan.</p>
+        <p class="de"><span class="flag">DE</span><span class="mono-inline">cp</span> allein bewahrt die ursprünglichen Berechtigungen NICHT — verwende <span class="mono-inline">cp -p</span>, um sie zu behalten.</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>chmod 640 source.txt
+cp source.txt copy1.txt      <span class="c"># izinler DEĞİŞİR (varsayılan umask'e göre)</span>
+cp -p source.txt copy2.txt   <span class="c"># izinler AYNI kalır</span>
+sudo chown user1:user2 dosya.txt   <span class="c"># sahibi user1, grubu user2 yap</span></pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">alıştırma</span> Quick Self-Check <span class="title-tr">— Kendini test et</span><span class="title-de">— Selbsttest</span></h3>
+        <p class="en">Given <span class="mono-inline">-rwxr-xr--</span> owned by alice:developers — can someone outside the "developers" group execute this file? What can the group do?</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">-rwxr-xr--</span> iznine sahip, sahibi alice, grubu developers olan bir dosya düşün — "developers" grubu dışındaki biri bu dosyayı çalıştırabilir mi? Grup ne yapabilir? (Cevap: grup okuyup çalıştırabilir ama yazamaz; diğerleri sadece okuyabilir, çalıştıramaz.)</p>
+        <p class="de"><span class="flag">DE</span>Angenommen <span class="mono-inline">-rwxr-xr--</span>, Eigentümer alice:developers — kann jemand außerhalb der Gruppe "developers" diese Datei ausführen? Was darf die Gruppe? (Antwort: die Gruppe darf lesen und ausführen, aber nicht schreiben; Andere dürfen nur lesen, nicht ausführen.)</p>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">oktal</span> Octal Anatomy: 4-2-1 <span class="title-tr">— Oktal anatomi: 4-2-1</span><span class="title-de">— Oktal-Anatomie: 4-2-1</span></h3>
+        <p class="en">Each permission digit is a sum of three bit values: read=<b>4</b>, write=<b>2</b>, execute=<b>1</b>. Adding the ones you want gives every possible combination from 0 to 7.</p>
+        <p class="tr"><span class="flag">TR</span>Her izin hanesi üç bit değerinin toplamıdır: okuma=<b>4</b>, yazma=<b>2</b>, çalıştırma=<b>1</b>. İstediklerini toplaman 0'dan 7'ye kadar her olası kombinasyonu verir.</p>
+        <p class="de"><span class="flag">DE</span>Jede Berechtigungsziffer ist die Summe dreier Bitwerte: Lesen=<b>4</b>, Schreiben=<b>2</b>, Ausführen=<b>1</b>. Das Addieren der gewünschten Werte ergibt jede mögliche Kombination von 0 bis 7.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Digit</th><th>Bits</th><th>Meaning</th></tr>
+          <tr><td><code>7</code></td><td>4+2+1</td><td>read + write + execute (rwx)</td></tr>
+          <tr><td><code>6</code></td><td>4+2</td><td>read + write (rw-)</td></tr>
+          <tr><td><code>5</code></td><td>4+1</td><td>read + execute (r-x)</td></tr>
+          <tr><td><code>4</code></td><td>4</td><td>read only (r--)</td></tr>
+          <tr><td><code>0</code></td><td>—</td><td>no permission (---)</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Hane</th><th>Bitler</th><th>Anlamı</th></tr>
+          <tr><td><code>7</code></td><td>4+2+1</td><td>okuma + yazma + çalıştırma (rwx)</td></tr>
+          <tr><td><code>6</code></td><td>4+2</td><td>okuma + yazma (rw-)</td></tr>
+          <tr><td><code>5</code></td><td>4+1</td><td>okuma + çalıştırma (r-x)</td></tr>
+          <tr><td><code>4</code></td><td>4</td><td>sadece okuma (r--)</td></tr>
+          <tr><td><code>0</code></td><td>—</td><td>izin yok (---)</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Ziffer</th><th>Bits</th><th>Bedeutung</th></tr>
+          <tr><td><code>7</code></td><td>4+2+1</td><td>Lesen + Schreiben + Ausführen (rwx)</td></tr>
+          <tr><td><code>6</code></td><td>4+2</td><td>Lesen + Schreiben (rw-)</td></tr>
+          <tr><td><code>5</code></td><td>4+1</td><td>Lesen + Ausführen (r-x)</td></tr>
+          <tr><td><code>4</code></td><td>4</td><td>Nur Lesen (r--)</td></tr>
+          <tr><td><code>0</code></td><td>—</td><td>Keine Berechtigung (---)</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>touch betik.sh
+chmod 750 betik.sh    <span class="c"># sahip:7(rwx) grup:5(r-x) diger:0(---)</span>
+ls -l betik.sh        <span class="c"># kontrol et: -rwxr-x--- olmali</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> Add the three digits' bits mentally — <b>7-5-0</b> reads as "owner gets everything, group can read+run, others get nothing."</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Üç hanenin bitlerini zihinden topla — <b>7-5-0</b>, "sahip her şeyi alır, grup okuyup çalıştırabilir, diğerleri hiçbir şey alamaz" diye okunur.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Addiere die Bits der drei Ziffern im Kopf — <b>7-5-0</b> liest sich als "Eigentümer bekommt alles, Gruppe kann lesen+ausführen, Andere bekommen nichts."</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">chgrp</span> Changing Group Ownership: chgrp <span class="title-tr">— Grup sahipliğini değiştirme: chgrp</span><span class="title-de">— Gruppenzugehörigkeit ändern: chgrp</span></h3>
+        <p class="en"><span class="mono-inline">chgrp</span> changes only the group of a file, leaving the owner untouched — useful when a file needs to be shared with a team without giving up ownership.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">chgrp</span> yalnızca bir dosyanın grubunu değiştirir, sahibine dokunmaz — bir dosyanın sahipliği bırakılmadan bir ekiple paylaşılması gerektiğinde kullanışlıdır.</p>
+        <p class="de"><span class="flag">DE</span><span class="mono-inline">chgrp</span> ändert nur die Gruppe einer Datei, der Eigentümer bleibt unberührt — nützlich, wenn eine Datei mit einem Team geteilt werden soll, ohne den Eigentümer aufzugeben.</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>touch rapor.txt
+sudo groupadd analistler
+sudo chgrp analistler rapor.txt   <span class="c"># sahip degismedi, grup analistler oldu</span>
+ls -l rapor.txt                   <span class="c"># grup sutununu kontrol et</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> <span class="mono-inline">chown user:group file</span> can do both jobs at once — you don't always need a separate <span class="mono-inline">chgrp</span> call.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">chown kullanici:grup dosya</span> iki işi birden yapabilir — her zaman ayrı bir <span class="mono-inline">chgrp</span> çağrısına ihtiyacın olmayabilir.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> <span class="mono-inline">chown benutzer:gruppe datei</span> kann beide Aufgaben auf einmal erledigen — du brauchst nicht immer einen separaten <span class="mono-inline">chgrp</span>-Aufruf.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">özel</span> Special Bits: SUID, SGID, Sticky <span class="title-tr">— Özel bitler: SUID, SGID, Sticky</span><span class="title-de">— Spezielle Bits: SUID, SGID, Sticky</span></h3>
+        <p class="en">Beyond rwx, three special bits change how a file or directory behaves, set with a leading fourth digit in <span class="mono-inline">chmod</span>.</p>
+        <p class="tr"><span class="flag">TR</span>rwx'in ötesinde, üç özel bit bir dosya veya dizinin davranışını değiştirir; <span class="mono-inline">chmod</span>'da baştaki dördüncü haneyle ayarlanır.</p>
+        <p class="de"><span class="flag">DE</span>Über rwx hinaus verändern drei spezielle Bits, wie sich eine Datei oder ein Verzeichnis verhält — gesetzt mit einer vierten, führenden Ziffer in <span class="mono-inline">chmod</span>.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Bit</th><th>Octal</th><th>Effect</th></tr>
+          <tr><td>SUID</td><td><code>4</code></td><td>Executable runs as the file's <b>owner</b>, not the caller</td></tr>
+          <tr><td>SGID</td><td><code>2</code></td><td>On a folder: new files inherit the folder's <b>group</b></td></tr>
+          <tr><td>Sticky</td><td><code>1</code></td><td>In a shared folder, only the owner can delete their own files</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Bit</th><th>Oktal</th><th>Etkisi</th></tr>
+          <tr><td>SUID</td><td><code>4</code></td><td>Çalıştırılabilir dosya, çağıran değil dosyanın <b>sahibi</b> olarak çalışır</td></tr>
+          <tr><td>SGID</td><td><code>2</code></td><td>Bir klasörde: yeni dosyalar klasörün <b>grubunu</b> devralır</td></tr>
+          <tr><td>Sticky</td><td><code>1</code></td><td>Paylaşımlı bir klasörde sadece sahip kendi dosyasını silebilir</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Bit</th><th>Oktal</th><th>Wirkung</th></tr>
+          <tr><td>SUID</td><td><code>4</code></td><td>Ausführbare Datei läuft als der <b>Eigentümer</b> der Datei, nicht als Aufrufer</td></tr>
+          <tr><td>SGID</td><td><code>2</code></td><td>Bei einem Ordner: neue Dateien erben die <b>Gruppe</b> des Ordners</td></tr>
+          <tr><td>Sticky</td><td><code>1</code></td><td>In einem geteilten Ordner kann nur der Eigentümer seine eigenen Dateien löschen</td></tr>
+        </table>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>chmod 4755 /usr/bin/passwd   <span class="c"># SUID: her kullanici kendi sifresini degistirebilir</span>
+chmod 2775 /shared/proje     <span class="c"># SGID: klasordeki yeni dosyalar proje grubunu alir</span>
+chmod 1777 /tmp              <span class="c"># Sticky: herkes yazar ama sadece sahip siler</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> <span class="mono-inline">/tmp</span> on a real Linux system already has the sticky bit set — that's exactly why one user's temp files are safe from another user's cleanup script.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Gerçek bir Linux sisteminde <span class="mono-inline">/tmp</span>'de sticky bit zaten ayarlıdır — bir kullanıcının geçici dosyalarının başka bir kullanıcının temizlik scriptinden güvende olmasının nedeni tam olarak budur.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Auf einem echten Linux-System ist das Sticky-Bit für <span class="mono-inline">/tmp</span> bereits gesetzt — genau deshalb sind die temporären Dateien eines Benutzers vor dem Aufräum-Skript eines anderen sicher.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">umask</span> Default Permissions: umask <span class="title-tr">— Varsayılan izinler: umask</span><span class="title-de">— Standardberechtigungen: umask</span></h3>
+        <p class="en"><span class="mono-inline">umask</span> is a mask subtracted from the maximum default permissions (666 for files, 777 for directories) every time a new file or folder is created.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">umask</span>, her yeni dosya veya klasör oluşturulduğunda maksimum varsayılan izinlerden (dosyalar için 666, dizinler için 777) çıkarılan bir maskedir.</p>
+        <p class="de"><span class="flag">DE</span><span class="mono-inline">umask</span> ist eine Maske, die bei jeder neuen Datei oder jedem neuen Ordner von den maximalen Standardberechtigungen (666 für Dateien, 777 für Verzeichnisse) abgezogen wird.</p>
+        <table class="tbl tbl-en">
+          <tr><th>umask</th><th>New file gets</th><th>New folder gets</th></tr>
+          <tr><td><code>022</code></td><td>644 (rw-r--r--)</td><td>755 (rwxr-xr-x)</td></tr>
+          <tr><td><code>077</code></td><td>600 (rw-------)</td><td>700 (rwx------)</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>umask</th><th>Yeni dosya alır</th><th>Yeni klasör alır</th></tr>
+          <tr><td><code>022</code></td><td>644 (rw-r--r--)</td><td>755 (rwxr-xr-x)</td></tr>
+          <tr><td><code>077</code></td><td>600 (rw-------)</td><td>700 (rwx------)</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>umask</th><th>Neue Datei erhält</th><th>Neuer Ordner erhält</th></tr>
+          <tr><td><code>022</code></td><td>644 (rw-r--r--)</td><td>755 (rwxr-xr-x)</td></tr>
+          <tr><td><code>077</code></td><td>600 (rw-------)</td><td>700 (rwx------)</td></tr>
+        </table>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>umask               <span class="c"># mevcut maskeyi goster (cogu dagitimda varsayilan 022)</span>
+umask 077           <span class="c"># bu oturumdaki yeni dosyalari daha kisitli yap</span>
+touch gizli.txt
+ls -l gizli.txt     <span class="c"># -rw------- olmali (666 - 077 = 600)</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> <span class="mono-inline">umask</span> never adds the execute bit to a plain file (that's why files default to 644, not 666-minus-mask-with-x) — directories need <span class="mono-inline">x</span> to be enterable, so they get it by default.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">umask</span> düz bir dosyaya asla çalıştırma bitini eklemez (dosyaların varsayılan olarak 666 eksi maske ile x almadan 644 olmasının nedeni budur) — dizinlerin girilebilir olması için <span class="mono-inline">x</span>'e ihtiyacı vardır, bu yüzden varsayılan olarak alırlar.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> <span class="mono-inline">umask</span> fügt einer einfachen Datei nie das Ausführungsbit hinzu (deshalb sind Dateien standardmäßig 644, nicht 666 minus Maske mit x) — Verzeichnisse brauchen <span class="mono-inline">x</span>, um betretbar zu sein, deshalb erhalten sie es standardmäßig.</div>
+      </div>
+
+      <div class="scen-box" data-scen="p8-proje1">
+        <div class="scen-head"><span class="tag">proje 1/3</span> Read-Only File <span class="title-tr">— salt okunur dosya</span><span class="title-de">— schreibgeschützte Datei</span></div>
+        <p class="en">Create <span class="mono-inline">onemli.txt</span> and set its permissions so nobody can write or execute it — everyone can only read it.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">onemli.txt</span> oluştur, izinlerini kimsenin yazamayacağı/çalıştıramayacağı, sadece okuyabileceği şekilde ayarla.</p>
+        <p class="de"><span class="flag">DE</span>Erstelle <span class="mono-inline">onemli.txt</span> und setze die Berechtigungen so, dass niemand schreiben oder ausführen kann — alle können sie nur lesen.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p8-proje1')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p8-proje1')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p8-proje1"></div>
+      </div>
+      <div class="scen-box" data-scen="p8-proje2">
+        <div class="scen-head"><span class="tag">proje 2/3</span> An Executable Script <span class="title-tr">— çalıştırılabilir script</span><span class="title-de">— ausführbares Skript</span></div>
+        <p class="en">Create <span class="mono-inline">betik.sh</span> and set permissions so the owner has full access and everyone else can read and execute it.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">betik.sh</span> oluştur, izinlerini sahibi tam yetkili, diğer herkes okuyup çalıştırabilecek şekilde ayarla.</p>
+        <p class="de"><span class="flag">DE</span>Erstelle <span class="mono-inline">betik.sh</span> und setze die Berechtigungen so, dass der Eigentümer vollen Zugriff hat und alle anderen lesen und ausführen können.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p8-proje2')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p8-proje2')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p8-proje2"></div>
+      </div>
+      <div class="scen-box" data-scen="p8-proje3">
+        <div class="scen-head"><span class="tag">proje 3/3</span> Shared with the Team <span class="title-tr">— ekiple paylaşılan</span><span class="title-de">— mit dem Team geteilt</span></div>
+        <p class="en">Create <span class="mono-inline">paylasim.txt</span> so the owner and group can both read and write it, but others can only read it.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">paylasim.txt</span> oluştur, sahibi ve grubu okuyup yazabilsin, diğerleri sadece okuyabilsin.</p>
+        <p class="de"><span class="flag">DE</span>Erstelle <span class="mono-inline">paylasim.txt</span>, sodass Eigentümer und Gruppe lesen und schreiben können, Andere aber nur lesen können.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p8-proje3')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p8-proje3')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p8-proje3"></div>
+      </div>

@@ -1,0 +1,260 @@
+      <div class="eyebrow">$ cd part-09/</div>
+      <h1 class="h-en">Loops &amp; Functions</h1>
+      <p class="h-tr">Döngüler ve Fonksiyonlar</p>
+      <p class="h-de">Schleifen und Funktionen</p>
+      <div class="purpose">
+        <p class="en">Purpose: repeat blocks of code with while/until/for/select loops, control them with break/continue, and organize reusable code into functions.</p>
+        <p class="tr">Amaç: while/until/for/select döngüleriyle kod bloklarını tekrarlamak, break/continue ile kontrol etmek, tekrar kullanılabilir kodu fonksiyonlar halinde organize etmek.</p>
+        <p class="de">Zweck: Codeblöcke mit while/until/for/select-Schleifen wiederholen, sie mit break/continue steuern und wiederverwendbaren Code in Funktionen organisieren.</p>
+      </div>
+
+      <details class="notebox">
+        <summary>✎ Notlarım — Döngüler &amp; Fonksiyonlar</summary>
+        <textarea placeholder="Bu bölümle ilgili notların... buraya yaz." data-note="p9"></textarea>
+      </details>
+
+      <div class="topic">
+        <h3><span class="tag">while</span> While &amp; Until Loops <span class="title-tr">— While ve Until döngüleri</span><span class="title-de">— While- und Until-Schleifen</span></h3>
+        <p class="en"><span class="mono-inline">while</span> repeats <b>as long as</b> the condition is true. <span class="mono-inline">until</span> is the opposite — it repeats <b>until</b> the condition becomes true (i.e. while it's false).</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">while</span>, koşul doğru <b>olduğu sürece</b> tekrar eder. <span class="mono-inline">until</span> ise tam tersi — koşul doğru <b>olana kadar</b> (yani yanlış olduğu sürece) tekrar eder.</p>
+        <p class="de"><span class="flag">DE</span><span class="mono-inline">while</span> wiederholt sich, <b>solange</b> die Bedingung wahr ist. <span class="mono-inline">until</span> ist das Gegenteil — es wiederholt sich, <b>bis</b> die Bedingung wahr wird (also solange sie falsch ist).</p>
+        <div class="svg-wrap svg-wrap-tr">
+          <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+            <style>.b{fill:#161b10;stroke:#333a24;} .d{fill:#161b10;stroke:#e3a94a;} .t{font-family:'JetBrains Mono',monospace;font-size:11.5px;fill:#eae6d8;} .ar{stroke:#9a9682;stroke-width:1.2;marker-end:url(#ah7tr);} .lbl{font-family:Inter,sans-serif;font-size:10px;fill:#9a9682;}</style>
+            <defs><marker id="ah7tr" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#9a9682"/></marker></defs>
+            <polygon class="d" points="200,10 280,50 200,90 120,50"/><text x="200" y="46" text-anchor="middle" class="t" font-size="10.5">number</text><text x="200" y="60" text-anchor="middle" class="t" font-size="10.5">-le 10 ?</text>
+            <line x1="280" y1="50" x2="330" y2="50" class="ar"/><text x="305" y="42" class="lbl">evet</text>
+            <rect class="b" x="330" y="34" width="60" height="32" rx="6"/><text x="360" y="55" text-anchor="middle" class="t" font-size="10.5">echo</text>
+            <line x1="360" y1="66" x2="360" y2="130" class="ar"/>
+            <rect class="b" x="330" y="130" width="60" height="32" rx="6"/><text x="360" y="151" text-anchor="middle" class="t" font-size="10.5">number++</text>
+            <path d="M 330 146 C 250 146 250 50 118 50" fill="none" class="ar" stroke="#9a9682"/>
+            <line x1="200" y1="90" x2="200" y2="180" class="ar"/><text x="220" y="140" class="lbl">hayır</text>
+            <rect class="b" x="140" y="180" width="120" height="30" rx="6"/><text x="200" y="200" text-anchor="middle" class="t" font-size="10.5">döngü biter</text>
+          </svg>
+          <div class="svg-cap">while [[ number -le 10 ]] do ... done — koşul yanlış olunca döngü durur</div>
+        </div>
+        <div class="svg-wrap svg-wrap-de">
+          <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+            <style>.b{fill:#161b10;stroke:#333a24;} .d{fill:#161b10;stroke:#e3a94a;} .t{font-family:'JetBrains Mono',monospace;font-size:11.5px;fill:#eae6d8;} .ar{stroke:#9a9682;stroke-width:1.2;marker-end:url(#ah7de);} .lbl{font-family:Inter,sans-serif;font-size:10px;fill:#9a9682;}</style>
+            <defs><marker id="ah7de" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#9a9682"/></marker></defs>
+            <polygon class="d" points="200,10 280,50 200,90 120,50"/><text x="200" y="46" text-anchor="middle" class="t" font-size="10.5">number</text><text x="200" y="60" text-anchor="middle" class="t" font-size="10.5">-le 10 ?</text>
+            <line x1="280" y1="50" x2="330" y2="50" class="ar"/><text x="305" y="42" class="lbl">ja</text>
+            <rect class="b" x="330" y="34" width="60" height="32" rx="6"/><text x="360" y="55" text-anchor="middle" class="t" font-size="10.5">echo</text>
+            <line x1="360" y1="66" x2="360" y2="130" class="ar"/>
+            <rect class="b" x="330" y="130" width="60" height="32" rx="6"/><text x="360" y="151" text-anchor="middle" class="t" font-size="10.5">number++</text>
+            <path d="M 330 146 C 250 146 250 50 118 50" fill="none" class="ar" stroke="#9a9682"/>
+            <line x1="200" y1="90" x2="200" y2="180" class="ar"/><text x="220" y="140" class="lbl">nein</text>
+            <rect class="b" x="140" y="180" width="120" height="30" rx="6"/><text x="200" y="200" text-anchor="middle" class="t" font-size="10.5">Schleife endet</text>
+          </svg>
+          <div class="svg-cap">while [[ number -le 10 ]] do ... done — die Schleife stoppt, wenn die Bedingung falsch wird</div>
+        </div>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge">while-loop.sh</span></div>
+<pre>#!/bin/bash
+number=1
+while [[ $number -le 10 ]]
+do
+  echo $number
+  ((number++))
+done
+echo "Now, number is $number"</pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">for</span> For Loops &amp; Select Loops <span class="title-tr">— For ve Select döngüleri</span><span class="title-de">— For- und Select-Schleifen</span></h3>
+        <p class="en"><span class="mono-inline">for</span> iterates over a fixed list of items. <span class="mono-inline">select</span> builds an interactive numbered menu the user can choose from.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">for</span>, sabit bir liste üzerinde döner. <span class="mono-inline">select</span> ise kullanıcının seçebileceği numaralı, interaktif bir menü oluşturur.</p>
+        <p class="de"><span class="flag">DE</span><span class="mono-inline">for</span> durchläuft eine feste Liste von Elementen. <span class="mono-inline">select</span> erstellt ein interaktives, nummeriertes Menü, aus dem der Benutzer wählen kann.</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge">for-array.sh</span></div>
+<pre>#!/bin/bash
+devops_tools=("docker" "kubernetes" "ansible" "terraform" "jenkins")
+
+for tool in ${devops_tools[@]}
+do
+   echo $tool
+done</pre></div>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge">select-loop.sh</span></div>
+<pre>#!/bin/bash
+PS3="Select the operation: "
+select operation in addition subtraction exit
+do
+  case $operation in
+    addition) echo "toplama seçildi" ;;
+    subtraction) echo "çıkarma seçildi" ;;
+    exit) break ;;
+    *) echo "Wrong choice..." ;;
+  esac
+done</pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">break</span> Break &amp; Continue <span class="title-tr">— Break ve Continue</span><span class="title-de">— Break und Continue</span></h3>
+        <table class="tbl tbl-en">
+          <tr><th>Command</th><th>What it does</th></tr>
+          <tr><td><code>break</code></td><td>Ends the ENTIRE loop immediately</td></tr>
+          <tr><td><code>continue</code></td><td>Skips only the current iteration, the loop continues</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Komut</th><th>Ne yapar</th></tr>
+          <tr><td><code>break</code></td><td>Döngünün TAMAMINI hemen sonlandırır</td></tr>
+          <tr><td><code>continue</code></td><td>Sadece o anki tekrarı atlar, döngü devam eder</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Befehl</th><th>Was er macht</th></tr>
+          <tr><td><code>break</code></td><td>Beendet die GESAMTE Schleife sofort</td></tr>
+          <tr><td><code>continue</code></td><td>Überspringt nur den aktuellen Durchlauf, die Schleife läuft weiter</td></tr>
+        </table>
+        <div class="tip tip-en"><b>⚠️ Warning:</b> A loop whose condition is never <span class="mono-inline">false</span> is an infinite loop — you can stop it with <span class="mono-inline">Ctrl+C</span>. <span class="mono-inline">break</span>/<span class="mono-inline">continue</span> are usually used to bring such loops under control.</div>
+        <div class="tip tip-tr"><b>⚠️ Dikkat:</b> Koşulu hiç <span class="mono-inline">false</span> olmayan bir döngü sonsuz döngüdür (infinite loop) — <span class="mono-inline">Ctrl+C</span> ile durdurabilirsin. <span class="mono-inline">break</span>/<span class="mono-inline">continue</span> genelde böyle döngüleri kontrollü hale getirmek için kullanılır.</div>
+        <div class="tip tip-de"><b>⚠️ Achtung:</b> Eine Schleife, deren Bedingung nie <span class="mono-inline">false</span> wird, ist eine Endlosschleife — du kannst sie mit <span class="mono-inline">Ctrl+C</span> stoppen. <span class="mono-inline">break</span>/<span class="mono-inline">continue</span> werden meist verwendet, um solche Schleifen kontrollierbar zu machen.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">func</span> Functions <span class="title-tr">— Fonksiyonlar</span><span class="title-de">— Funktionen</span></h3>
+        <p class="en">A function is reusable code that only runs when called. Arguments are passed the same way as script arguments (<span class="mono-inline">$1</span>, <span class="mono-inline">$2</span>...). Bash functions don't "return" a value like other languages — <span class="mono-inline">return</span> just sets an exit status (0-255), captured in <span class="mono-inline">$?</span>.</p>
+        <p class="tr"><span class="flag">TR</span>Fonksiyon, sadece çağrıldığında çalışan, tekrar kullanılabilir koddur. Argümanlar script argümanlarıyla aynı şekilde geçilir (<span class="mono-inline">$1</span>, <span class="mono-inline">$2</span>...). Bash fonksiyonları diğer dillerdeki gibi bir "değer döndürmez" — <span class="mono-inline">return</span> sadece bir çıkış durumu (0-255) belirler, bunu <span class="mono-inline">$?</span> ile okursun.</p>
+        <p class="de"><span class="flag">DE</span>Eine Funktion ist wiederverwendbarer Code, der nur beim Aufruf ausgeführt wird. Argumente werden genauso übergeben wie Skriptargumente (<span class="mono-inline">$1</span>, <span class="mono-inline">$2</span>...). Bash-Funktionen "geben" keinen Wert wie in anderen Sprachen zurück — <span class="mono-inline">return</span> setzt lediglich einen Exit-Status (0-255), den du mit <span class="mono-inline">$?</span> ausliest.</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge">functions.sh</span></div>
+<pre>#!/bin/bash
+Welcome () {
+    echo "Welcome to Linux Lessons $1 $2 $3"
+    return 3
+}
+
+Welcome Joe Matt Timothy
+echo $?    <span class="c"># → 3 (return ile belirlenen çıkış kodu)</span></pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">scope</span> Variable Scope: local <span class="title-tr">— Değişken kapsamı</span><span class="title-de">— Variablengültigkeit</span></h3>
+        <p class="en">By default, ALL Bash variables are global — even ones declared inside a function. The <span class="mono-inline">local</span> keyword restricts a variable to only exist inside that function.</p>
+        <p class="tr"><span class="flag">TR</span>Varsayılan olarak Bash'te TÜM değişkenler globaldir — bir fonksiyonun içinde tanımlansa bile. <span class="mono-inline">local</span> anahtar kelimesi, bir değişkenin sadece o fonksiyonun içinde var olmasını sağlar.</p>
+        <p class="de"><span class="flag">DE</span>Standardmäßig sind ALLE Bash-Variablen global — selbst wenn sie innerhalb einer Funktion deklariert werden. Das Schlüsselwort <span class="mono-inline">local</span> beschränkt eine Variable darauf, nur innerhalb dieser Funktion zu existieren.</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge">variables-scope.sh</span></div>
+<pre>#!/bin/bash
+var1='global 1'
+var2='global 2'
+
+var_scope () {
+  local var1='function 1'   <span class="c"># sadece fonksiyon içinde geçerli</span>
+  var2='function 2'         <span class="c"># local değil → GLOBAL var2'yi değiştirir!</span>
+}
+
+var_scope
+echo $var1   <span class="c"># → global 1 (değişmedi, local korudu)</span>
+echo $var2   <span class="c"># → function 2 (kalıcı olarak değişti!)</span></pre></div>
+        <div class="tip tip-en"><b>⚠️ Warning:</b> If you forget to say <span class="mono-inline">local</span> inside a function, that variable permanently changes the global variable — this is one of the most common script bugs.</div>
+        <div class="tip tip-tr"><b>⚠️ Dikkat:</b> Fonksiyon içinde <span class="mono-inline">local</span> demeyi unutursan, o değişken global değişkeni kalıcı olarak değiştirir — bu en sık yapılan script hatalarından biridir.</div>
+        <div class="tip tip-de"><b>⚠️ Achtung:</b> Wenn du innerhalb einer Funktion <span class="mono-inline">local</span> zu schreiben vergisst, ändert diese Variable dauerhaft die globale Variable — das ist einer der häufigsten Skriptfehler.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">aralık</span> Range Expansion: {1..N} &amp; C-Style for <span class="title-tr">— Aralık genişletme: {1..N} ve C-stili for</span><span class="title-de">— Bereichs-Expansion: {1..N} und C-Stil-for</span></h3>
+        <p class="en">Looping over a fixed list works everywhere, but real bash also offers shortcuts for numeric ranges: brace expansion, C-style <span class="mono-inline">for (( ))</span>, and <span class="mono-inline">seq</span>.</p>
+        <p class="tr"><span class="flag">TR</span>Sabit bir liste üzerinde dönmek her yerde çalışır, ama gerçek bash sayısal aralıklar için de kısayollar sunar: süslü parantez genişletmesi, C-stili <span class="mono-inline">for (( ))</span> ve <span class="mono-inline">seq</span>.</p>
+        <p class="de"><span class="flag">DE</span>Das Iterieren über eine feste Liste funktioniert überall, aber echtes Bash bietet auch Abkürzungen für numerische Bereiche: Klammer-Expansion, C-Stil-<span class="mono-inline">for (( ))</span> und <span class="mono-inline">seq</span>.</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>for gun in Pazartesi Sali Carsamba
+do
+  echo "Bugun: $gun"       <span class="c"># sabit liste uzerinde for-in, her zaman calisir</span>
+done</pre></div>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>for i in {1..5}                 <span class="c"># brace expansion: 1 2 3 4 5</span>
+do
+  echo $i
+done
+
+for (( i=0; i&lt;5; i++ ))         <span class="c"># C-stili for dongusu</span>
+do
+  echo $i
+done
+
+for i in $(seq 1 5)             <span class="c"># seq ile sayi listesi uretme</span>
+do
+  echo $i
+done</pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> <span class="mono-inline">{1..100}</span> is easier to read than <span class="mono-inline">seq 1 100</span>, but only brace expansion works when there's no external <span class="mono-inline">seq</span> binary available (e.g. some minimal containers).</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">{1..100}</span>, <span class="mono-inline">seq 1 100</span>'den okunması daha kolaydır, ama harici <span class="mono-inline">seq</span> ikili dosyası bulunmadığında (bazı minimal container'larda olduğu gibi) sadece brace expansion çalışır.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> <span class="mono-inline">{1..100}</span> ist leichter zu lesen als <span class="mono-inline">seq 1 100</span>, aber nur die Klammer-Expansion funktioniert, wenn kein externes <span class="mono-inline">seq</span>-Binary verfügbar ist (z. B. in manchen minimalen Containern).</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">kontrol</span> Nested Loop Control: break N / continue N <span class="title-tr">— İç içe döngü kontrolü: break N / continue N</span><span class="title-de">— Verschachtelte Schleifensteuerung: break N / continue N</span></h3>
+        <p class="en">Plain <span class="mono-inline">break</span> and <span class="mono-inline">continue</span> affect only the innermost loop. Give them a number to jump out of (or skip an iteration of) an outer loop instead.</p>
+        <p class="tr"><span class="flag">TR</span>Düz <span class="mono-inline">break</span> ve <span class="mono-inline">continue</span> sadece en içteki döngüyü etkiler. Bunlara bir sayı vererek dıştaki bir döngüden çıkabilir (veya onun bir adımını atlayabilirsin).</p>
+        <p class="de"><span class="flag">DE</span>Einfaches <span class="mono-inline">break</span> und <span class="mono-inline">continue</span> wirken nur auf die innerste Schleife. Gib ihnen eine Zahl, um stattdessen aus einer äußeren Schleife auszubrechen (oder eine ihrer Iterationen zu überspringen).</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>for i in 1 2 3 4 5
+do
+  if [ $i -eq 3 ]
+  then
+    break              <span class="c"># duz break: dongudden tamamen cikar</span>
+  fi
+  echo $i
+done</pre></div>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>for i in 1 2 3
+do
+  for j in 1 2 3
+  do
+    if [ $j -eq 2 ]
+    then
+      break 2          <span class="c"># ic degil, DIS dongudden de cikar</span>
+    fi
+    echo "$i-$j"
+  done
+done</pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> <span class="mono-inline">break 2</span> means "break out 2 levels" — count the loops from the innermost outward, not from the outside in.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">break 2</span>, "2 seviye dışarı çık" demektir — döngüleri en içteki dışa doğru say, dıştan içe doğru değil.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> <span class="mono-inline">break 2</span> bedeutet "2 Ebenen ausbrechen" — zähle die Schleifen von innen nach außen, nicht von außen nach innen.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">dönüş</span> "Returning" a Value: return vs echo Capture <span class="title-tr">— Değer "döndürme": return vs echo yakalama</span><span class="title-de">— Einen Wert "zurückgeben": return vs echo-Erfassung</span></h3>
+        <p class="en"><span class="mono-inline">return</span> only sets a numeric exit status (0-255), read via <span class="mono-inline">$?</span>. To hand back a real string or number, have the function <span class="mono-inline">echo</span> it and capture that output with <span class="mono-inline">$( )</span> from the caller.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">return</span> sadece sayısal bir çıkış durumu (0-255) belirler, <span class="mono-inline">$?</span> ile okunur. Gerçek bir metin veya sayı geri vermek için fonksiyonun onu <span class="mono-inline">echo</span> etmesini sağla ve çağıran tarafta bu çıktıyı <span class="mono-inline">$( )</span> ile yakala.</p>
+        <p class="de"><span class="flag">DE</span><span class="mono-inline">return</span> setzt nur einen numerischen Exit-Status (0-255), gelesen über <span class="mono-inline">$?</span>. Um einen echten String oder eine Zahl zurückzugeben, lass die Funktion ihn mit <span class="mono-inline">echo</span> ausgeben und erfasse diese Ausgabe beim Aufrufer mit <span class="mono-inline">$( )</span>.</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>topla () {
+  echo $(( $1 + $2 ))     <span class="c"># deger echo edilir, return degil</span>
+}
+
+sonuc=$(topla 4 7)        <span class="c"># cagiran taraf ciktiyi $() ile yakalar</span>
+echo "Toplam: $sonuc"     <span class="c"># -&gt; Toplam: 11</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> Never try <span class="mono-inline">return $(( $1 + $2 ))</span> for a big sum — <span class="mono-inline">return</span> silently truncates anything above 255, while <span class="mono-inline">echo</span> + capture keeps the exact value.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Büyük bir toplam için asla <span class="mono-inline">return $(( $1 + $2 ))</span> deneme — <span class="mono-inline">return</span>, 255'in üzerindeki her şeyi sessizce keser, <span class="mono-inline">echo</span> + yakalama ise tam değeri korur.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Versuche niemals <span class="mono-inline">return $(( $1 + $2 ))</span> für eine große Summe — <span class="mono-inline">return</span> schneidet alles über 255 stillschweigend ab, während <span class="mono-inline">echo</span> + Erfassung den exakten Wert behält.</div>
+      </div>
+
+      <div class="scen-box" data-scen="p9-proje1">
+        <div class="scen-head"><span class="tag">proje 1/3</span> for Loop Report <span class="title-tr">— for döngüsü raporu</span><span class="title-de">— for-Schleifen-Bericht</span></div>
+        <p class="en">Using a <span class="mono-inline">for</span> loop over 1, 2, 3, append "Adım: N" for each number into <span class="mono-inline">rapor.txt</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">for</span> döngüsüyle 1, 2, 3 üzerinde dönüp her sayı için "Adım: N" satırını <span class="mono-inline">rapor.txt</span>'ye ekle (<span class="mono-inline">&gt;&gt;</span>).</p>
+        <p class="de"><span class="flag">DE</span>Füge mit einer <span class="mono-inline">for</span>-Schleife über 1, 2, 3 für jede Zahl "Adım: N" zu <span class="mono-inline">rapor.txt</span> hinzu.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p9-proje1')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p9-proje1')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p9-proje1"></div>
+      </div>
+      <div class="scen-box" data-scen="p9-proje2">
+        <div class="scen-head"><span class="tag">proje 2/3</span> A Function with Parameters <span class="title-tr">— parametreli fonksiyon</span><span class="title-de">— Funktion mit Parametern</span></div>
+        <p class="en">Write a function <span class="mono-inline">topla()</span> that adds its two arguments. Call it as <span class="mono-inline">topla 4 7</span> and redirect its result into <span class="mono-inline">sonuc.txt</span>.</p>
+        <p class="tr"><span class="flag">TR</span>İki parametresini toplayan <span class="mono-inline">topla()</span> fonksiyonu yaz. <span class="mono-inline">topla 4 7</span> olarak çağır, sonucu <span class="mono-inline">sonuc.txt</span>'ye yönlendir.</p>
+        <p class="de"><span class="flag">DE</span>Schreibe eine Funktion <span class="mono-inline">topla()</span>, die ihre beiden Argumente addiert. Rufe sie als <span class="mono-inline">topla 4 7</span> auf und leite das Ergebnis in <span class="mono-inline">sonuc.txt</span> um.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p9-proje2')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p9-proje2')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p9-proje2"></div>
+      </div>
+      <div class="scen-box" data-scen="p9-proje3">
+        <div class="scen-head"><span class="tag">proje 3/3</span> Countdown with while <span class="title-tr">— while ile geri sayım</span><span class="title-de">— Countdown mit while</span></div>
+        <p class="en">Set <span class="mono-inline">sayac=3</span>. Using a <span class="mono-inline">while</span> loop, append "Geri sayım: N" for each step, counting down to 1, into <span class="mono-inline">geri-sayim.txt</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">sayac=3</span> ata. <span class="mono-inline">while</span> döngüsüyle 1'e kadar geri sayıp her adımı "Geri sayım: N" olarak <span class="mono-inline">geri-sayim.txt</span>'ye ekle.</p>
+        <p class="de"><span class="flag">DE</span>Setze <span class="mono-inline">sayac=3</span>. Zähle mit einer <span class="mono-inline">while</span>-Schleife bis 1 herunter und füge jeden Schritt als "Geri sayım: N" zu <span class="mono-inline">geri-sayim.txt</span> hinzu.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p9-proje3')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p9-proje3')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p9-proje3"></div>
+      </div>

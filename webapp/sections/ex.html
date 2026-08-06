@@ -1,0 +1,91 @@
+      <div class="eyebrow">$ ./test-yourself.sh</div>
+      <h1 class="h-en">Exercise Checklist</h1>
+      <p class="h-tr">Alıştırma Kontrol Listesi — hepsini terminalde gerçekten dene</p>
+      <p class="h-de">Übungs-Checkliste — probiere alles wirklich im Terminal aus</p>
+      <div class="purpose">
+        <p class="en">Tick these off as you complete them for real, in a terminal. They're drawn directly from the workbook's parts, section by section. This box only tracks progress in this browser tab — it resets on reload.</p>
+        <p class="tr">Bunları gerçekten terminalde yaparak işaretle. Çalışma kitabındaki bölümlerden, bölüm bölüm derlendi. Bu kutu ilerlemeyi sadece bu sekmede takip eder — sayfayı yenilersen sıfırlanır, o yüzden bir oturuşta bitirmeye çalış ya da kendi notlarını da tut.</p>
+        <p class="de">Hake diese ab, sobald du sie wirklich im Terminal erledigt hast. Sie stammen direkt aus den Teilen des Arbeitsbuchs, Abschnitt für Abschnitt. Diese Box verfolgt den Fortschritt nur in diesem Browser-Tab — er wird beim Neuladen zurückgesetzt, versuche also, in einer Sitzung fertig zu werden, oder führe eigene Notizen.</p>
+      </div>
+
+      <details class="notebox">
+        <summary>✎ Genel notlar / takıldığım yerler</summary>
+        <textarea placeholder="Hangi alıştırmada takıldın, hangi bölümü tekrar etmen lazım... buraya yaz." data-note="ex"></textarea>
+      </details>
+
+      <div class="topic">
+        <h3><span class="tag">01</span> Managing Files <span class="title-tr">— Dosya Yönetimi</span><span class="title-de">— Dateien verwalten</span></h3>
+        <ul class="exlist">
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Create a folder "linux-lessons", inside it create three files, write text into one with cat, then find and grep across them</span><span class="exsub exsub-tr">"linux-lessons" klasörü oluştur, içine üç dosya aç, birine cat ile yazı yaz, sonra find ve grep ile ara</span><span class="exsub exsub-de">Erstelle einen Ordner "linux-lessons", darin drei Dateien, schreibe mit cat Text in eine, suche dann mit find und grep darin</span></span></li>
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Practice head/tail/more/less/tac on a multi-line file, then chown/chgrp it to another user and group</span><span class="exsub exsub-tr">Çok satırlı bir dosyada head/tail/more/less/tac dene, sonra chown/chgrp ile sahibini ve grubunu değiştir</span><span class="exsub exsub-de">Übe head/tail/more/less/tac an einer mehrzeiligen Datei, ändere dann mit chown/chgrp Eigentümer und Gruppe</span></span></li>
+        </ul>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">02</span> Environment Variables <span class="title-tr">— Ortam Değişkenleri</span><span class="title-de">— Umgebungsvariablen</span></h3>
+        <ul class="exlist">
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Create a shell variable and an environment variable, show the difference with a subshell, then unset both</span><span class="exsub exsub-tr">Bir shell değişkeni ve bir ortam değişkeni oluştur, alt shell'de farkı göster, sonra ikisini de sil</span><span class="exsub exsub-de">Erstelle eine Shell-Variable und eine Umgebungsvariable, zeige den Unterschied in einer Subshell, lösche dann beide</span></span></li>
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Add a folder to PATH temporarily, verify with echo $PATH, then compare single vs double quotes with a variable</span><span class="exsub exsub-tr">Bir klasörü geçici olarak PATH'e ekle, echo $PATH ile doğrula, sonra bir değişkenle tek/çift tırnak farkını karşılaştır</span><span class="exsub exsub-de">Füge einen Ordner temporär zu PATH hinzu, überprüfe mit echo $PATH, vergleiche dann einfache vs. doppelte Anführungszeichen mit einer Variable</span></span></li>
+        </ul>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">03</span> Users &amp; Groups <span class="title-tr">— Kullanıcı &amp; Grup</span><span class="title-de">— Benutzer &amp; Gruppe</span></h3>
+        <ul class="exlist">
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Create user "devops", set password, add description "the best cloud engineer", switch to it, then delete with home dir</span><span class="exsub exsub-tr">devops kullanıcısı oluştur, şifre ver, açıklama ekle, kullanıcıya geç, sonra ev diziniyle sil</span><span class="exsub exsub-de">Erstelle den Benutzer "devops", setze ein Passwort, füge die Beschreibung "the best cloud engineer" hinzu, wechsle zu ihm, lösche ihn dann mit Home-Verzeichnis</span></span></li>
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Create groups "cloud" and "aws", add devops to both, then remove from one and rename the other</span><span class="exsub exsub-tr">"cloud" ve "aws" gruplarını oluştur, devops'u ikisine de ekle, birinden çıkar, diğerinin adını değiştir</span><span class="exsub exsub-de">Erstelle die Gruppen "cloud" und "aws", füge devops zu beiden hinzu, entferne ihn dann aus einer und benenne die andere um</span></span></li>
+        </ul>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">04</span> Package Managers <span class="title-tr">— Paket Yöneticileri</span><span class="title-de">— Paketmanager</span></h3>
+        <ul class="exlist">
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Update all packages, then install/remove httpd without confirmation prompts</span><span class="exsub exsub-tr">Tüm paketleri güncelle, sonra httpd'yi onaysız kur/kaldır</span><span class="exsub exsub-de">Aktualisiere alle Pakete, installiere/entferne dann httpd ohne Bestätigungsabfragen</span></span></li>
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Uninstall git with dependencies, find and install a previous version, then update to latest</span><span class="exsub exsub-tr">git'i bağımlılıklarıyla kaldır, önceki bir sürümü bul ve kur, sonra en güncel sürüme güncelle</span><span class="exsub exsub-de">Deinstalliere git mit seinen Abhängigkeiten, finde und installiere eine frühere Version, aktualisiere dann auf die neueste</span></span></li>
+        </ul>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">05</span> Filters &amp; Control Operators <span class="title-tr">— Filtreler</span><span class="title-de">— Filter</span></h3>
+        <ul class="exlist">
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Create countries.csv → cut the Continent column → remove header → sort → dedupe → save to continents.txt</span><span class="exsub exsub-tr">countries.csv oluştur → Continent sütununu kes → başlığı çıkar → sırala → tekrarları kaldır → continents.txt'e kaydet</span><span class="exsub exsub-de">Erstelle countries.csv → schneide die Continent-Spalte aus → entferne die Kopfzeile → sortiere → entferne Duplikate → speichere in continents.txt</span></span></li>
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Search for "linuxway.doc"; print its content if found, else print "Too early!"; create it and repeat</span><span class="exsub exsub-tr">"linuxway.doc" ara; varsa içeriğini yazdır, yoksa "Too early!" yaz; dosyayı oluşturup tekrarla</span><span class="exsub exsub-de">Suche nach "linuxway.doc"; gib ihren Inhalt aus, falls gefunden, sonst gib "Too early!" aus; erstelle sie und wiederhole</span></span></li>
+        </ul>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">06</span> Shell Scripting <span class="title-tr">— Script Yazımı</span><span class="title-de">— Skripterstellung</span></h3>
+        <ul class="exlist">
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Write "my-first-script.sh" that prints "This is my first script.", make it executable, run it</span><span class="exsub exsub-tr">"This is my first script." yazdıran my-first-script.sh yaz, çalıştırılabilir yap, çalıştır</span><span class="exsub exsub-de">Schreibe "my-first-script.sh", das "This is my first script." ausgibt, mache es ausführbar, führe es aus</span></span></li>
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Add your scripts directory to PATH so you never need "./" again</span><span class="exsub exsub-tr">Scriptlerinin klasörünü PATH'e ekle, bir daha "./" yazmana gerek kalmasın</span><span class="exsub exsub-de">Füge dein Skriptverzeichnis zu PATH hinzu, sodass du nie wieder "./" brauchst</span></span></li>
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">calculate.sh: base_value=5, add user input, print total</span><span class="exsub exsub-tr">calculate.sh: base_value=5, kullanıcı girdisini ekle, toplamı yazdır</span><span class="exsub exsub-de">calculate.sh: base_value=5, addiere die Benutzereingabe, gib die Summe aus</span></span></li>
+        </ul>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">07</span> Conditional Statements <span class="title-tr">— Koşullu İfadeler</span><span class="title-de">— Bedingte Anweisungen</span></h3>
+        <ul class="exlist">
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Ask name, age, average life expectancy → print "Student"/"Worker"/"Retired"/"Already died" logic with years-remaining math</span><span class="exsub exsub-tr">İsim, yaş, ortalama yaşam süresi sor → "Öğrenci"/"Çalışan"/"Emekli"/"Zaten ölmüş" mantığıyla kalan yıl hesabı yap</span><span class="exsub exsub-de">Frage nach Name, Alter, durchschnittlicher Lebenserwartung → gib mit "Student"/"Worker"/"Retired"/"Already died"-Logik die verbleibenden Jahre aus</span></span></li>
+        </ul>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">08</span> File Permissions <span class="title-tr">— Dosya İzinleri</span><span class="title-de">— Dateiberechtigungen</span></h3>
+        <ul class="exlist">
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Lab 1A: set a.txt=rw-r-----, b.txt=rwxr-xr--, c.txt=rw-rw-r-- with chmod, verify with ls -l</span><span class="exsub exsub-tr">chmod ile a.txt/b.txt/c.txt için farklı izin kombinasyonları kur, ls -l ile doğrula</span><span class="exsub exsub-de">Lab 1A: setze mit chmod a.txt=rw-r-----, b.txt=rwxr-xr--, c.txt=rw-rw-r--, überprüfe mit ls -l</span></span></li>
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Lab 1C: create secret.txt, chmod 600, try reading as another user, then chmod 700 and try running it</span><span class="exsub exsub-tr">secret.txt oluştur, 600 yap, başka kullanıcıyla okumayı dene, sonra 700 yapıp çalıştırmayı dene</span><span class="exsub exsub-de">Lab 1C: erstelle secret.txt, chmod 600, versuche als anderer Benutzer zu lesen, dann chmod 700 und versuche es auszuführen</span></span></li>
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Lab 1D: compare cp vs cp -p permission preservation</span><span class="exsub exsub-tr">cp ile cp -p arasındaki izin koruma farkını karşılaştır</span><span class="exsub exsub-de">Lab 1D: vergleiche die Berechtigungserhaltung von cp und cp -p</span></span></li>
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Lab 1E: sudo chown user1:user2 a file, verify with ls -l</span><span class="exsub exsub-tr">Bir dosyayı sudo chown user1:user2 ile değiştir, ls -l ile doğrula</span><span class="exsub exsub-de">Lab 1E: ändere eine Datei mit sudo chown user1:user2, überprüfe mit ls -l</span></span></li>
+        </ul>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">09</span> Loops &amp; Functions <span class="title-tr">— Döngüler &amp; Fonksiyonlar</span><span class="title-de">— Schleifen &amp; Funktionen</span></h3>
+        <ul class="exlist">
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Sum numbers 1 to 100 using a loop, print result</span><span class="exsub exsub-tr">1'den 100'e kadar sayıları bir döngüyle topla, sonucu yazdır</span><span class="exsub exsub-de">Summiere die Zahlen 1 bis 100 mit einer Schleife, gib das Ergebnis aus</span></span></li>
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Ask for multiple names on one line, print a "Hello" line for each</span><span class="exsub exsub-tr">Tek satırda birden fazla isim al, her biri için ayrı "Hello" satırı yazdır</span><span class="exsub exsub-de">Frage nach mehreren Namen in einer Zeile, gib für jeden eine "Hello"-Zeile aus</span></span></li>
+          <li onclick="toggleDone(this)"><span class="chk">✓</span><span><span class="extxt">Write print_age(birth_year) function; call print_age 2024</span><span class="exsub exsub-tr">print_age(birth_year) fonksiyonu yaz; print_age 2024 ile çağır</span><span class="exsub exsub-de">Schreibe die Funktion print_age(birth_year); rufe sie mit print_age 2024 auf</span></span></li>
+        </ul>
+      </div>
+
+      <footer class="foot">./kernelkompass.linux — İngilizce + Türkçe + Almanca, ücretsiz interaktif Linux &amp; DevOps çalışma kitabı. · <a href="impressum.html" style="color:inherit;">Impressum</a></footer>

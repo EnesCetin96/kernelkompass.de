@@ -1,0 +1,235 @@
+      <div class="eyebrow">$ cd advanced/unit-01/</div>
+      <h1 class="h-en">Linux System Architecture &amp; Kernel Philosophy</h1>
+      <p class="h-tr">Linux Sistem Mimarisine Giriş ve Çekirdek Felsefesi</p>
+      <p class="h-de">Einführung in die Linux-Systemarchitektur und Kernel-Philosophie</p>
+      <div class="purpose">
+        <p class="en">Purpose: understand the user space / kernel space divide, why Linux is monolithic-but-modular, the kernel's four core responsibilities, and how each of them has a concrete, observable footprint from user space.</p>
+        <p class="tr">Amaç: kullanıcı alanı / çekirdek alanı ayrımını, Linux'un neden "monolitik ama modüler" olduğunu, çekirdeğin dört temel sorumluluğunu ve her birinin kullanıcı alanından nasıl gözlemlenebildiğini anlamak.</p>
+        <p class="de">Zweck: die Trennung zwischen User Space und Kernel Space verstehen, warum Linux "monolithisch, aber modular" ist, die vier Kernaufgaben des Kernels kennenlernen und wie jede davon aus dem User Space beobachtbar ist.</p>
+      </div>
+
+      <details class="notebox">
+        <summary>✎ Notlarım — Sistem Mimarisi ve Çekirdek Felsefesi</summary>
+        <textarea placeholder="Bu bölümle ilgili notların, ring/ayrıcalık seviyeleri üzerine kendi örneklerin... buraya yaz." data-note="a1"></textarea>
+      </details>
+
+      <div class="topic">
+        <h3><span class="tag">kavram</span> Why Think in Terms of "The Kernel"? <span class="title-tr">— Neden "Çekirdek" merkezli düşünmeliyiz?</span><span class="title-de">— Warum kernelzentriert denken?</span></h3>
+        <p class="en">Think of an operating system as a building. What the user sees — windows, doors, furniture — is application software. What keeps the building standing — the structural frame, the electrical wiring, the plumbing — is invisible; that is exactly what the kernel is. The Linux kernel sits between the hardware and every program running on top of it, sharing resources, isolating processes, and protecting the system.</p>
+        <p class="tr"><span class="flag">TR</span>Bir işletim sistemini bir bina gibi düşün. Kullanıcının gördüğü kısım — pencereler, kapılar, mobilyalar — uygulama yazılımlarıdır. Ama binanın ayakta durmasını sağlayan taşıyıcı sistem, elektrik tesisatı, su borusu hatları görünmez; işte çekirdek (kernel) tam olarak budur. Linux çekirdeği, donanım ile üzerinde çalışan her programın arasına giren, kaynakları paylaştıran, izole eden ve koruyan bir aracıdır.</p>
+        <p class="de"><span class="flag">DE</span>Stell dir ein Betriebssystem wie ein Gebäude vor. Was der Nutzer sieht — Fenster, Türen, Möbel — ist Anwendungssoftware. Was das Gebäude aber trägt — die Tragstruktur, die Elektrik, die Wasserleitungen — bleibt unsichtbar; genau das ist der Kernel. Der Linux-Kernel steht zwischen der Hardware und jedem darauf laufenden Programm, teilt Ressourcen zu, isoliert Prozesse und schützt das System.</p>
+
+        <p class="en">A systems programmer's first key lesson is the sharp divide between <b>user space</b> and <b>kernel space</b>. The CPU runs at different privilege levels — x86 calls these "rings": ring 0 is the most privileged, ring 3 the most restricted. The Linux kernel runs in ring 0, ordinary applications in ring 3. When an application wants to read a file, send a network packet, or allocate memory, it cannot touch the hardware directly — it must "ask" the kernel via a <b>system call</b>.</p>
+        <p class="tr"><span class="flag">TR</span>Bir sistem programcısının ilk öğrenmesi gereken şey, <b>kullanıcı alanı</b> (user space) ile <b>çekirdek alanı</b> (kernel space) arasındaki keskin ayrımdır. İşlemci farklı ayrıcalık seviyelerinde çalışır — x86 mimarisinde bunlara "ring" denir: ring 0 en yetkili, ring 3 en kısıtlı seviyedir. Linux çekirdeği ring 0'da, normal uygulamalar ring 3'te çalışır. Bir uygulama dosya okumak, ağ paketi göndermek ya da bellek ayırmak istediğinde, donanıma doğrudan dokunamaz — bunun yerine bir <b>sistem çağrısı</b> (system call) aracılığıyla çekirdekten bunu "rica eder".</p>
+        <p class="de"><span class="flag">DE</span>Die erste zentrale Lektion für Systemprogrammierer ist die scharfe Trennung zwischen <b>User Space</b> und <b>Kernel Space</b>. Die CPU läuft auf unterschiedlichen Privilegstufen — bei x86 heißen diese "Ringe": Ring 0 ist am privilegiertesten, Ring 3 am eingeschränktesten. Der Linux-Kernel läuft in Ring 0, gewöhnliche Anwendungen in Ring 3. Will eine Anwendung eine Datei lesen, ein Netzwerkpaket senden oder Speicher reservieren, kann sie die Hardware nicht direkt ansprechen — sie muss den Kernel über einen <b>Systemaufruf</b> (System Call) "bitten".</p>
+
+        <div class="svg-wrap">
+          <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg">
+            <style>
+              .rlyr{fill:#161b10;stroke:#333a24;stroke-width:1;}
+              .rlbl{font-family:'JetBrains Mono',monospace;font-size:13px;fill:#eae6d8;}
+              .rsub{font-family:Inter,sans-serif;font-size:10px;fill:#9a9682;}
+              .rarrow{stroke:#e3a94a;stroke-width:1.4;marker-end:url(#rarrhead);}
+            </style>
+            <defs>
+              <marker id="rarrhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e3a94a"/></marker>
+            </defs>
+            <rect class="rlyr" x="150" y="10" width="340" height="46" rx="6" stroke="#5fb8a6"/>
+            <text x="320" y="30" text-anchor="middle" class="rlbl" fill="#5fb8a6">Ring 3 — User Space</text>
+            <text x="320" y="47" text-anchor="middle" class="rsub">applications, glibc, ld.so — CPL=3</text>
+
+            <rect x="150" y="70" width="340" height="34" rx="4" fill="#20261a" stroke="#e3a94a" stroke-dasharray="3,3"/>
+            <text x="320" y="91" text-anchor="middle" class="rsub" fill="#e3a94a">system call (SYSCALL / trap) — the only doorway</text>
+
+            <rect class="rlyr" x="150" y="118" width="340" height="46" rx="6" stroke="#e3a94a"/>
+            <text x="320" y="138" text-anchor="middle" class="rlbl" fill="#e3a94a">Ring 0 — Kernel Space</text>
+            <text x="320" y="155" text-anchor="middle" class="rsub">process/memory/fs/device management — CPL=0</text>
+
+            <rect class="rlyr" x="150" y="178" width="340" height="42" rx="6"/>
+            <text x="320" y="203" text-anchor="middle" class="rlbl">Hardware</text>
+
+            <line x1="320" y1="56" x2="320" y2="68" class="rarrow"/>
+            <line x1="320" y1="104" x2="320" y2="116" class="rarrow"/>
+            <line x1="320" y1="164" x2="320" y2="176" class="rarrow"/>
+          </svg>
+          <div class="svg-cap">Ring 3 ↔ syscall gate ↔ Ring 0 ↔ Hardware — the syscall boundary is enforced by the CPU itself, not by software convention</div>
+        </div>
+
+        <p class="en">This isn't just a software convention — it's a hardware guarantee. On x86-64, the CPU stores the current privilege level (CPL) in the two lowest bits of the code segment (CS) register. User-space code running at CPL=3 that attempts privileged operations — direct I/O port access, changing the page table base register (CR3), editing the interrupt descriptor table (IDT) — triggers a general protection fault (#GP), handing control back to the kernel. ARM calls the same idea "exception levels" (EL0-EL3); RISC-V calls it "privilege modes" (U/S/M) — the names differ, the principle doesn't.</p>
+        <p class="tr"><span class="flag">TR</span>Bu sadece yazılımsal bir kural değil — donanım tarafından garanti edilir. x86-64'te işlemci, o an hangi ayrıcalık seviyesinde (CPL) çalıştığını CS (kod segmenti) yazmacının en düşük iki bitinde saklar. CPL=3 ile çalışan kullanıcı alanı kodu, G/Ç port komutlarını doğrudan yürütmeye, sayfa tablosu taban yazmacını (CR3) değiştirmeye ya da kesme tanımlayıcı tablosunu (IDT) elden geçirmeye kalkıştığında, işlemci bir genel koruma hatası (#GP) üretir ve kontrolü çekirdeğe devreder. ARM'de aynı fikir "istisna seviyeleri" (EL0-EL3), RISC-V'de "ayrıcalık modları" (U/S/M) olarak adlandırılır — isimler değişse de ilke aynıdır.</p>
+        <p class="de"><span class="flag">DE</span>Das ist keine reine Softwarekonvention — es ist eine Hardware-Garantie. Bei x86-64 speichert die CPU die aktuelle Privilegstufe (CPL) in den beiden niedrigsten Bits des Codesegment-Registers (CS). Versucht User-Space-Code mit CPL=3 privilegierte Operationen — direkte I/O-Port-Zugriffe, Ändern des Seitentabellen-Basisregisters (CR3), Bearbeiten der Interrupt Descriptor Table (IDT) —, löst der Prozessor einen General Protection Fault (#GP) aus und übergibt die Kontrolle an den Kernel. ARM nennt dasselbe Prinzip "Exception Levels" (EL0-EL3), RISC-V "Privilege Modes" (U/S/M) — die Namen unterscheiden sich, das Prinzip nicht.</p>
+
+        <div class="tip tip-en"><b>💡 Tip:</b> a crashed or infinite-looping application can't take down the kernel — process isolation contains it. But if the kernel itself crashes, the whole system goes down ("kernel panic"), which is exactly why kernel code is held to a far stricter discipline than application code.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> çöken ya da sonsuz döngüye giren bir uygulama çekirdeği düşüremez — süreç izolasyonu onu hapseder. Ama çekirdeğin kendisi çökerse tüm sistem çöker ("kernel panic") — çekirdek kodunun uygulama koduna göre çok daha katı bir disiplinle yazılmasının sebebi tam olarak budur.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> eine abgestürzte oder in einer Endlosschleife hängende Anwendung kann den Kernel nicht mitreißen — Prozessisolation hält sie in Schach. Stürzt aber der Kernel selbst ab, fällt das ganze System aus ("Kernel Panic") — genau deshalb wird Kernel-Code nach einer viel strengeren Disziplin geschrieben als Anwendungscode.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">mimari</span> Monolithic — But Modular <span class="title-tr">— Monolitik ama modüler</span><span class="title-de">— Monolithisch, aber modular</span></h3>
+        <p class="en">Linux is historically a <b>monolithic kernel</b>: process management, memory management, filesystems, the networking stack, and device drivers all run in the same address space at ring 0. The alternative is a <b>microkernel</b>, where only the bare essentials (messaging, basic scheduling) live in the kernel, and everything else runs as separate user-space processes.</p>
+        <p class="tr"><span class="flag">TR</span>Linux, tarihsel olarak <b>monolitik bir çekirdektir</b>: süreç yönetimi, bellek yönetimi, dosya sistemleri, ağ yığını ve aygıt sürücülerinin tamamı aynı adres alanında, ring 0 ayrıcalığıyla çalışır. Bunun alternatifi <b>mikroçekirdek</b> (microkernel) mimarisidir; burada sadece en temel işlevler (mesajlaşma, temel zamanlama) çekirdekte kalır, geri kalan her şey kullanıcı alanında ayrı süreçler olarak çalışır.</p>
+        <p class="de"><span class="flag">DE</span>Linux ist historisch ein <b>monolithischer Kernel</b>: Prozessverwaltung, Speicherverwaltung, Dateisysteme, Netzwerk-Stack und Gerätetreiber laufen alle im selben Adressraum mit Ring-0-Rechten. Die Alternative ist eine <b>Mikrokernel</b>-Architektur, bei der nur die absoluten Grundfunktionen (Messaging, einfache Zeitplanung) im Kernel bleiben und alles andere als separate User-Space-Prozesse läuft.</p>
+
+        <p class="en">The monolithic approach wins on performance: data flows between, say, a filesystem driver and the memory manager via a direct function call, no expensive message-passing layer required. The cost is a larger attack/failure surface — a bug in any driver can, in theory, endanger the whole kernel. Linux softens this with <b>Loadable Kernel Modules (LKM)</b>: drivers can be loaded and unloaded at runtime, keeping the codebase modular even though everything still shares one address space.</p>
+        <p class="tr"><span class="flag">TR</span>Monolitik yaklaşımın avantajı performanstır: bir dosya sistemi sürücüsü ile bellek yöneticisi arasında veri aktarımı doğrudan fonksiyon çağrısıyla olur, pahalı mesajlaşma katmanlarına gerek yoktur. Dezavantajı ise güvenlik yüzeyinin büyümesidir: herhangi bir sürücüdeki hata, teorik olarak tüm çekirdeği tehlikeye atabilir. Linux bu dezavantajı <b>yüklenebilir çekirdek modülleri</b> (Loadable Kernel Modules, LKM) ile yumuşatır — sürücüler çalışma zamanında yüklenip kaldırılabilir, kod tabanı modüler tutulur, ama yine de aynı adres alanında çalışırlar.</p>
+        <p class="de"><span class="flag">DE</span>Der monolithische Ansatz gewinnt bei der Performance: Daten fließen etwa zwischen einem Dateisystemtreiber und dem Speicherverwalter über einen direkten Funktionsaufruf, ohne teure Message-Passing-Schicht. Der Nachteil ist eine größere Angriffs-/Fehlerfläche: ein Bug in irgendeinem Treiber kann theoretisch den gesamten Kernel gefährden. Linux mildert das mit <b>Loadable Kernel Modules (LKM)</b>: Treiber können zur Laufzeit geladen und entladen werden, die Codebasis bleibt modular, auch wenn alles im selben Adressraum läuft.</p>
+
+        <p class="en">You can see this "monolithic-but-modular" balance directly on any distro: <span class="mono-inline">/boot/vmlinuz-6.x.x</span> holds the core image, always resident in memory, while hundreds of <span class="mono-inline">.ko</span> (kernel object) files under <span class="mono-inline">/lib/modules/$(uname -r)/</span> hold drivers loaded on demand — via <span class="mono-inline">udev</span> when hardware is detected, or when a user runs <span class="mono-inline">modprobe</span>. This is why one kernel image can serve everything from an embedded board to a server, each machine loading only the modules its own hardware needs.</p>
+        <p class="tr"><span class="flag">TR</span>Bu "monolitik-ama-modüler" dengeyi herhangi bir dağıtımda doğrudan görebilirsin: <span class="mono-inline">/boot/vmlinuz-6.x.x</span>, her zaman bellekte tutulan çekirdek imajını içerirken, <span class="mono-inline">/lib/modules/$(uname -r)/</span> altındaki yüzlerce <span class="mono-inline">.ko</span> (kernel object) dosyası ihtiyaç anında yüklenen sürücüleri barındırır — donanım algılandığında <span class="mono-inline">udev</span> aracılığıyla, ya da kullanıcı <span class="mono-inline">modprobe</span> çalıştırdığında. Bu tasarım sayesinde tek bir çekirdek imajı, gömülü bir karttan sunucuya kadar her şeye hizmet edebilir — her makine yalnızca kendi donanımına özgü modülleri yükler.</p>
+        <p class="de"><span class="flag">DE</span>Dieses "monolithisch-aber-modular"-Gleichgewicht siehst du direkt auf jeder Distribution: <span class="mono-inline">/boot/vmlinuz-6.x.x</span> enthält das Kernabbild, das immer im Speicher resident ist, während Hunderte von <span class="mono-inline">.ko</span>-Dateien (Kernel Object) unter <span class="mono-inline">/lib/modules/$(uname -r)/</span> bei Bedarf geladene Treiber enthalten — über <span class="mono-inline">udev</span> bei erkannter Hardware oder wenn ein Nutzer <span class="mono-inline">modprobe</span> ausführt. So kann ein einziges Kernabbild von Embedded-Boards bis zu Servern alles bedienen — jede Maschine lädt nur die Module, die ihre eigene Hardware braucht.</p>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">temel</span> The Kernel's Four Core Jobs <span class="title-tr">— Çekirdeğin dört temel görevi</span><span class="title-de">— Die vier Kernaufgaben des Kernels</span></h3>
+        <table class="tbl tbl-en">
+          <tr><th>Responsibility</th><th>What it does</th><th>Observe from user space</th></tr>
+          <tr><td>Process management</td><td>Decides which process runs on the CPU when (scheduler), performs context switches, manages the process lifecycle (fork, exec, exit, wait)</td><td><code>ps</code>, <code>top</code>, <code>/proc/&lt;pid&gt;/status</code></td></tr>
+          <tr><td>Memory management</td><td>Shares physical memory across processes, builds virtual address spaces, uses paging to offer more virtual memory than physical RAM</td><td><code>free</code>, <code>/proc/meminfo</code>, <code>vmstat</code></td></tr>
+          <tr><td>Filesystems &amp; I/O</td><td>Presents different filesystem types (ext4, XFS, Btrfs, tmpfs...) through one consistent interface (VFS), manages block devices, caches via the page cache</td><td><code>mount</code>, <code>df</code>, <code>iostat</code></td></tr>
+          <tr><td>Device management</td><td>Abstracts hardware communication, handles interrupts and DMA, models char/block/network devices uniformly</td><td><code>lspci</code>, <code>lsusb</code>, <code>/proc/interrupts</code></td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Sorumluluk</th><th>Ne yapar</th><th>Kullanıcı alanından gözlemle</th></tr>
+          <tr><td>Süreç yönetimi</td><td>Hangi sürecin ne zaman CPU'da çalışacağına karar verir (zamanlayıcı), context switch yapar, süreç yaşam döngüsünü yönetir (fork, exec, exit, wait)</td><td><code>ps</code>, <code>top</code>, <code>/proc/&lt;pid&gt;/status</code></td></tr>
+          <tr><td>Bellek yönetimi</td><td>Fiziksel belleği süreçler arasında paylaştırır, sanal adres uzayları oluşturur, sayfalama ile fiziksel belleği aşan sanal alan sunar</td><td><code>free</code>, <code>/proc/meminfo</code>, <code>vmstat</code></td></tr>
+          <tr><td>Dosya sistemleri ve G/Ç</td><td>Farklı dosya sistemi türlerini (ext4, XFS, Btrfs, tmpfs...) tek bir tutarlı arayüzde sunar (VFS), blok aygıtları yönetir, page cache ile önbellekler</td><td><code>mount</code>, <code>df</code>, <code>iostat</code></td></tr>
+          <tr><td>Aygıt yönetimi</td><td>Donanım iletişimini soyutlar, kesme (interrupt) ve DMA işler, char/block/ağ aygıtlarını ortak bir modelle temsil eder</td><td><code>lspci</code>, <code>lsusb</code>, <code>/proc/interrupts</code></td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Aufgabe</th><th>Was sie tut</th><th>Aus User Space beobachten</th></tr>
+          <tr><td>Prozessverwaltung</td><td>Entscheidet, welcher Prozess wann auf der CPU läuft (Scheduler), führt Kontextwechsel durch, verwaltet den Prozesslebenszyklus (fork, exec, exit, wait)</td><td><code>ps</code>, <code>top</code>, <code>/proc/&lt;pid&gt;/status</code></td></tr>
+          <tr><td>Speicherverwaltung</td><td>Teilt physischen Speicher auf Prozesse auf, baut virtuelle Adressräume, bietet per Paging mehr virtuellen als physischen Speicher</td><td><code>free</code>, <code>/proc/meminfo</code>, <code>vmstat</code></td></tr>
+          <tr><td>Dateisysteme &amp; E/A</td><td>Stellt verschiedene Dateisystemtypen (ext4, XFS, Btrfs, tmpfs...) über eine einheitliche Schnittstelle bereit (VFS), verwaltet Blockgeräte, cacht über den Page Cache</td><td><code>mount</code>, <code>df</code>, <code>iostat</code></td></tr>
+          <tr><td>Geräteverwaltung</td><td>Abstrahiert Hardware-Kommunikation, behandelt Interrupts und DMA, bildet Zeichen-/Block-/Netzwerkgeräte einheitlich ab</td><td><code>lspci</code>, <code>lsusb</code>, <code>/proc/interrupts</code></td></tr>
+        </table>
+        <p class="en">These four responsibilities form the skeleton of the rest of this book — and each has a concrete, observable footprint from user space, because for an advanced practitioner theoretical knowledge stays incomplete until it maps onto a command you can actually run.</p>
+        <p class="tr"><span class="flag">TR</span>Bu dört başlık, kitabın geri kalan bölümlerinin iskeletini oluşturur — ve her biri kullanıcı alanından gözlemlenebilir somut bir izdüşüme sahiptir, çünkü ileri seviye bir uygulayıcı için teorik bilgi, onu doğrulayabileceğin somut bir komutla eşleşmediği sürece eksik kalır.</p>
+        <p class="de"><span class="flag">DE</span>Diese vier Aufgaben bilden das Skelett für den Rest dieses Buches — und jede hat einen konkreten, aus dem User Space beobachtbaren Fußabdruck, denn für einen fortgeschrittenen Praktiker bleibt theoretisches Wissen unvollständig, solange es nicht auf einen tatsächlich ausführbaren Befehl abbildbar ist.</p>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">bakış açısı</span> Two Perspectives: Systems Programmer vs. Kernel Developer <span class="title-tr">— İki bakış açısı: sistem programcısı ve çekirdek geliştiricisi</span><span class="title-de">— Zwei Perspektiven: Systemprogrammierer und Kernel-Entwickler</span></h3>
+        <p class="en">To a systems programmer, the kernel is mostly a <b>service provider</b>. POSIX system calls like <span class="mono-inline">open()</span>, <span class="mono-inline">read()</span>, <span class="mono-inline">write()</span>, <span class="mono-inline">fork()</span>, <span class="mono-inline">mmap()</span>, <span class="mono-inline">socket()</span> are services the application requests from the kernel. The C standard library (glibc or musl) wraps these calls — most programmers never touch a raw <span class="mono-inline">syscall()</span> number directly.</p>
+        <p class="tr"><span class="flag">TR</span>Bir sistem programcısı için çekirdek çoğunlukla bir <b>hizmet sağlayıcı</b>dır. <span class="mono-inline">open()</span>, <span class="mono-inline">read()</span>, <span class="mono-inline">write()</span>, <span class="mono-inline">fork()</span>, <span class="mono-inline">mmap()</span>, <span class="mono-inline">socket()</span> gibi POSIX sistem çağrıları, uygulamanın çekirdekten talep ettiği hizmetlerdir. C standart kütüphanesi (glibc ya da musl) bu çağrıları sarmalar — programcı çoğu zaman doğrudan <span class="mono-inline">syscall()</span> numarasıyla uğraşmaz.</p>
+        <p class="de"><span class="flag">DE</span>Für einen Systemprogrammierer ist der Kernel meist ein <b>Diensteanbieter</b>. POSIX-Systemaufrufe wie <span class="mono-inline">open()</span>, <span class="mono-inline">read()</span>, <span class="mono-inline">write()</span>, <span class="mono-inline">fork()</span>, <span class="mono-inline">mmap()</span>, <span class="mono-inline">socket()</span> sind Dienste, die die Anwendung vom Kernel anfordert. Die C-Standardbibliothek (glibc oder musl) kapselt diese Aufrufe — die meisten Programmierer fassen nie eine rohe <span class="mono-inline">syscall()</span>-Nummer direkt an.</p>
+
+        <p class="en">A crucial distinction for advanced learners: a system call is not the same thing as a library function. <span class="mono-inline">printf()</span> is a library function that buffers internally and eventually triggers a <span class="mono-inline">write()</span> syscall. <span class="mono-inline">malloc()</span> is a library function that uses <span class="mono-inline">brk()</span> or <span class="mono-inline">mmap()</span> under the hood — but not every <span class="mono-inline">malloc()</span> call becomes a syscall, since glibc serves small allocations from its own internal free lists.</p>
+        <p class="tr"><span class="flag">TR</span>İleri seviye öğrenciler için kritik bir ayrım: sistem çağrısı ile kütüphane fonksiyonu aynı şey değildir. <span class="mono-inline">printf()</span> bir kütüphane fonksiyonudur; içeride arabelleğe alır (buffering) ve sonunda bir <span class="mono-inline">write()</span> sistem çağrısını tetikler. <span class="mono-inline">malloc()</span> da bir kütüphane fonksiyonudur; içeride <span class="mono-inline">brk()</span> veya <span class="mono-inline">mmap()</span> kullanır — ama her <span class="mono-inline">malloc()</span> çağrısı bir sistem çağrısına dönüşmez, çünkü glibc küçük ayırma taleplerini kendi iç serbest listelerinden karşılar.</p>
+        <p class="de"><span class="flag">DE</span>Eine entscheidende Unterscheidung für Fortgeschrittene: ein Systemaufruf ist nicht dasselbe wie eine Bibliotheksfunktion. <span class="mono-inline">printf()</span> ist eine Bibliotheksfunktion, die intern puffert und schließlich einen <span class="mono-inline">write()</span>-Syscall auslöst. <span class="mono-inline">malloc()</span> ist ebenfalls eine Bibliotheksfunktion, die intern <span class="mono-inline">brk()</span> oder <span class="mono-inline">mmap()</span> nutzt — aber nicht jeder <span class="mono-inline">malloc()</span>-Aufruf wird zu einem Syscall, da glibc kleine Anfragen aus eigenen internen Freilisten bedient.</p>
+
+        <div class="tip tip-en"><b>💡 Tip:</b> a real-world case: a web server slows down under load. Tracing with <span class="mono-inline">strace</span> reveals dozens of tiny <span class="mono-inline">mmap()</span>/<span class="mono-inline">munmap()</span> calls per request — because per-request buffers exceed glibc's <span class="mono-inline">mmap_threshold</span> (128 KB by default), so each allocation goes straight to the kernel. Fix: pool and reuse buffers, or tune the threshold with <span class="mono-inline">mallopt()</span>.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> gerçek dünya vakası: bir web sunucusu yük altında yavaşlıyor. <span class="mono-inline">strace</span> ile izlerken, her istek için onlarca küçük <span class="mono-inline">mmap()</span>/<span class="mono-inline">munmap()</span> çağrısı görülür — çünkü istek başına ayrılan buffer'lar glibc'nin <span class="mono-inline">mmap_threshold</span> değerini (varsayılan 128 KB) aşıyor ve her ayırma doğrudan çekirdeğe gidiyor. Çözüm: buffer'ları havuzlayıp yeniden kullanmak ya da eşiği <span class="mono-inline">mallopt()</span> ile ayarlamak.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> ein Praxisfall: ein Webserver wird unter Last langsamer. <span class="mono-inline">strace</span> zeigt Dutzende winziger <span class="mono-inline">mmap()</span>/<span class="mono-inline">munmap()</span>-Aufrufe pro Anfrage — weil die Puffer pro Anfrage glibcs <span class="mono-inline">mmap_threshold</span> (Standard 128 KB) überschreiten und jede Allokation direkt zum Kernel geht. Lösung: Puffer poolen und wiederverwenden oder den Schwellenwert mit <span class="mono-inline">mallopt()</span> anpassen.</div>
+
+        <p class="en">The kernel developer's world is inverted: no libc, no <span class="mono-inline">malloc()</span>, no signal handlers. Kernel code uses its own toolkit — <span class="mono-inline">kmalloc()</span>/<span class="mono-inline">kfree()</span> for allocation, <span class="mono-inline">printk()</span> for logging, spinlocks and mutexes for synchronization. Code running in interrupt context cannot sleep, must assume it cannot take a page fault, and must treat every byte from user space as suspect — which is exactly why safe-copy functions like <span class="mono-inline">copy_from_user()</span> exist.</p>
+        <p class="tr"><span class="flag">TR</span>Çekirdek geliştiricisi için dünya tersine döner: artık libc yoktur, <span class="mono-inline">malloc()</span> yoktur, sinyal işleyicileri yoktur. Çekirdek kodu kendi araç setini kullanır: bellek ayırma için <span class="mono-inline">kmalloc()</span>/<span class="mono-inline">kfree()</span>, günlükleme için <span class="mono-inline">printk()</span>, senkronizasyon için spinlock ve mutex. Kesme bağlamında (interrupt context) çalışan kod uyuyamaz, sayfa hatası alamayacağı varsayımıyla yazılmalıdır ve kullanıcı alanından gelen her veriye şüpheyle yaklaşmalıdır — <span class="mono-inline">copy_from_user()</span> gibi güvenli kopyalama fonksiyonlarının var olma sebebi tam olarak budur.</p>
+        <p class="de"><span class="flag">DE</span>Die Welt des Kernel-Entwicklers ist umgekehrt: keine libc, kein <span class="mono-inline">malloc()</span>, keine Signal-Handler. Kernel-Code nutzt sein eigenes Werkzeugset — <span class="mono-inline">kmalloc()</span>/<span class="mono-inline">kfree()</span> zur Speicherzuteilung, <span class="mono-inline">printk()</span> zum Loggen, Spinlocks und Mutexe zur Synchronisation. Code im Interrupt-Kontext darf nicht schlafen, muss davon ausgehen, dass er keinen Page Fault erhalten darf, und muss jedes Byte aus dem User Space als verdächtig behandeln — genau deshalb existieren sichere Kopierfunktionen wie <span class="mono-inline">copy_from_user()</span>.</p>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">performans</span> The Real Cost of a Ring Transition <span class="title-tr">— Ring geçişinin somut maliyeti</span><span class="title-de">— Die tatsächlichen Kosten eines Ringwechsels</span></h3>
+        <p class="en">A ring 3 → ring 0 transition is not "free." On a modern x86-64 CPU, an empty system call (like <span class="mono-inline">getpid()</span>, which does almost no work) typically costs 100-300 nanoseconds via the SYSCALL/SYSRET pair — versus under 1-2 nanoseconds for a plain user-space function call. That's up to two orders of magnitude slower, which is exactly why hot-path syscalls get special engineering attention.</p>
+        <p class="tr"><span class="flag">TR</span>Ring 3'ten ring 0'a geçiş "ücretsiz" değildir. Modern bir x86-64 işlemcide boş bir sistem çağrısının (<span class="mono-inline">getpid()</span> gibi, neredeyse hiç iş yapmayan bir çağrı) SYSCALL/SYSRET çifti üzerinden maliyeti tipik olarak 100-300 nanosaniyedir — buna karşılık saf bir kullanıcı alanı fonksiyon çağrısı 1-2 nanosaniyeden azdır. Bu, iki kat büyüklük mertebesine varan bir yavaşlamadır — sık tekrarlanan (hot path) sistem çağrılarının performans mühendisliğinde özel ilgi görmesinin sebebi tam olarak budur.</p>
+        <p class="de"><span class="flag">DE</span>Ein Übergang von Ring 3 zu Ring 0 ist nicht "kostenlos". Auf einer modernen x86-64-CPU kostet ein leerer Systemaufruf (wie <span class="mono-inline">getpid()</span>, der fast nichts tut) über das SYSCALL/SYSRET-Paar typischerweise 100-300 Nanosekunden — gegenüber unter 1-2 Nanosekunden für einen reinen User-Space-Funktionsaufruf. Das ist eine bis zu zwei Größenordnungen langsamere Operation — genau deshalb bekommen häufig aufgerufene ("hot path") Syscalls besondere Performance-Aufmerksamkeit.</p>
+        <p class="en">The 2018 Meltdown vulnerability made this worse: the Kernel Page Table Isolation (KPTI) mitigation added a separate page table switch (with partial TLB flush) to every ring transition, increasing the cost by 5-30% for some workloads — a concrete, measurable example of the security-vs-performance engineering trade-off.</p>
+        <p class="tr"><span class="flag">TR</span>2018'de ortaya çıkan Meltdown açığı bu maliyeti daha da artırdı: Kernel Page Table Isolation (KPTI) yaması, her ring geçişine ayrı bir sayfa tablosu geçişi (kısmi TLB boşaltma dahil) ekleyerek bazı iş yüklerinde maliyeti %5-30 oranında artırdı — güvenlik ile performans arasındaki mühendislik dengesinin somut, ölçülebilir bir örneği.</p>
+        <p class="de"><span class="flag">DE</span>Die 2018 aufgedeckte Meltdown-Schwachstelle verschärfte das: Die Kernel Page Table Isolation (KPTI) fügte jedem Ringwechsel einen separaten Seitentabellenwechsel (mit teilweisem TLB-Flush) hinzu und erhöhte die Kosten bei manchen Workloads um 5-30% — ein konkretes, messbares Beispiel für den Zielkonflikt zwischen Sicherheit und Performance.</p>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">karşılaştırma</span> Linux vs. Other Kernel Architectures <span class="title-tr">— Linux'un diğer çekirdek mimarileriyle karşılaştırılması</span><span class="title-de">— Linux im Vergleich zu anderen Kernel-Architekturen</span></h3>
+        <table class="tbl tbl-en">
+          <tr><th>System</th><th>Architecture</th><th>Key trade-off</th></tr>
+          <tr><td>Linux</td><td>Monolithic, modular via LKM</td><td>Performance-first; graphics fully in user space (X11/Wayland + DRM)</td></tr>
+          <tr><td>Windows NT</td><td>Hybrid (Executive layer over a microkernel-like base)</td><td>GDI moved into kernel mode for performance — a historical bending of the pure microkernel ideal</td></tr>
+          <tr><td>macOS (XNU)</td><td>Hybrid: Mach microkernel + BSD components</td><td>Mach's port-based IPC + BSD's process/fs abstractions — neither pure micro- nor monolithic</td></tr>
+          <tr><td>seL4</td><td>Formally verified academic microkernel</td><td>Mathematically proven security properties, but only viable because the kernel itself stays tiny</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Sistem</th><th>Mimari</th><th>Temel denge</th></tr>
+          <tr><td>Linux</td><td>Monolitik, LKM ile modüler</td><td>Performans önceliği; grafik tamamen kullanıcı alanında (X11/Wayland + DRM)</td></tr>
+          <tr><td>Windows NT</td><td>Hibrit (mikroçekirdek benzeri taban üzerinde Executive katmanı)</td><td>GDI performans için çekirdek moduna taşındı — saf mikroçekirdek idealinin pratikte esnetilmesi</td></tr>
+          <tr><td>macOS (XNU)</td><td>Hibrit: Mach mikroçekirdeği + BSD bileşenleri</td><td>Mach'ın port tabanlı IPC'si + BSD'nin süreç/dosya sistemi soyutlamaları — ne saf mikro ne saf monolitik</td></tr>
+          <tr><td>seL4</td><td>Biçimsel doğrulanmış akademik mikroçekirdek</td><td>Matematiksel olarak kanıtlanmış güvenlik özellikleri, ama sadece çekirdek küçük kaldığı için mümkün</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>System</th><th>Architektur</th><th>Zentraler Kompromiss</th></tr>
+          <tr><td>Linux</td><td>Monolithisch, modular via LKM</td><td>Performance zuerst; Grafik vollständig im User Space (X11/Wayland + DRM)</td></tr>
+          <tr><td>Windows NT</td><td>Hybrid (Executive-Schicht über einer mikrokernelartigen Basis)</td><td>GDI aus Performancegründen in den Kernel-Modus verschoben — eine historische Abweichung vom reinen Mikrokernel-Ideal</td></tr>
+          <tr><td>macOS (XNU)</td><td>Hybrid: Mach-Mikrokernel + BSD-Komponenten</td><td>Machs portbasierte IPC + BSDs Prozess-/Dateisystem-Abstraktionen — weder rein mikro noch monolithisch</td></tr>
+          <tr><td>seL4</td><td>Formal verifizierter akademischer Mikrokernel</td><td>Mathematisch bewiesene Sicherheitseigenschaften, aber nur machbar, weil der Kernel selbst winzig bleibt</td></tr>
+        </table>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">iç mimari</span> The Kernel's Layered Internal Structure <span class="title-tr">— Çekirdeğin katmanlı iç mimarisi</span><span class="title-de">— Die geschichtete interne Struktur des Kernels</span></h3>
+        <p class="en">Even though the Linux kernel is "one block" (monolithic), its internals are clearly layered — which is what keeps a multi-million-line codebase manageable:</p>
+        <p class="tr"><span class="flag">TR</span>Linux çekirdeği "tek bir blok" olsa da (monolitik), iç yapısı kendi içinde belirgin katmanlara ayrılır — bu katmanlaşma, kod tabanının milyonlarca satıra rağmen yönetilebilir kalmasını sağlar:</p>
+        <p class="de"><span class="flag">DE</span>Auch wenn der Linux-Kernel "ein Block" ist (monolithisch), ist sein Inneres klar in Schichten gegliedert — das hält die Codebasis trotz Millionen Zeilen Code handhabbar:</p>
+        <table class="tbl tbl-en">
+          <tr><th>Directory</th><th>Contents</th></tr>
+          <tr><td><code>arch/</code></td><td>Architecture-specific boot code, interrupt entry points, page table formats (x86, ARM, RISC-V...)</td></tr>
+          <tr><td><code>kernel/</code></td><td>Architecture-independent core: process management, scheduling, signals, module loading</td></tr>
+          <tr><td><code>mm/</code></td><td>Virtual memory, paging, slab/buddy allocators (Chapters 5-6)</td></tr>
+          <tr><td><code>fs/</code></td><td>The VFS layer (Chapter 7) plus each concrete filesystem (ext4/, xfs/, btrfs/...)</td></tr>
+          <tr><td><code>drivers/</code></td><td>The kernel's largest area by line count — network, storage, USB, graphics subdirectories</td></tr>
+          <tr><td><code>net/</code></td><td>Protocol stacks (Chapter 16)</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Dizin</th><th>İçerik</th></tr>
+          <tr><td><code>arch/</code></td><td>Mimariye özgü önyükleme kodu, kesme giriş noktaları, sayfa tablosu formatları (x86, ARM, RISC-V...)</td></tr>
+          <tr><td><code>kernel/</code></td><td>Mimariden bağımsız çekirdek: süreç yönetimi, zamanlama, sinyaller, modül yükleme</td></tr>
+          <tr><td><code>mm/</code></td><td>Sanal bellek, sayfalama, slab/buddy ayırıcıları (Bölüm 5-6)</td></tr>
+          <tr><td><code>fs/</code></td><td>VFS katmanı (Bölüm 7) ve her somut dosya sisteminin kendi alt dizini (ext4/, xfs/, btrfs/...)</td></tr>
+          <tr><td><code>drivers/</code></td><td>Satır sayısı olarak çekirdeğin en büyük bölümü — ağ, depolama, USB, grafik alt dizinleri</td></tr>
+          <tr><td><code>net/</code></td><td>Protokol yığınları (Bölüm 16)</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Verzeichnis</th><th>Inhalt</th></tr>
+          <tr><td><code>arch/</code></td><td>Architekturspezifischer Boot-Code, Interrupt-Einstiegspunkte, Seitentabellenformate (x86, ARM, RISC-V...)</td></tr>
+          <tr><td><code>kernel/</code></td><td>Architekturunabhängiger Kern: Prozessverwaltung, Scheduling, Signale, Modul-Laden</td></tr>
+          <tr><td><code>mm/</code></td><td>Virtueller Speicher, Paging, Slab-/Buddy-Allokatoren (Kapitel 5-6)</td></tr>
+          <tr><td><code>fs/</code></td><td>Die VFS-Schicht (Kapitel 7) plus jedes konkrete Dateisystem (ext4/, xfs/, btrfs/...)</td></tr>
+          <tr><td><code>drivers/</code></td><td>Nach Zeilenzahl der größte Bereich des Kernels — Unterverzeichnisse für Netzwerk, Speicher, USB, Grafik</td></tr>
+          <tr><td><code>net/</code></td><td>Protokoll-Stacks (Kapitel 16)</td></tr>
+        </table>
+        <div class="tip tip-en"><b>💡 Tip:</b> this layered map is designed to line up with this book's chapter structure — so when you eventually browse the real kernel source at kernel.org, you'll already know roughly where to look for any given topic.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> bu katmanlı harita, kitabın bölüm yapısıyla örtüşecek şekilde tasarlandı — kernel.org üzerinden gerçek çekirdek kaynak kodunu incelediğinde, herhangi bir konuyla ilgili kodu kabaca nerede arayacağını zaten bileceksin.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> diese Schichtenkarte ist so gestaltet, dass sie mit der Kapitelstruktur dieses Buches übereinstimmt — wenn du irgendwann den echten Kernel-Quellcode auf kernel.org durchsiehst, weißt du bereits ungefähr, wo du zu einem bestimmten Thema suchen musst.</div>
+      </div>
+
+      <div class="scen-box" data-scen="a1-proc">
+        <div class="scen-head"><span class="tag">proje 1/3</span> Observe the Process Table <span class="title-tr">— süreç tablosunu gözlemle</span><span class="title-de">— die Prozesstabelle beobachten</span></div>
+        <p class="en">The kernel's process-management responsibility has a direct user-space footprint: <span class="mono-inline">ps</span>. Run <span class="mono-inline">ps aux</span> and redirect the output into a file named <span class="mono-inline">surecler.txt</span> in your home directory. Then use <span class="mono-inline">grep</span> to find the line for the process named <span class="mono-inline">worker</span> and save just that line into <span class="mono-inline">worker-satiri.txt</span>.</p>
+        <p class="tr"><span class="flag">TR</span>Çekirdeğin süreç yönetimi sorumluluğunun kullanıcı alanındaki doğrudan izdüşümü: <span class="mono-inline">ps</span>. <span class="mono-inline">ps aux</span> komutunu çalıştır ve çıktısını ev dizininde <span class="mono-inline">surecler.txt</span> adlı dosyaya yönlendir. Sonra <span class="mono-inline">grep</span> ile <span class="mono-inline">worker</span> adlı sürecin satırını bul ve sadece o satırı <span class="mono-inline">worker-satiri.txt</span>'ye kaydet.</p>
+        <p class="de"><span class="flag">DE</span>Die Prozessverwaltungsaufgabe des Kernels hat einen direkten User-Space-Fußabdruck: <span class="mono-inline">ps</span>. Führe <span class="mono-inline">ps aux</span> aus und leite die Ausgabe in eine Datei namens <span class="mono-inline">surecler.txt</span> in deinem Home-Verzeichnis um. Finde dann mit <span class="mono-inline">grep</span> die Zeile für den Prozess <span class="mono-inline">worker</span> und speichere nur diese Zeile in <span class="mono-inline">worker-satiri.txt</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('a1-proc')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('a1-proc')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-a1-proc"></div>
+      </div>
+
+      <div class="scen-box" data-scen="a1-kill">
+        <div class="scen-head"><span class="tag">proje 2/3</span> Terminate a Runaway Process <span class="title-tr">— aşırı yük yapan süreci sonlandır</span><span class="title-de">— einen außer Kontrolle geratenen Prozess beenden</span></div>
+        <p class="en">Suppose <span class="mono-inline">worker</span> (PID 512) is consuming too much CPU. First run <span class="mono-inline">ps aux</span> to confirm its PID, then terminate it with <span class="mono-inline">kill 512</span>. Finally, run <span class="mono-inline">ps aux</span> again and save the output into <span class="mono-inline">sonra.txt</span> — it should no longer contain a line for <span class="mono-inline">worker</span>.</p>
+        <p class="tr"><span class="flag">TR</span>Diyelim ki <span class="mono-inline">worker</span> (PID 512) çok fazla CPU tüketiyor. Önce <span class="mono-inline">ps aux</span> ile PID'sini doğrula, sonra <span class="mono-inline">kill 512</span> ile sonlandır. Son olarak tekrar <span class="mono-inline">ps aux</span> çalıştırıp çıktısını <span class="mono-inline">sonra.txt</span>'ye kaydet — artık <span class="mono-inline">worker</span> için bir satır içermemeli.</p>
+        <p class="de"><span class="flag">DE</span>Angenommen <span class="mono-inline">worker</span> (PID 512) verbraucht zu viel CPU. Bestätige zunächst mit <span class="mono-inline">ps aux</span> seine PID, beende ihn dann mit <span class="mono-inline">kill 512</span>. Führe abschließend erneut <span class="mono-inline">ps aux</span> aus und speichere die Ausgabe in <span class="mono-inline">sonra.txt</span> — sie sollte keine Zeile für <span class="mono-inline">worker</span> mehr enthalten.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('a1-kill')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('a1-kill')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-a1-kill"></div>
+      </div>
+
+      <div class="scen-box" data-scen="a1-modul">
+        <div class="scen-head"><span class="tag">proje 3/3</span> Loadable Kernel Modules in Practice <span class="title-tr">— pratikte yüklenebilir çekirdek modülleri</span><span class="title-de">— Loadable Kernel Modules in der Praxis</span></div>
+        <p class="en">List currently loaded modules with <span class="mono-inline">lsmod</span> and save the output to <span class="mono-inline">moduller-once.txt</span>. Load a new module named <span class="mono-inline">kk_demo</span> with <span class="mono-inline">modprobe kk_demo</span>. Run <span class="mono-inline">lsmod</span> again and confirm — using <span class="mono-inline">grep</span> — that <span class="mono-inline">kk_demo</span> now appears; save that matching line into <span class="mono-inline">kk-demo-satiri.txt</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">lsmod</span> ile o an yüklü modülleri listele ve çıktıyı <span class="mono-inline">moduller-once.txt</span>'ye kaydet. <span class="mono-inline">modprobe kk_demo</span> ile <span class="mono-inline">kk_demo</span> adında yeni bir modül yükle. Tekrar <span class="mono-inline">lsmod</span> çalıştırıp <span class="mono-inline">grep</span> ile <span class="mono-inline">kk_demo</span>'nun artık listede olduğunu doğrula; eşleşen satırı <span class="mono-inline">kk-demo-satiri.txt</span>'ye kaydet.</p>
+        <p class="de"><span class="flag">DE</span>Liste die aktuell geladenen Module mit <span class="mono-inline">lsmod</span> auf und speichere die Ausgabe in <span class="mono-inline">moduller-once.txt</span>. Lade mit <span class="mono-inline">modprobe kk_demo</span> ein neues Modul namens <span class="mono-inline">kk_demo</span>. Führe erneut <span class="mono-inline">lsmod</span> aus und bestätige mit <span class="mono-inline">grep</span>, dass <span class="mono-inline">kk_demo</span> jetzt erscheint; speichere die passende Zeile in <span class="mono-inline">kk-demo-satiri.txt</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('a1-modul')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('a1-modul')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-a1-modul"></div>
+      </div>

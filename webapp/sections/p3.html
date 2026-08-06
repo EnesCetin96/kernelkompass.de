@@ -1,0 +1,320 @@
+      <div class="eyebrow">$ cd part-03/</div>
+      <h1 class="h-en">Managing Users and Groups</h1>
+      <p class="h-tr">Kullanıcı ve Grup Yönetimi</p>
+      <p class="h-de">Benutzer- und Gruppenverwaltung</p>
+      <div class="purpose">
+        <p class="en">Purpose: learn to identify who's on the system, create/modify/delete users, manage passwords, and organize users into groups.</p>
+        <p class="tr">Amaç: sistemde kimin olduğunu görmeyi, kullanıcı oluşturma/değiştirme/silmeyi, şifre yönetimini ve kullanıcıları gruplar halinde organize etmeyi öğrenmek.</p>
+        <p class="de">Zweck: lernen, wer sich auf dem System befindet, Benutzer erstellen/ändern/löschen, Passwörter verwalten und Benutzer in Gruppen organisieren.</p>
+      </div>
+
+      <details class="notebox">
+        <summary>✎ Notlarım — Kullanıcı &amp; Grup Yönetimi</summary>
+        <textarea placeholder="Bu bölümle ilgili notların... buraya yaz." data-note="p3"></textarea>
+      </details>
+
+      <div class="topic">
+        <h3><span class="tag">kimlik</span> Basic User Commands <span class="title-tr">— Temel kullanıcı komutları</span><span class="title-de">— Grundlegende Benutzerbefehle</span></h3>
+        <table class="tbl tbl-en">
+          <tr><th>Command</th><th>What it does</th></tr>
+          <tr><td><code>whoami</code></td><td>Shows which user you're currently logged in as</td></tr>
+          <tr><td><code>who</code></td><td>Shows who's currently logged into the system</td></tr>
+          <tr><td><code>w</code></td><td><span class="mono-inline">who</span> + what those users are doing</td></tr>
+          <tr><td><code>id [user]</code></td><td>Shows the user ID, primary group ID, and all groups they belong to</td></tr>
+          <tr><td><code>su [user]</code></td><td>Starts a shell as another user (environment doesn't change)</td></tr>
+          <tr><td><code>su - [user]</code></td><td>Switches to another user, along with their own environment settings</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Komut</th><th>Ne yapar</th></tr>
+          <tr><td><code>whoami</code></td><td>Şu an hangi kullanıcı olarak giriş yaptığını gösterir</td></tr>
+          <tr><td><code>who</code></td><td>Sistemde şu an kimlerin oturum açtığını gösterir</td></tr>
+          <tr><td><code>w</code></td><td><span class="mono-inline">who</span> + o kullanıcıların ne yaptığını gösterir</td></tr>
+          <tr><td><code>id [kullanıcı]</code></td><td>Kullanıcı ID'sini, birincil grup ID'sini ve üye olduğu tüm grupları gösterir</td></tr>
+          <tr><td><code>su [kullanıcı]</code></td><td>Başka bir kullanıcı olarak bir shell başlatır (ortam değişmez)</td></tr>
+          <tr><td><code>su - [kullanıcı]</code></td><td>Başka kullanıcıya, onun kendi ortam ayarlarıyla birlikte geçer</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Befehl</th><th>Was er macht</th></tr>
+          <tr><td><code>whoami</code></td><td>Zeigt, als welcher Benutzer du gerade angemeldet bist</td></tr>
+          <tr><td><code>who</code></td><td>Zeigt, wer gerade am System angemeldet ist</td></tr>
+          <tr><td><code>w</code></td><td><span class="mono-inline">who</span> + was diese Benutzer gerade tun</td></tr>
+          <tr><td><code>id [Benutzer]</code></td><td>Zeigt die Benutzer-ID, die primäre Gruppen-ID und alle Gruppen, denen er angehört</td></tr>
+          <tr><td><code>su [Benutzer]</code></td><td>Startet eine Shell als anderer Benutzer (Umgebung ändert sich nicht)</td></tr>
+          <tr><td><code>su - [Benutzer]</code></td><td>Wechselt zu einem anderen Benutzer, mitsamt dessen eigenen Umgebungseinstellungen</td></tr>
+        </table>
+        <div class="tip tip-en"><b>💡 Tip:</b> The difference between <span class="mono-inline">su user1</span> and <span class="mono-inline">su - user1</span> matters: without the dash (-) only the user changes but you're still in the old directory; with the dash, both the user AND their home directory/environment are loaded.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">su user1</span> ile <span class="mono-inline">su - user1</span> arasındaki fark önemli: tire (-) olmadan sadece kullanıcı değişir ama hâlâ eski dizindesindir; tire ile hem kullanıcı hem de onun ev dizini/ortamı yüklenir.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Der Unterschied zwischen <span class="mono-inline">su user1</span> und <span class="mono-inline">su - user1</span> ist wichtig: ohne Bindestrich (-) ändert sich nur der Benutzer, du bist aber noch im alten Verzeichnis; mit Bindestrich werden sowohl der Benutzer als auch sein Home-Verzeichnis/seine Umgebung geladen.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">passwd</span> User Management: /etc/passwd <span class="title-tr">— Kullanıcı veritabanı</span><span class="title-de">— Benutzerdatenbank</span></h3>
+        <p class="en">All local users are recorded in <span class="mono-inline">/etc/passwd</span>. This is a plain text file you can read with <span class="mono-inline">cat</span>.</p>
+        <p class="tr"><span class="flag">TR</span>Tüm yerel kullanıcılar <span class="mono-inline">/etc/passwd</span> dosyasında kayıtlıdır. Bu düz metin bir dosyadır, <span class="mono-inline">cat</span> ile okuyabilirsin (şifreler burada değil, şifreler ayrı ve şifreli bir dosyada — /etc/shadow).</p>
+        <p class="de"><span class="flag">DE</span>Alle lokalen Benutzer werden in <span class="mono-inline">/etc/passwd</span> erfasst. Das ist eine reine Textdatei, die du mit <span class="mono-inline">cat</span> lesen kannst (Passwörter stehen hier nicht — sie liegen separat und verschlüsselt in /etc/shadow).</p>
+        <table class="tbl tbl-en">
+          <tr><th>Command</th><th>What it does</th></tr>
+          <tr><td><code>useradd username</code></td><td>Creates a new user (may not create a home directory by default)</td></tr>
+          <tr><td><code>useradd -m username</code></td><td>Forces creation of a home directory</td></tr>
+          <tr><td><code>useradd -d /path username</code></td><td>Specifies a custom home directory path</td></tr>
+          <tr><td><code>useradd -c "description" username</code></td><td>Adds a description to the user</td></tr>
+          <tr><td><code>adduser username</code></td><td>The interactive (Q&A) version of useradd — a Perl script</td></tr>
+          <tr><td><code>userdel username</code></td><td>Deletes the user but does NOT delete the home directory</td></tr>
+          <tr><td><code>userdel -r username</code></td><td>Deletes the user AND the home directory together</td></tr>
+          <tr><td><code>usermod -c "new description" username</code></td><td>Changes a property of the user</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Komut</th><th>Ne yapar</th></tr>
+          <tr><td><code>useradd kullanici</code></td><td>Yeni bir kullanıcı oluşturur (varsayılan olarak ev dizini oluşturmayabilir)</td></tr>
+          <tr><td><code>useradd -m kullanici</code></td><td>Ev dizini oluşturmaya zorlar</td></tr>
+          <tr><td><code>useradd -d /yol kullanici</code></td><td>Özel bir ev dizini adı belirtir</td></tr>
+          <tr><td><code>useradd -c "açıklama" kullanici</code></td><td>Kullanıcıya bir açıklama (description) ekler</td></tr>
+          <tr><td><code>adduser kullanici</code></td><td>useradd'ın interaktif (soru-cevaplı) versiyonu — bir Perl scripti</td></tr>
+          <tr><td><code>userdel kullanici</code></td><td>Kullanıcıyı siler ama ev dizinini SİLMEZ</td></tr>
+          <tr><td><code>userdel -r kullanici</code></td><td>Kullanıcıyı VE ev dizinini birlikte siler</td></tr>
+          <tr><td><code>usermod -c "yeni açıklama" kullanici</code></td><td>Kullanıcının bir özelliğini değiştirir</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Befehl</th><th>Was er macht</th></tr>
+          <tr><td><code>useradd benutzer</code></td><td>Erstellt einen neuen Benutzer (erstellt standardmäßig evtl. kein Home-Verzeichnis)</td></tr>
+          <tr><td><code>useradd -m benutzer</code></td><td>Erzwingt die Erstellung eines Home-Verzeichnisses</td></tr>
+          <tr><td><code>useradd -d /pfad benutzer</code></td><td>Gibt einen benutzerdefinierten Home-Verzeichnispfad an</td></tr>
+          <tr><td><code>useradd -c "Beschreibung" benutzer</code></td><td>Fügt dem Benutzer eine Beschreibung hinzu</td></tr>
+          <tr><td><code>adduser benutzer</code></td><td>Die interaktive (Frage-Antwort) Version von useradd — ein Perl-Skript</td></tr>
+          <tr><td><code>userdel benutzer</code></td><td>Löscht den Benutzer, aber NICHT das Home-Verzeichnis</td></tr>
+          <tr><td><code>userdel -r benutzer</code></td><td>Löscht den Benutzer UND das Home-Verzeichnis zusammen</td></tr>
+          <tr><td><code>usermod -c "neue Beschreibung" benutzer</code></td><td>Ändert eine Eigenschaft des Benutzers</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>sudo useradd -m -c "Yazilim Gelistirici" mehmet
+cat /etc/passwd | grep mehmet
+sudo userdel -r mehmet</pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">şifre</span> User Passwords <span class="title-tr">— Kullanıcı şifreleri</span><span class="title-de">— Benutzerpasswörter</span></h3>
+        <table class="tbl tbl-en">
+          <tr><th>Item</th><th>Description</th></tr>
+          <tr><td><code>passwd [user]</code></td><td>Sets/changes a user's password</td></tr>
+          <tr><td><code>/etc/shadow</code></td><td>File where encrypted passwords are stored — only root can read it</td></tr>
+          <tr><td><code>/etc/login.defs</code></td><td>Default settings like password aging, length, etc.</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Öğe</th><th>Açıklama</th></tr>
+          <tr><td><code>passwd [kullanıcı]</code></td><td>Bir kullanıcının şifresini belirler/değiştirir</td></tr>
+          <tr><td><code>/etc/shadow</code></td><td>Şifrelenmiş şifrelerin tutulduğu dosya — sadece root okuyabilir</td></tr>
+          <tr><td><code>/etc/login.defs</code></td><td>Şifre yaşlanması, uzunluğu gibi varsayılan ayarlar</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Element</th><th>Beschreibung</th></tr>
+          <tr><td><code>passwd [Benutzer]</code></td><td>Legt das Passwort eines Benutzers fest/ändert es</td></tr>
+          <tr><td><code>/etc/shadow</code></td><td>Datei, in der verschlüsselte Passwörter gespeichert werden — nur root kann sie lesen</td></tr>
+          <tr><td><code>/etc/login.defs</code></td><td>Standardeinstellungen wie Passwortalter, -länge usw.</td></tr>
+        </table>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">grup</span> Group Management <span class="title-tr">— Grup yönetimi</span><span class="title-de">— Gruppenverwaltung</span></h3>
+        <p class="en">Group membership is recorded in <span class="mono-inline">/etc/group</span>. Groups let you give the same permissions to many users at once (e.g. everyone in "devops" can access certain files).</p>
+        <p class="tr"><span class="flag">TR</span>Grup üyelikleri <span class="mono-inline">/etc/group</span> dosyasında tutulur. Gruplar sayesinde birçok kullanıcıya aynı anda aynı izinleri verebilirsin (örn. "devops" grubundaki herkes belirli dosyalara erişebilsin).</p>
+        <p class="de"><span class="flag">DE</span>Gruppenmitgliedschaften werden in <span class="mono-inline">/etc/group</span> gespeichert. Gruppen erlauben es, vielen Benutzern gleichzeitig dieselben Rechte zu geben (z. B. kann jeder in der Gruppe "devops" auf bestimmte Dateien zugreifen).</p>
+        <div class="svg-wrap">
+          <svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+            <style>.u{fill:#161b10;stroke:#333a24;} .ut{font-family:'JetBrains Mono',monospace;font-size:12px;fill:#eae6d8;} .g{fill:#12251f;stroke:#2c463f;} .gt{font-family:'JetBrains Mono',monospace;font-size:12px;fill:#5fb8a6;} .l{stroke:#333a24;stroke-width:1;}</style>
+            <rect class="u" x="270" y="10" width="100" height="34" rx="6"/><text x="320" y="32" text-anchor="middle" class="ut">devops (kullanıcı)</text>
+            <rect class="g" x="60" y="90" width="150" height="34" rx="17"/><text x="135" y="112" text-anchor="middle" class="gt">devops (birincil grup)</text>
+            <rect class="g" x="245" y="90" width="150" height="34" rx="17"/><text x="320" y="112" text-anchor="middle" class="gt">cloud (ikincil)</text>
+            <rect class="g" x="430" y="90" width="150" height="34" rx="17"/><text x="505" y="112" text-anchor="middle" class="gt">aws (ikincil)</text>
+            <line class="l" x1="320" y1="44" x2="135" y2="90"/>
+            <line class="l" x1="320" y1="44" x2="320" y2="90"/>
+            <line class="l" x1="320" y1="44" x2="505" y2="90"/>
+            <text x="320" y="160" text-anchor="middle" class="gt" fill="#9a9682" font-family="Inter,sans-serif" font-size="11">groups devops → devops cloud aws</text>
+          </svg>
+          <div class="svg-cap svg-cap-en">A user can have one "primary" group and multiple "secondary" groups</div>
+          <div class="svg-cap svg-cap-tr">Bir kullanıcının bir "birincil" grubu, birden çok "ikincil" grubu olabilir</div>
+          <div class="svg-cap svg-cap-de">Ein Benutzer kann eine "primäre" Gruppe und mehrere "sekundäre" Gruppen haben</div>
+        </div>
+        <table class="tbl tbl-en">
+          <tr><th>Command</th><th>What it does</th></tr>
+          <tr><td><code>groups [user]</code></td><td>Lists the groups a user belongs to</td></tr>
+          <tr><td><code>groupadd [group]</code></td><td>Creates a new group</td></tr>
+          <tr><td><code>usermod -a -G group username</code></td><td><b>Adds</b> a user to a group (keeps existing groups)</td></tr>
+          <tr><td><code>groupmod -n newname oldname</code></td><td>Renames a group</td></tr>
+          <tr><td><code>groupdel [group]</code></td><td>Deletes a group</td></tr>
+          <tr><td><code>gpasswd -a username group</code></td><td>Adds a user to a group</td></tr>
+          <tr><td><code>gpasswd -d username group</code></td><td>Removes a user from a group</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Komut</th><th>Ne yapar</th></tr>
+          <tr><td><code>groups [kullanıcı]</code></td><td>Kullanıcının üye olduğu grupları listeler</td></tr>
+          <tr><td><code>groupadd [grup]</code></td><td>Yeni bir grup oluşturur</td></tr>
+          <tr><td><code>usermod -a -G grup kullanici</code></td><td>Kullanıcıyı bir gruba <b>ekler</b> (mevcut gruplarını korur)</td></tr>
+          <tr><td><code>groupmod -n yenisim eskisim</code></td><td>Bir grubun adını değiştirir</td></tr>
+          <tr><td><code>groupdel [grup]</code></td><td>Bir grubu siler</td></tr>
+          <tr><td><code>gpasswd -a kullanici grup</code></td><td>Kullanıcıyı gruba ekler</td></tr>
+          <tr><td><code>gpasswd -d kullanici grup</code></td><td>Kullanıcıyı gruptan çıkarır</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Befehl</th><th>Was er macht</th></tr>
+          <tr><td><code>groups [Benutzer]</code></td><td>Listet die Gruppen auf, denen ein Benutzer angehört</td></tr>
+          <tr><td><code>groupadd [Gruppe]</code></td><td>Erstellt eine neue Gruppe</td></tr>
+          <tr><td><code>usermod -a -G Gruppe Benutzer</code></td><td><b>Fügt</b> einen Benutzer zu einer Gruppe hinzu (behält bestehende Gruppen)</td></tr>
+          <tr><td><code>groupmod -n neuerName alterName</code></td><td>Benennt eine Gruppe um</td></tr>
+          <tr><td><code>groupdel [Gruppe]</code></td><td>Löscht eine Gruppe</td></tr>
+          <tr><td><code>gpasswd -a Benutzer Gruppe</code></td><td>Fügt einen Benutzer zu einer Gruppe hinzu</td></tr>
+          <tr><td><code>gpasswd -d Benutzer Gruppe</code></td><td>Entfernt einen Benutzer aus einer Gruppe</td></tr>
+        </table>
+        <div class="tip tip-en"><b>⚠️ Warning:</b> If you use <span class="mono-inline">usermod -G group username</span> WITHOUT the <b>-a</b> flag, you remove the user from ALL other groups you didn't specify! Always use <span class="mono-inline">-a -G</span> together ("append" — meaning "add").</div>
+        <div class="tip tip-tr"><b>⚠️ Dikkat:</b> <span class="mono-inline">usermod -G grup kullanici</span> komutunda <b>-a</b> bayrağı olmadan kullanırsan, kullanıcıyı belirtmediğin TÜM diğer gruplardan çıkarırsın! Her zaman <span class="mono-inline">-a -G</span> birlikte kullan ("append" — ekle demek).</div>
+        <div class="tip tip-de"><b>⚠️ Achtung:</b> Wenn du <span class="mono-inline">usermod -G Gruppe Benutzer</span> OHNE das <b>-a</b>-Flag verwendest, entfernst du den Benutzer aus ALLEN anderen Gruppen, die du nicht angegeben hast! Verwende immer <span class="mono-inline">-a -G</span> zusammen ("append" — bedeutet "hinzufügen").</div>
+      </div>
+
+
+      <div class="topic">
+        <h3><span class="tag">uid</span> UID &amp; GID Conventions <span class="title-tr">— UID ve GID kuralları</span><span class="title-de">— UID- &amp; GID-Konventionen</span></h3>
+        <p class="en">Linux doesn't actually think in names — internally every user is a number (<b>UID</b>) and every group is a number (<b>GID</b>). The names in <span class="mono-inline">/etc/passwd</span> are just labels mapped onto those numbers, and the number ranges follow a convention.</p>
+        <p class="tr"><span class="flag">TR</span>Linux aslında isimlerle düşünmez — içeride her kullanıcı bir sayıdır (<b>UID</b>), her grup bir sayıdır (<b>GID</b>). <span class="mono-inline">/etc/passwd</span> içindeki isimler, bu sayılara eşlenmiş etiketlerden ibarettir ve sayı aralıkları bir kurala uyar.</p>
+        <p class="de"><span class="flag">DE</span>Linux denkt eigentlich nicht in Namen — intern ist jeder Benutzer eine Zahl (<b>UID</b>) und jede Gruppe eine Zahl (<b>GID</b>). Die Namen in <span class="mono-inline">/etc/passwd</span> sind nur Etiketten, die auf diese Zahlen abgebildet werden, und die Zahlenbereiche folgen einer Konvention.</p>
+        <table class="tbl tbl-en">
+          <tr><th>UID range</th><th>Who</th></tr>
+          <tr><td><code>0</code></td><td>root — the superuser. The number, not the name, grants the power</td></tr>
+          <tr><td><code>1 – 999</code></td><td>System/service accounts (daemons like www-data, sshd)</td></tr>
+          <tr><td><code>1000+</code></td><td>Regular human users (first user created = 1000, distro-dependent)</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>UID aralığı</th><th>Kim</th></tr>
+          <tr><td><code>0</code></td><td>root — süper kullanıcı. Gücü isim değil, sayı verir</td></tr>
+          <tr><td><code>1 – 999</code></td><td>Sistem/servis hesapları (www-data, sshd gibi daemonlar)</td></tr>
+          <tr><td><code>1000+</code></td><td>Normal insan kullanıcılar (ilk oluşturulan = 1000, dağıtıma göre değişir)</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>UID-Bereich</th><th>Wer</th></tr>
+          <tr><td><code>0</code></td><td>root — der Superuser. Die Zahl, nicht der Name, verleiht die Macht</td></tr>
+          <tr><td><code>1 – 999</code></td><td>System-/Dienstkonten (Daemons wie www-data, sshd)</td></tr>
+          <tr><td><code>1000+</code></td><td>Normale menschliche Benutzer (erster Benutzer = 1000, distributionsabhängig)</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>id                          <span class="c"># kendi UID, GID ve gruplarını gör</span>
+cat /etc/passwd             <span class="c"># user:x:1000:1000:… → 3. alan UID, 4. alan GID</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> This is why deleting a user can leave "orphaned" files: the files still carry the old UID number, which now maps to no name.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Bir kullanıcıyı silmenin "sahipsiz" dosyalar bırakabilmesinin nedeni budur: dosyalar hâlâ eski UID sayısını taşır, ama o sayı artık hiçbir isme eşlenmez.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Deshalb kann das Löschen eines Benutzers "verwaiste" Dateien hinterlassen: Die Dateien tragen noch die alte UID-Nummer, die jetzt auf keinen Namen mehr abgebildet wird.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">chage</span> Password Aging: chage <span class="title-tr">— Şifre yaşlandırma</span><span class="title-de">— Passwort-Alterung</span></h3>
+        <p class="en">Corporate and school systems rarely let a password live forever. <span class="mono-inline">chage</span> ("change age") controls when a password expires, how early the user is warned, and when an unused account is disabled — all stored in <span class="mono-inline">/etc/shadow</span>.</p>
+        <p class="tr"><span class="flag">TR</span>Kurumsal ve okul sistemleri bir şifrenin sonsuza dek yaşamasına nadiren izin verir. <span class="mono-inline">chage</span> ("change age"), bir şifrenin ne zaman süresinin dolacağını, kullanıcının ne kadar önceden uyarılacağını ve kullanılmayan bir hesabın ne zaman devre dışı bırakılacağını kontrol eder — hepsi <span class="mono-inline">/etc/shadow</span>'da saklanır.</p>
+        <p class="de"><span class="flag">DE</span>Firmen- und Schulsysteme lassen ein Passwort selten ewig leben. <span class="mono-inline">chage</span> ("change age") steuert, wann ein Passwort abläuft, wie früh der Benutzer gewarnt wird und wann ein ungenutztes Konto deaktiviert wird — alles gespeichert in <span class="mono-inline">/etc/shadow</span>.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Option</th><th>Meaning</th></tr>
+          <tr><td><code>chage -l user</code></td><td>List the user's current aging policy</td></tr>
+          <tr><td><code>-M 90</code></td><td>Password expires after 90 days (max age)</td></tr>
+          <tr><td><code>-m 7</code></td><td>Must wait at least 7 days between changes (min age)</td></tr>
+          <tr><td><code>-W 14</code></td><td>Warn the user 14 days before expiry</td></tr>
+          <tr><td><code>-E 2026-12-31</code></td><td>Account itself expires on this date</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Seçenek</th><th>Anlamı</th></tr>
+          <tr><td><code>chage -l user</code></td><td>Kullanıcının mevcut yaşlandırma politikasını listele</td></tr>
+          <tr><td><code>-M 90</code></td><td>Şifre 90 gün sonra dolar (maksimum yaş)</td></tr>
+          <tr><td><code>-m 7</code></td><td>İki değişiklik arasında en az 7 gün beklenmeli (minimum yaş)</td></tr>
+          <tr><td><code>-W 14</code></td><td>Süre dolmadan 14 gün önce kullanıcıyı uyar</td></tr>
+          <tr><td><code>-E 2026-12-31</code></td><td>Hesabın kendisi bu tarihte sona erer</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Option</th><th>Bedeutung</th></tr>
+          <tr><td><code>chage -l user</code></td><td>Die aktuelle Alterungsrichtlinie des Benutzers auflisten</td></tr>
+          <tr><td><code>-M 90</code></td><td>Passwort läuft nach 90 Tagen ab (Maximalalter)</td></tr>
+          <tr><td><code>-m 7</code></td><td>Zwischen Änderungen mindestens 7 Tage warten (Mindestalter)</td></tr>
+          <tr><td><code>-W 14</code></td><td>Benutzer 14 Tage vor Ablauf warnen</td></tr>
+          <tr><td><code>-E 2026-12-31</code></td><td>Das Konto selbst läuft an diesem Datum ab</td></tr>
+        </table>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>sudo chage -l ali            <span class="c"># ali'nin şifre politikasını görüntüle</span>
+sudo chage -M 90 -W 14 ali   <span class="c"># 90 günde bir yenile, 14 gün önce uyar</span></pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">geçiş</span> su vs su - vs sudo -i <span class="title-tr">— Kullanıcı geçiş yolları</span><span class="title-de">— Wege des Benutzerwechsels</span></h3>
+        <p class="en">There are three common ways to "become" another user, and the difference is all about the <b>environment</b> you carry with you.</p>
+        <p class="tr"><span class="flag">TR</span>Başka bir kullanıcı "olmanın" üç yaygın yolu vardır ve fark, tamamen yanında taşıdığın <b>ortamla</b> ilgilidir.</p>
+        <p class="de"><span class="flag">DE</span>Es gibt drei gängige Wege, ein anderer Benutzer zu "werden", und der Unterschied liegt ganz in der <b>Umgebung</b>, die du mitnimmst.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Command</th><th>Password asked</th><th>Environment</th></tr>
+          <tr><td><code>su ali</code></td><td>ali's password</td><td>Keeps YOUR current env — half-way state, error-prone</td></tr>
+          <tr><td><code>su - ali</code></td><td>ali's password</td><td>Full clean login as ali (ali's HOME, PATH, .profile)</td></tr>
+          <tr><td><code>sudo -i</code></td><td>YOUR password</td><td>Full root login shell — the modern, logged, preferred way</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Komut</th><th>Sorulan şifre</th><th>Ortam</th></tr>
+          <tr><td><code>su ali</code></td><td>ali'nin şifresi</td><td>SENİN mevcut ortamın kalır — yarım durum, hataya açık</td></tr>
+          <tr><td><code>su - ali</code></td><td>ali'nin şifresi</td><td>ali olarak tam temiz giriş (ali'nin HOME, PATH, .profile'ı)</td></tr>
+          <tr><td><code>sudo -i</code></td><td>SENİN şifren</td><td>Tam root login shell — modern, loglanan, tercih edilen yol</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Befehl</th><th>Abgefragtes Passwort</th><th>Umgebung</th></tr>
+          <tr><td><code>su ali</code></td><td>alis Passwort</td><td>DEINE aktuelle Umgebung bleibt — Zwischenzustand, fehleranfällig</td></tr>
+          <tr><td><code>su - ali</code></td><td>alis Passwort</td><td>Vollständiger sauberer Login als ali (alis HOME, PATH, .profile)</td></tr>
+          <tr><td><code>sudo -i</code></td><td>DEIN Passwort</td><td>Volle root-Login-Shell — der moderne, protokollierte, bevorzugte Weg</td></tr>
+        </table>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>sudo -i                <span class="c"># root'a tam login shell ile geç (tercih edilen)</span>
+whoami                 <span class="c"># → root</span>
+exit                   <span class="c"># kendi hesabına dön</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> On servers, <span class="mono-inline">sudo</span> is preferred over sharing the root password: every command is logged with WHO ran it, and access can be revoked per person.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Sunucularda <span class="mono-inline">sudo</span>, root şifresini paylaşmaya tercih edilir: her komut KİMİN çalıştırdığı bilgisiyle loglanır ve erişim kişi bazında geri alınabilir.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Auf Servern wird <span class="mono-inline">sudo</span> dem Teilen des root-Passworts vorgezogen: Jeder Befehl wird mit der Info protokolliert, WER ihn ausgeführt hat, und der Zugriff kann pro Person entzogen werden.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">sudoers</span> The sudoers File &amp; visudo <span class="title-tr">— sudoers dosyası ve visudo</span><span class="title-de">— Die sudoers-Datei &amp; visudo</span></h3>
+        <p class="en">Who may use <span class="mono-inline">sudo</span>, and for which commands, is defined in <span class="mono-inline">/etc/sudoers</span>. You must NEVER edit it with a normal editor — a single syntax error can lock everyone (including you) out of admin rights. <span class="mono-inline">visudo</span> opens it safely and refuses to save broken syntax.</p>
+        <p class="tr"><span class="flag">TR</span>Kimin <span class="mono-inline">sudo</span> kullanabileceği ve hangi komutlar için kullanabileceği <span class="mono-inline">/etc/sudoers</span> dosyasında tanımlanır. Bu dosyayı ASLA normal bir editörle düzenleme — tek bir sözdizimi hatası herkesi (sen dahil) yönetici yetkilerinin dışında bırakabilir. <span class="mono-inline">visudo</span> dosyayı güvenle açar ve bozuk sözdizimini kaydetmeyi reddeder.</p>
+        <p class="de"><span class="flag">DE</span>Wer <span class="mono-inline">sudo</span> benutzen darf und für welche Befehle, wird in <span class="mono-inline">/etc/sudoers</span> definiert. Bearbeite sie NIEMALS mit einem normalen Editor — ein einziger Syntaxfehler kann alle (auch dich) von Admin-Rechten aussperren. <span class="mono-inline">visudo</span> öffnet sie sicher und weigert sich, kaputte Syntax zu speichern.</p>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>sudo visudo                       <span class="c"># sudoers'ı güvenli editörle aç</span>
+<span class="c"># örnek satırlar:</span>
+<span class="c">#   %sudo   ALL=(ALL:ALL) ALL      → sudo grubundaki herkes her şeyi yapabilir</span>
+<span class="c">#   ali  ALL=(ALL) /usr/bin/systemctl restart nginx</span>
+<span class="c">#        → ali SADECE nginx'i yeniden başlatabilir (dar yetki = güvenlik)</span>
+sudo usermod -aG sudo ali         <span class="c"># ali'yi sudo grubuna ekle (tam yetki)</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> The professional pattern is the narrow rule: grant one exact command instead of blanket root. "Least privilege" is a core DevOps security principle.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Profesyonel desen dar kuraldır: her şeye root yetkisi yerine tek bir tam komut ver. "En az yetki" (least privilege), temel bir DevOps güvenlik ilkesidir.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Das professionelle Muster ist die enge Regel: Gewähre einen exakten Befehl statt pauschalem root. "Least Privilege" ist ein zentrales DevOps-Sicherheitsprinzip.</div>
+      </div>
+
+
+      <div class="scen-box" data-scen="p3-proje1">
+        <div class="scen-head"><span class="tag">proje 1/3</span> New Hire <span class="title-tr">— yeni işe alım</span><span class="title-de">— Neueinstellung</span></div>
+        <p class="en">A new colleague named <span class="mono-inline">ayse</span> joined. Create her user account.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">ayse</span> adında yeni bir çalışan işe başladı. Onun kullanıcı hesabını oluştur.</p>
+        <p class="de"><span class="flag">DE</span>Eine neue Kollegin namens <span class="mono-inline">ayse</span> ist gestartet. Erstelle ihr Benutzerkonto.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p3-proje1')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p3-proje1')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p3-proje1"></div>
+      </div>
+      <div class="scen-box" data-scen="p3-proje2">
+        <div class="scen-head"><span class="tag">proje 2/3</span> Add to a Group <span class="title-tr">— gruba ekle</span><span class="title-de">— zur Gruppe hinzufügen</span></div>
+        <p class="en">Create a group named <span class="mono-inline">pazarlama</span>, create user <span class="mono-inline">mehmet</span>, then add him to that group without removing him from his other groups.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">pazarlama</span> adında bir grup oluştur, <span class="mono-inline">mehmet</span> adında bir kullanıcı oluştur, sonra onu diğer gruplarından çıkarmadan bu gruba ekle.</p>
+        <p class="de"><span class="flag">DE</span>Erstelle eine Gruppe namens <span class="mono-inline">pazarlama</span>, erstelle den Benutzer <span class="mono-inline">mehmet</span> und füge ihn dieser Gruppe hinzu, ohne ihn aus seinen anderen Gruppen zu entfernen.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p3-proje2')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p3-proje2')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p3-proje2"></div>
+      </div>
+      <div class="scen-box" data-scen="p3-proje3">
+        <div class="scen-head"><span class="tag">proje 3/3</span> Offboarding <span class="title-tr">— ayrılan çalışan</span><span class="title-de">— ausscheidender Mitarbeiter</span></div>
+        <p class="en">The account <span class="mono-inline">eskikullanici</span> already exists (a former employee). Remove it.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">eskikullanici</span> hesabı zaten var (eski bir çalışan). Onu kaldır.</p>
+        <p class="de"><span class="flag">DE</span>Das Konto <span class="mono-inline">eskikullanici</span> existiert bereits (ein ehemaliger Mitarbeiter). Entferne es.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p3-proje3')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p3-proje3')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p3-proje3"></div>
+      </div>

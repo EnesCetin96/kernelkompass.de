@@ -1,0 +1,593 @@
+      <div class="eyebrow">$ cd part-01/</div>
+      <h1 class="h-en">Managing Files in Linux</h1>
+      <p class="h-tr">Linux'ta Dosya Yönetimi</p>
+      <p class="h-de">Dateiverwaltung unter Linux</p>
+      <div class="purpose">
+        <p class="en">Purpose: understand what Linux is, how the shell fits into the system, and learn the core commands to view, search, and manage files and their contents.</p>
+        <p class="tr">Amaç: Linux'un ne olduğunu, shell'in sistemin neresinde durduğunu anlamak ve dosyaları görüntülemek, aramak, içeriklerini yönetmek için temel komutları öğrenmek.</p>
+        <p class="de">Zweck: verstehen, was Linux ist und wie die Shell in das System eingebettet ist, und die wichtigsten Befehle lernen, um Dateien und ihre Inhalte anzuzeigen, zu durchsuchen und zu verwalten.</p>
+      </div>
+
+      <details class="notebox">
+        <summary>✎ Notlarım — Dosya Yönetimi</summary>
+        <textarea placeholder="Bu bölümle ilgili notların, takıldığın komutlar, kendi örneklerin... buraya yaz." data-note="p1"></textarea>
+      </details>
+
+      <div class="topic">
+        <h3><span class="tag">kavram</span> What is Linux? <span class="title-tr">— Linux nedir?</span><span class="title-de">— Was ist Linux?</span></h3>
+        <p class="en">Linux is a free, open-source operating system — an alternative to Windows and macOS. "Open-source" means anyone can read, modify, and redistribute its source code.</p>
+        <p class="tr"><span class="flag">TR</span>Linux, ücretsiz ve açık kaynaklı bir işletim sistemidir — Windows ve macOS'a bir alternatiftir. "Açık kaynak" demek, kaynak kodunu isteyen herkesin okuyabileceği, değiştirebileceği ve yeniden dağıtabileceği anlamına gelir.</p>
+        <p class="de"><span class="flag">DE</span>Linux ist ein kostenloses, quelloffenes Betriebssystem — eine Alternative zu Windows und macOS. "Open-Source" bedeutet, dass jeder den Quellcode lesen, verändern und weiterverbreiten kann.</p>
+
+        <div class="svg-wrap">
+          <svg viewBox="0 0 640 230" xmlns="http://www.w3.org/2000/svg">
+            <style>
+              .lyr{fill:#161b10;stroke:#333a24;stroke-width:1;}
+              .lyrlbl{font-family:'JetBrains Mono',monospace;font-size:13px;fill:#eae6d8;}
+              .lyrsub{font-family:Inter,sans-serif;font-size:10.5px;fill:#9a9682;}
+              .arrow{stroke:#e3a94a;stroke-width:1.4;marker-end:url(#arrhead);}
+            </style>
+            <defs>
+              <marker id="arrhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e3a94a"/></marker>
+            </defs>
+            <rect class="lyr" x="170" y="10" width="300" height="42" rx="6"/>
+            <text x="320" y="30" text-anchor="middle" class="lyrlbl">Applications / Utilities</text>
+            <text x="320" y="45" text-anchor="middle" class="lyrsub">bash, vim, grep, python…</text>
+
+            <rect class="lyr" x="170" y="66" width="300" height="42" rx="6" stroke="#5fb8a6"/>
+            <text x="320" y="86" text-anchor="middle" class="lyrlbl" fill="#5fb8a6">Shell</text>
+            <text x="320" y="101" text-anchor="middle" class="lyrsub">bash / zsh — command interpreter</text>
+
+            <rect class="lyr" x="170" y="122" width="300" height="42" rx="6"/>
+            <text x="320" y="142" text-anchor="middle" class="lyrlbl">Kernel</text>
+            <text x="320" y="157" text-anchor="middle" class="lyrsub">manages CPU, memory, devices</text>
+
+            <rect class="lyr" x="170" y="178" width="300" height="42" rx="6" stroke="#e3a94a"/>
+            <text x="320" y="203" text-anchor="middle" class="lyrlbl" fill="#e3a94a">Hardware</text>
+
+            <line x1="320" y1="52" x2="320" y2="64" class="arrow"/>
+            <line x1="320" y1="108" x2="320" y2="120" class="arrow"/>
+            <line x1="320" y1="164" x2="320" y2="176" class="arrow"/>
+          </svg>
+          <div class="svg-cap">USER ↔ Shell ↔ Kernel ↔ Hardware — the shell is your only door into the system</div>
+        </div>
+        <p class="tr"><span class="flag">TR</span>Sen komut yazdığında (örn. <span class="mono-inline">ls</span>), bunu <b>Shell</b> alır, işletim sisteminin çekirdeği olan <b>Kernel</b>'e iletir, o da donanımla konuşup sonucu geri Shell üzerinden sana ekranda gösterir. Shell hem komut satırı yorumlayıcısı hem de bir programlama dilidir (Bash = "Bourne Again SHell").</p>
+        <p class="de"><span class="flag">DE</span>Wenn du einen Befehl eingibst (z. B. <span class="mono-inline">ls</span>), nimmt die <b>Shell</b> ihn entgegen und leitet ihn an den <b>Kernel</b> weiter, den Kern des Betriebssystems. Dieser kommuniziert mit der Hardware und gibt das Ergebnis über die Shell auf deinem Bildschirm aus. Die Shell ist sowohl ein Kommandozeilen-Interpreter als auch eine Programmiersprache (Bash = "Bourne Again SHell").</p>
+        <p class="tr">Prompt sonundaki işaret önemlidir: <span class="mono-inline">$</span> normal kullanıcı demektir, <span class="mono-inline">#</span> ise root / süper kullanıcı (yönetici) olduğun anlamına gelir.</p>
+        <p class="de">Das Zeichen am Ende der Eingabeaufforderung ist wichtig: <span class="mono-inline">$</span> bedeutet normaler Benutzer, <span class="mono-inline">#</span> bedeutet, dass du root/Superuser (Administrator) bist.</p>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">temel</span> Basic Shell Commands <span class="title-tr">— Temel komutlar</span><span class="title-de">— Grundlegende Befehle</span></h3>
+        <table class="tbl tbl-en">
+          <tr><th>Command</th><th>Description (EN)</th></tr>
+          <tr><td><code>pwd</code></td><td>Shows the full path of your current directory — "print working directory"</td></tr>
+          <tr><td><code>ls</code></td><td>Lists directory contents</td></tr>
+          <tr><td><code>cd</code></td><td>Changes directory</td></tr>
+          <tr><td><code>mkdir</code></td><td>Creates a new folder</td></tr>
+          <tr><td><code>rmdir</code></td><td>Deletes an empty folder</td></tr>
+          <tr><td><code>touch</code></td><td>Creates an empty file</td></tr>
+          <tr><td><code>rm</code></td><td>Deletes a file</td></tr>
+          <tr><td><code>cp</code></td><td>Copies a file elsewhere</td></tr>
+          <tr><td><code>mv</code></td><td>Moves a file or renames it</td></tr>
+          <tr><td><code>cat</code></td><td>Prints file contents to the screen</td></tr>
+          <tr><td><code>echo</code></td><td>Prints text to the screen</td></tr>
+          <tr><td><code>clear</code></td><td>Clears the terminal screen</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Command</th><th>Açıklama (TR)</th></tr>
+          <tr><td><code>pwd</code></td><td>Bulunduğun (şu anki) dizinin tam yolunu gösterir — "print working directory"</td></tr>
+          <tr><td><code>ls</code></td><td>Dizin içeriğini listeler</td></tr>
+          <tr><td><code>cd</code></td><td>Dizin değiştirir</td></tr>
+          <tr><td><code>mkdir</code></td><td>Yeni bir klasör oluşturur</td></tr>
+          <tr><td><code>rmdir</code></td><td>Boş bir klasörü siler</td></tr>
+          <tr><td><code>touch</code></td><td>Boş bir dosya oluşturur</td></tr>
+          <tr><td><code>rm</code></td><td>Dosya siler</td></tr>
+          <tr><td><code>cp</code></td><td>Dosyayı başka bir yere kopyalar</td></tr>
+          <tr><td><code>mv</code></td><td>Dosyayı taşır veya adını değiştirir</td></tr>
+          <tr><td><code>cat</code></td><td>Dosya içeriğini ekrana yazdırır</td></tr>
+          <tr><td><code>echo</code></td><td>Ekrana yazı yazdırır</td></tr>
+          <tr><td><code>clear</code></td><td>Terminal ekranını temizler</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Befehl</th><th>Beschreibung (DE)</th></tr>
+          <tr><td><code>pwd</code></td><td>Zeigt den vollständigen Pfad des aktuellen Verzeichnisses — "print working directory"</td></tr>
+          <tr><td><code>ls</code></td><td>Listet den Verzeichnisinhalt auf</td></tr>
+          <tr><td><code>cd</code></td><td>Wechselt das Verzeichnis</td></tr>
+          <tr><td><code>mkdir</code></td><td>Erstellt einen neuen Ordner</td></tr>
+          <tr><td><code>rmdir</code></td><td>Löscht einen leeren Ordner</td></tr>
+          <tr><td><code>touch</code></td><td>Erstellt eine leere Datei</td></tr>
+          <tr><td><code>rm</code></td><td>Löscht eine Datei</td></tr>
+          <tr><td><code>cp</code></td><td>Kopiert eine Datei an einen anderen Ort</td></tr>
+          <tr><td><code>mv</code></td><td>Verschiebt eine Datei oder benennt sie um</td></tr>
+          <tr><td><code>cat</code></td><td>Gibt den Dateiinhalt auf dem Bildschirm aus</td></tr>
+          <tr><td><code>echo</code></td><td>Gibt Text auf dem Bildschirm aus</td></tr>
+          <tr><td><code>clear</code></td><td>Löscht den Terminalbildschirm</td></tr>
+        </table>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">yardım</span> Getting Help <span class="title-tr">— Yardım alma komutları</span><span class="title-de">— Hilfe-Befehle</span></h3>
+        <p class="en">Every command has documentation built into Linux itself — you rarely need to search the internet.</p>
+        <p class="tr"><span class="flag">TR</span>Her komutun Linux'un içinde hazır bir belgesi vardır — çoğu zaman internete bakmana gerek kalmaz.</p>
+        <p class="de"><span class="flag">DE</span>Jeder Befehl hat eine in Linux selbst eingebaute Dokumentation — du musst selten im Internet suchen.</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>man ls        <span class="c"># ls komutunun tam el kitabını (manual) açar — çıkmak için 'q'</span>
+info ls       <span class="c"># man'den daha detaylı belge</span>
+whatis ls     <span class="c"># tek satırlık kısa açıklama</span>
+apropos pwd   <span class="c"># "pwd" ile ilgili tüm komutları arar</span>
+ls --help     <span class="c"># kısa kullanım + seçenekler listesi</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> Press <span class="mono-inline">q</span> to exit the <span class="mono-inline">man</span> screen — most beginners get stuck here!</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">man</span> ekranından çıkmak için <span class="mono-inline">q</span> tuşuna bas — çoğu yeni başlayan burada takılır kalır!</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Drücke <span class="mono-inline">q</span>, um den <span class="mono-inline">man</span>-Bildschirm zu verlassen — die meisten Anfänger bleiben hier hängen!</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">editör</span> Text Editors: Vim &amp; Nano <span class="title-tr">— Metin editörleri</span><span class="title-de">— Texteditoren</span></h3>
+        <p class="en">Vim has two modes: <b>Command mode</b> (moving/deleting/copying) and <b>Insert mode</b> (actually typing text). Nano is "modeless" — you can just start typing immediately.</p>
+        <p class="tr"><span class="flag">TR</span>Vim'in iki modu vardır: <b>Komut modu</b> (gezinme/silme/kopyalama) ve <b>Ekleme (Insert) modu</b> (gerçekten yazı yazma). Nano ise "modsuz"dur — dosyayı açar açmaz direkt yazmaya başlayabilirsin, bu yüzden yeni başlayanlar için daha kolaydır.</p>
+        <p class="de"><span class="flag">DE</span>Vim hat zwei Modi: den <b>Befehlsmodus</b> (Bewegen/Löschen/Kopieren) und den <b>Einfügemodus</b> (tatsächliches Tippen von Text). Nano ist "modlos" — du kannst sofort mit dem Tippen beginnen, sobald du die Datei öffnest, was es für Anfänger einfacher macht.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Vim</th><th>What it does</th><th>Nano</th><th>What it does</th></tr>
+          <tr><td><code>i</code></td><td>Enter insert mode</td><td><code>Ctrl+O</code></td><td>Save (Write Out)</td></tr>
+          <tr><td><code>Esc</code></td><td>Return to command mode</td><td><code>Ctrl+X</code></td><td>Exit</td></tr>
+          <tr><td><code>dd</code></td><td>Delete line</td><td><code>Ctrl+K</code></td><td>Cut line</td></tr>
+          <tr><td><code>yy</code></td><td>Copy line</td><td><code>Ctrl+U</code></td><td>Paste (uncut)</td></tr>
+          <tr><td><code>p</code></td><td>Paste</td><td><code>Ctrl+W</code></td><td>Search (Where is)</td></tr>
+          <tr><td><code>:wq</code> or <code>ZZ</code></td><td>Save and quit</td><td><code>Ctrl+G</code></td><td>Help</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Vim</th><th>Ne yapar</th><th>Nano</th><th>Ne yapar</th></tr>
+          <tr><td><code>i</code></td><td>Ekleme moduna gir</td><td><code>Ctrl+O</code></td><td>Kaydet (Write Out)</td></tr>
+          <tr><td><code>Esc</code></td><td>Komut moduna dön</td><td><code>Ctrl+X</code></td><td>Çıkış</td></tr>
+          <tr><td><code>dd</code></td><td>Satırı sil</td><td><code>Ctrl+K</code></td><td>Satırı kes</td></tr>
+          <tr><td><code>yy</code></td><td>Satırı kopyala</td><td><code>Ctrl+U</code></td><td>Yapıştır (uncut)</td></tr>
+          <tr><td><code>p</code></td><td>Yapıştır</td><td><code>Ctrl+W</code></td><td>Ara (Where is)</td></tr>
+          <tr><td><code>:wq</code> veya <code>ZZ</code></td><td>Kaydet ve çık</td><td><code>Ctrl+G</code></td><td>Yardım</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Vim</th><th>Was es macht</th><th>Nano</th><th>Was es macht</th></tr>
+          <tr><td><code>i</code></td><td>Einfügemodus starten</td><td><code>Ctrl+O</code></td><td>Speichern (Write Out)</td></tr>
+          <tr><td><code>Esc</code></td><td>Zurück zum Befehlsmodus</td><td><code>Ctrl+X</code></td><td>Beenden</td></tr>
+          <tr><td><code>dd</code></td><td>Zeile löschen</td><td><code>Ctrl+K</code></td><td>Zeile ausschneiden</td></tr>
+          <tr><td><code>yy</code></td><td>Zeile kopieren</td><td><code>Ctrl+U</code></td><td>Einfügen (uncut)</td></tr>
+          <tr><td><code>p</code></td><td>Einfügen</td><td><code>Ctrl+W</code></td><td>Suchen (Where is)</td></tr>
+          <tr><td><code>:wq</code> oder <code>ZZ</code></td><td>Speichern und beenden</td><td><code>Ctrl+G</code></td><td>Hilfe</td></tr>
+        </table>
+        <div class="tip tip-en"><b>💡 Tip:</b> If you accidentally get stuck in a Vim mode, don't panic — press <span class="mono-inline">Esc</span> to return to command mode.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Vim'de yanlışlıkla bir moda takılıp kaldıysan, panik yapma — <span class="mono-inline">Esc</span> tuşuna bas, komut moduna dönersin.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Wenn du in Vim versehentlich in einem Modus feststeckst, keine Panik — drücke <span class="mono-inline">Esc</span>, um zum Befehlsmodus zurückzukehren.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">dosya sistemi</span> The Filesystem Tree <span class="title-tr">— Dosya sistemi ağacı</span><span class="title-de">— Der Dateisystembaum</span></h3>
+        <p class="en">On Linux, <b>everything is a file</b> — even a directory is just a special file that contains the names of other files. Everything starts from the root directory <span class="mono-inline">/</span>.</p>
+        <p class="tr"><span class="flag">TR</span>Linux'ta <b>her şey bir dosyadır</b> — bir klasör bile, içinde başka dosyaların isimlerini tutan özel bir dosyadır. Her şey kök dizin (<span class="mono-inline">/</span>) ile başlar. Windows'taki gibi C:\, D:\ diye ayrı sürücüler yoktur, tek bir ağaç vardır.</p>
+        <p class="de"><span class="flag">DE</span>Unter Linux ist <b>alles eine Datei</b> — sogar ein Verzeichnis ist nur eine spezielle Datei, die die Namen anderer Dateien enthält. Alles beginnt beim Wurzelverzeichnis (<span class="mono-inline">/</span>). Anders als unter Windows gibt es keine getrennten Laufwerke wie C:\ oder D:\, sondern nur einen einzigen Baum.</p>
+        <div class="svg-wrap">
+          <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg">
+            <style>.node{fill:#161b10;stroke:#333a24;} .nl{font-family:'JetBrains Mono',monospace;font-size:12px;fill:#e3a94a;} .nd{font-family:Inter,sans-serif;font-size:9.5px;fill:#9a9682;} .ln{stroke:#333a24;stroke-width:1;}</style>
+            <rect class="node" x="320" y="8" width="60" height="30" rx="5"/><text x="350" y="28" text-anchor="middle" class="nl">/</text>
+            <line class="ln" x1="350" y1="38" x2="350" y2="58"/>
+            <line class="ln" x1="60" y1="58" x2="640" y2="58"/>
+            <g>
+            <line class="ln" x1="60" y1="58" x2="60" y2="72"/><rect class="node" x="10" y="72" width="100" height="30" rx="5"/><text x="60" y="92" text-anchor="middle" class="nl">/bin</text>
+            <line class="ln" x1="160" y1="58" x2="160" y2="72"/><rect class="node" x="110" y="72" width="100" height="30" rx="5"/><text x="160" y="92" text-anchor="middle" class="nl">/etc</text>
+            <line class="ln" x1="260" y1="58" x2="260" y2="72"/><rect class="node" x="210" y="72" width="100" height="30" rx="5"/><text x="260" y="92" text-anchor="middle" class="nl">/home</text>
+            <line class="ln" x1="360" y1="58" x2="360" y2="72"/><rect class="node" x="310" y="72" width="100" height="30" rx="5"/><text x="360" y="92" text-anchor="middle" class="nl">/var</text>
+            <line class="ln" x1="460" y1="58" x2="460" y2="72"/><rect class="node" x="410" y="72" width="100" height="30" rx="5"/><text x="460" y="92" text-anchor="middle" class="nl">/usr</text>
+            <line class="ln" x1="560" y1="58" x2="560" y2="72"/><rect class="node" x="510" y="72" width="100" height="30" rx="5"/><text x="560" y="92" text-anchor="middle" class="nl">/tmp</text>
+            <line class="ln" x1="640" y1="58" x2="640" y2="72"/><rect class="node" x="590" y="72" width="100" height="30" rx="5"/><text x="640" y="92" text-anchor="middle" class="nl">/opt</text>
+            </g>
+            <text x="60" y="118" text-anchor="middle" class="nd">binaries</text>
+            <text x="160" y="118" text-anchor="middle" class="nd">configs</text>
+            <text x="260" y="118" text-anchor="middle" class="nd">user dirs</text>
+            <text x="360" y="118" text-anchor="middle" class="nd">variable data</text>
+            <text x="460" y="118" text-anchor="middle" class="nd">2nd hierarchy</text>
+            <text x="560" y="118" text-anchor="middle" class="nd">temp files</text>
+            <text x="640" y="118" text-anchor="middle" class="nd">add-on apps</text>
+
+            <line class="ln" x1="260" y1="102" x2="260" y2="118"/>
+            <line class="ln" x1="200" y1="118" x2="320" y2="118"/>
+            <line class="ln" x1="200" y1="118" x2="200" y2="132"/><rect class="node" x="150" y="132" width="100" height="30" rx="5"/><text x="200" y="152" text-anchor="middle" class="nl">user</text>
+            <line class="ln" x1="320" y1="118" x2="320" y2="132"/><rect class="node" x="270" y="132" width="100" height="30" rx="5"/><text x="320" y="152" text-anchor="middle" class="nl">osman</text>
+            <text x="200" y="175" text-anchor="middle" class="nd">/home/user</text>
+            <text x="320" y="175" text-anchor="middle" class="nd">/home/osman</text>
+          </svg>
+          <div class="svg-cap svg-cap-en">Single root (/) — every user's own home directory lives under /home</div>
+          <div class="svg-cap svg-cap-tr">Tek kök (/) — her kullanıcının kendi ev dizini /home altında</div>
+          <div class="svg-cap svg-cap-de">Eine einzige Wurzel (/) — das eigene Home-Verzeichnis jedes Benutzers liegt unter /home</div>
+        </div>
+        <table class="tbl tbl-en">
+          <tr><th>Directory</th><th>Purpose</th></tr>
+          <tr><td><code>/bin</code></td><td>Essential command executables (binaries)</td></tr>
+          <tr><td><code>/boot</code></td><td>Boot loader files</td></tr>
+          <tr><td><code>/dev</code></td><td>Device files (hardware appears as files)</td></tr>
+          <tr><td><code>/etc</code></td><td>System-wide configuration files</td></tr>
+          <tr><td><code>/home</code></td><td>Users' home directories</td></tr>
+          <tr><td><code>/lib</code></td><td>Essential shared libraries</td></tr>
+          <tr><td><code>/mnt</code>, <code>/media</code></td><td>Temporary / removable mount points</td></tr>
+          <tr><td><code>/opt</code></td><td>Add-on application packages</td></tr>
+          <tr><td><code>/tmp</code></td><td>Temporary files (may be deleted on reboot)</td></tr>
+          <tr><td><code>/usr</code>, <code>/var</code></td><td>Secondary program hierarchy / variable data (logs etc.)</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Dizin</th><th>Ne için</th></tr>
+          <tr><td><code>/bin</code></td><td>Temel komut çalıştırılabilir dosyaları (binary)</td></tr>
+          <tr><td><code>/boot</code></td><td>Önyükleyici (boot loader) dosyaları</td></tr>
+          <tr><td><code>/dev</code></td><td>Cihaz dosyaları (donanımlar dosya gibi görünür)</td></tr>
+          <tr><td><code>/etc</code></td><td>Sistem geneli ayar (konfigürasyon) dosyaları</td></tr>
+          <tr><td><code>/home</code></td><td>Kullanıcıların ev dizinleri</td></tr>
+          <tr><td><code>/lib</code></td><td>Temel paylaşılan kütüphaneler</td></tr>
+          <tr><td><code>/mnt</code>, <code>/media</code></td><td>Geçici / çıkarılabilir bağlama noktaları</td></tr>
+          <tr><td><code>/opt</code></td><td>Ek (eklenti) uygulama paketleri</td></tr>
+          <tr><td><code>/tmp</code></td><td>Geçici dosyalar (yeniden başlatınca silinebilir)</td></tr>
+          <tr><td><code>/usr</code>, <code>/var</code></td><td>İkincil program hiyerarşisi / değişken veriler (loglar vb.)</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Verzeichnis</th><th>Zweck</th></tr>
+          <tr><td><code>/bin</code></td><td>Wesentliche ausführbare Befehle (Binärdateien)</td></tr>
+          <tr><td><code>/boot</code></td><td>Boot-Loader-Dateien</td></tr>
+          <tr><td><code>/dev</code></td><td>Gerätedateien (Hardware erscheint als Datei)</td></tr>
+          <tr><td><code>/etc</code></td><td>Systemweite Konfigurationsdateien</td></tr>
+          <tr><td><code>/home</code></td><td>Home-Verzeichnisse der Benutzer</td></tr>
+          <tr><td><code>/lib</code></td><td>Wesentliche gemeinsam genutzte Bibliotheken</td></tr>
+          <tr><td><code>/mnt</code>, <code>/media</code></td><td>Temporäre / austauschbare Einhängepunkte</td></tr>
+          <tr><td><code>/opt</code></td><td>Zusätzliche Anwendungspakete</td></tr>
+          <tr><td><code>/tmp</code></td><td>Temporäre Dateien (können beim Neustart gelöscht werden)</td></tr>
+          <tr><td><code>/usr</code>, <code>/var</code></td><td>Sekundäre Programmhierarchie / variable Daten (Logs usw.)</td></tr>
+        </table>
+        <p class="en">The first character in <span class="mono-inline">ls -l</span> output tells you the file type:</p>
+        <table class="tbl tbl-en">
+          <tr><th>Symbol</th><th>Meaning</th></tr>
+          <tr><td><code>-</code></td><td>Regular file</td></tr>
+          <tr><td><code>d</code></td><td>Directory</td></tr>
+          <tr><td><code>l</code></td><td>Link (shortcut)</td></tr>
+          <tr><td><code>c</code></td><td>Character device</td></tr>
+          <tr><td><code>b</code></td><td>Block device</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Sembol</th><th>Anlamı</th></tr>
+          <tr><td><code>-</code></td><td>Normal dosya</td></tr>
+          <tr><td><code>d</code></td><td>Dizin (klasör)</td></tr>
+          <tr><td><code>l</code></td><td>Link (kısayol)</td></tr>
+          <tr><td><code>c</code></td><td>Karakter aygıtı</td></tr>
+          <tr><td><code>b</code></td><td>Blok aygıtı</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Symbol</th><th>Bedeutung</th></tr>
+          <tr><td><code>-</code></td><td>Reguläre Datei</td></tr>
+          <tr><td><code>d</code></td><td>Verzeichnis</td></tr>
+          <tr><td><code>l</code></td><td>Link (Verknüpfung)</td></tr>
+          <tr><td><code>c</code></td><td>Zeichengerät</td></tr>
+          <tr><td><code>b</code></td><td>Blockgerät</td></tr>
+        </table>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">ls</span> renkleri de anlamlıdır: Mavi = klasör, Yeşil = çalıştırılabilir dosya, Camgöbeği = link, Kırmızı = sıkıştırılmış arşiv, Beyaz = düz metin dosyası.</p>
+        <p class="de"><span class="flag">DE</span>Auch die <span class="mono-inline">ls</span>-Farben haben eine Bedeutung: Blau = Verzeichnis, Grün = ausführbare Datei, Cyan = Link, Rot = komprimiertes Archiv, Weiß = einfache Textdatei.</p>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">içerik</span> Working With File Contents <span class="title-tr">— Dosya içeriğiyle çalışmak</span><span class="title-de">— Mit Dateiinhalten arbeiten</span></h3>
+        <p class="en">Create a folder and a sample file to practice on:</p>
+        <p class="tr"><span class="flag">TR</span>Üzerinde pratik yapmak için bir klasör ve örnek bir dosya oluştur:</p>
+        <p class="de"><span class="flag">DE</span>Erstelle einen Ordner und eine Beispieldatei zum Üben:</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>mkdir linux-lessons
+cd linux-lessons
+cat &gt; welcome.txt
+<span class="c"># yaz: Welcome to the linux lessons ... line 15'e kadar, bitince Ctrl+D</span></pre></div>
+        <table class="tbl tbl-en">
+          <tr><th>Command</th><th>What it does</th></tr>
+          <tr><td><code>head welcome.txt</code></td><td>Shows the first 10 lines</td></tr>
+          <tr><td><code>head -5 welcome.txt</code></td><td>Shows the first 5 lines</td></tr>
+          <tr><td><code>tail welcome.txt</code></td><td>Shows the last 10 lines</td></tr>
+          <tr><td><code>tail -n 5 welcome.txt</code></td><td>Shows the last 5 lines</td></tr>
+          <tr><td><code>tail -n +10 welcome.txt</code></td><td>Shows from line 10 to the end</td></tr>
+          <tr><td><code>cat welcome.txt</code></td><td>Prints the whole file to the screen</td></tr>
+          <tr><td><code>more welcome.txt</code></td><td>Shows page by page (forward only)</td></tr>
+          <tr><td><code>less welcome.txt</code></td><td>Like more, but faster, and you can go forward/backward</td></tr>
+          <tr><td><code>tac welcome.txt</code></td><td>Shows the file reversed (last line to first) — "cat" spelled backwards!</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Komut</th><th>Ne yapar</th></tr>
+          <tr><td><code>head welcome.txt</code></td><td>İlk 10 satırı gösterir</td></tr>
+          <tr><td><code>head -5 welcome.txt</code></td><td>İlk 5 satırı gösterir</td></tr>
+          <tr><td><code>tail welcome.txt</code></td><td>Son 10 satırı gösterir</td></tr>
+          <tr><td><code>tail -n 5 welcome.txt</code></td><td>Son 5 satırı gösterir</td></tr>
+          <tr><td><code>tail -n +10 welcome.txt</code></td><td>10. satırdan sona kadar gösterir</td></tr>
+          <tr><td><code>cat welcome.txt</code></td><td>Tüm dosyayı ekrana basar</td></tr>
+          <tr><td><code>more welcome.txt</code></td><td>Sayfa sayfa gösterir (sadece ileri gidilir)</td></tr>
+          <tr><td><code>less welcome.txt</code></td><td>more gibi ama daha hızlı, ileri/geri gidilebilir</td></tr>
+          <tr><td><code>tac welcome.txt</code></td><td>Dosyayı ters (son satırdan ilk satıra) gösterir — "cat" tersten yazılmış!</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Befehl</th><th>Was er macht</th></tr>
+          <tr><td><code>head welcome.txt</code></td><td>Zeigt die ersten 10 Zeilen</td></tr>
+          <tr><td><code>head -5 welcome.txt</code></td><td>Zeigt die ersten 5 Zeilen</td></tr>
+          <tr><td><code>tail welcome.txt</code></td><td>Zeigt die letzten 10 Zeilen</td></tr>
+          <tr><td><code>tail -n 5 welcome.txt</code></td><td>Zeigt die letzten 5 Zeilen</td></tr>
+          <tr><td><code>tail -n +10 welcome.txt</code></td><td>Zeigt ab Zeile 10 bis zum Ende</td></tr>
+          <tr><td><code>cat welcome.txt</code></td><td>Gibt die gesamte Datei auf dem Bildschirm aus</td></tr>
+          <tr><td><code>more welcome.txt</code></td><td>Zeigt seitenweise an (nur vorwärts)</td></tr>
+          <tr><td><code>less welcome.txt</code></td><td>Wie more, aber schneller, vor- und zurückblätterbar</td></tr>
+          <tr><td><code>tac welcome.txt</code></td><td>Zeigt die Datei umgekehrt (letzte Zeile zuerst) — "cat" rückwärts geschrieben!</td></tr>
+        </table>
+        <div class="tip tip-en"><b>💡 Tip:</b> When you start writing with <span class="mono-inline">cat &gt; file.txt</span>, you need to signal <span class="mono-inline">Ctrl+D</span> (EOF - end of file) when you're done, otherwise the terminal keeps waiting for you to type.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">cat &gt; dosya.txt</span> ile yazmaya başladığında, bitirdiğinde <span class="mono-inline">Ctrl+D</span> ile (EOF - dosya sonu) sinyali vermen gerekir, yoksa terminal yazmaya devam etmeni bekler.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Wenn du mit <span class="mono-inline">cat &gt; datei.txt</span> zu schreiben beginnst, musst du beim Beenden <span class="mono-inline">Ctrl+D</span> (EOF - Dateiende) signalisieren, sonst wartet das Terminal weiter darauf, dass du tippst.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">find</span> Searching Files: <code>find</code> <span class="title-tr">— Dosya arama</span><span class="title-de">— Dateien suchen</span></h3>
+        <p class="en"><span class="mono-inline">find</span> searches the filesystem tree for files matching criteria: name, type, size, modification time, etc.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">find</span>, dosya sistemi ağacında isim, tür, boyut, değiştirilme tarihi gibi kriterlere göre dosya arar.</p>
+        <p class="de"><span class="flag">DE</span><span class="mono-inline">find</span> durchsucht den Dateisystembaum nach Dateien, die Kriterien wie Name, Typ, Größe oder Änderungsdatum entsprechen.</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>find . -name welcome.txt          <span class="c"># bulunduğun dizinde ara</span>
+find /home -name welcome.txt      <span class="c"># /home altında ara</span>
+find /home -iname welcome.txt     <span class="c"># büyük/küçük harf duyarsız ara</span>
+find /home -type d -name linux-lessons   <span class="c"># sadece klasörler arasında ara</span>
+find . -type f -name "*.txt"      <span class="c"># tüm .txt dosyalarını bul</span>
+find . -type f -empty             <span class="c"># boş dosyaları bul</span>
+find /home -size +50M -size -100M <span class="c"># 50MB'den büyük, 100MB'den küçük dosyalar</span>
+find /home -mtime -10             <span class="c"># son 10 gün içinde değişenler</span>
+find /home -mtime +10             <span class="c"># 10 günden daha eski değişenler</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> The <span class="mono-inline">+</span> and <span class="mono-inline">-</span> prefixes mean "more than" and "less than": <span class="mono-inline">-mtime -10</span> = last 10 days, <span class="mono-inline">-mtime +10</span> = older than 10 days.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">+</span> ve <span class="mono-inline">-</span> önekleri "büyük" ve "küçük" anlamına gelir: <span class="mono-inline">-mtime -10</span> = son 10 gün, <span class="mono-inline">-mtime +10</span> = 10 günden eski.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Die Präfixe <span class="mono-inline">+</span> und <span class="mono-inline">-</span> bedeuten "mehr als" und "weniger als": <span class="mono-inline">-mtime -10</span> = letzte 10 Tage, <span class="mono-inline">-mtime +10</span> = älter als 10 Tage.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">grep</span> Searching Text: <code>grep</code> <span class="title-tr">— Metin içinde arama</span><span class="title-de">— Textsuche</span></h3>
+        <p class="en"><span class="mono-inline">grep</span> (Global Regular Expression Print) searches for a text pattern inside files and prints matching lines. It's the single most-used filter command in DevOps work — logs, configs, code, everything.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">grep</span>, dosyaların içinde bir metin deseni arar ve eşleşen satırları ekrana basar. DevOps işlerinde en çok kullanılan komutlardan biridir — loglarda, config dosyalarında, kodda hep <span class="mono-inline">grep</span> kullanılır.</p>
+        <p class="de"><span class="flag">DE</span><span class="mono-inline">grep</span> durchsucht Dateien nach einem Textmuster und gibt die passenden Zeilen aus. Es ist der meistgenutzte Filterbefehl in der DevOps-Arbeit — bei Logs, Konfigurationsdateien, Code, überall.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Flag</th><th>Meaning</th></tr>
+          <tr><td><code>-i</code></td><td>Case-insensitive search</td></tr>
+          <tr><td><code>-v</code></td><td>Show lines that do <b>NOT</b> match</td></tr>
+          <tr><td><code>-w</code></td><td>Whole-word match only</td></tr>
+          <tr><td><code>-n</code></td><td>Show line numbers</td></tr>
+          <tr><td><code>-c</code></td><td>Count the matches</td></tr>
+          <tr><td><code>-r</code></td><td>Search subfolders too (recursive)</td></tr>
+          <tr><td><code>-A n</code> / <code>-B n</code> / <code>-C n</code></td><td>Show n more lines after/before/both directions around the match</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Bayrak (flag)</th><th>Anlamı</th></tr>
+          <tr><td><code>-i</code></td><td>Büyük/küçük harf duyarsız arama</td></tr>
+          <tr><td><code>-v</code></td><td>Eşleş<b>meyen</b> satırları göster</td></tr>
+          <tr><td><code>-w</code></td><td>Sadece tam kelime eşleşmesi</td></tr>
+          <tr><td><code>-n</code></td><td>Satır numaralarını göster</td></tr>
+          <tr><td><code>-c</code></td><td>Eşleşme sayısını say</td></tr>
+          <tr><td><code>-r</code></td><td>Alt klasörlerde de (recursive) ara</td></tr>
+          <tr><td><code>-A n</code> / <code>-B n</code> / <code>-C n</code></td><td>Eşleşen satırdan sonra/önce/her iki yönde n satır daha göster</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Flag</th><th>Bedeutung</th></tr>
+          <tr><td><code>-i</code></td><td>Groß-/Kleinschreibung ignorieren</td></tr>
+          <tr><td><code>-v</code></td><td>Zeigt Zeilen, die <b>NICHT</b> übereinstimmen</td></tr>
+          <tr><td><code>-w</code></td><td>Nur exakte Wortübereinstimmung</td></tr>
+          <tr><td><code>-n</code></td><td>Zeilennummern anzeigen</td></tr>
+          <tr><td><code>-c</code></td><td>Treffer zählen</td></tr>
+          <tr><td><code>-r</code></td><td>Auch Unterordner durchsuchen (rekursiv)</td></tr>
+          <tr><td><code>-A n</code> / <code>-B n</code> / <code>-C n</code></td><td>n weitere Zeilen nach/vor/in beide Richtungen um den Treffer zeigen</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>grep "kernel" linux.txt          <span class="c"># "kernel" geçen satırları bul</span>
+grep -i "linux" linux.txt        <span class="c"># büyük/küçük harf fark etmeksizin ara</span>
+grep -w "kernel" linux.txt       <span class="c"># tam kelime olarak "kernel"</span>
+grep -v "kernel" linux.txt       <span class="c"># "kernel" GEÇMEYEN satırlar</span>
+grep "^li" welcome.txt           <span class="c"># satır BAŞI "li" ile başlayanlar</span>
+grep "kernel.$" linux.txt        <span class="c"># satır SONU "kernel." ile bitenler</span>
+grep -A3 "line 5" welcome.txt    <span class="c"># eşleşmeden sonraki 3 satırı da göster</span></pre></div>
+        <p class="en">The <span class="mono-inline">^</span> symbol means "start of line", the <span class="mono-inline">$</span> symbol means "end of line" — these are called a "regular expression" (regex).</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">^</span> işareti "satır başı", <span class="mono-inline">$</span> işareti "satır sonu" demektir — bunlara "regular expression" (düzenli ifade / regex) denir.</p>
+        <p class="de"><span class="flag">DE</span>Das Zeichen <span class="mono-inline">^</span> bedeutet "Zeilenanfang", das Zeichen <span class="mono-inline">$</span> bedeutet "Zeilenende" — das nennt man einen "regulären Ausdruck" (regular expression / regex).</p>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">chown</span> File Ownership <span class="title-tr">— Dosya sahipliği</span><span class="title-de">— Dateibesitz</span></h3>
+        <p class="en">Every file belongs to a user (owner) and a group. <span class="mono-inline">chown</span> changes ownership, <span class="mono-inline">chgrp</span> changes just the group.</p>
+        <p class="tr"><span class="flag">TR</span>Her dosyanın bir kullanıcı (sahip) ve bir grup sahibi vardır. <span class="mono-inline">chown</span> sahipliği değiştirir, <span class="mono-inline">chgrp</span> sadece grubu değiştirir.</p>
+        <p class="de"><span class="flag">DE</span>Jede Datei gehört einem Benutzer (Eigentümer) und einer Gruppe. <span class="mono-inline">chown</span> ändert den Eigentümer, <span class="mono-inline">chgrp</span> ändert nur die Gruppe.</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>chown root linux.txt        <span class="c"># kullanıcı sahibini root yap</span>
+chown :root linux.txt       <span class="c"># grup sahibini root yap</span>
+chown root:root linux.txt   <span class="c"># hem kullanıcı hem grup sahibini root yap</span>
+chown -R root linux-lessons <span class="c"># klasör ve içindeki her şeyi recursive değiştir</span>
+chgrp root linux.txt        <span class="c"># sadece grup sahibini değiştir</span></pre></div>
+      </div>
+
+
+      <div class="topic">
+        <h3><span class="tag">hiyerarşi</span> The Filesystem Hierarchy <span class="title-tr">— Dosya sistemi hiyerarşisi</span><span class="title-de">— Die Dateisystem-Hierarchie</span></h3>
+        <p class="en">Everything in Linux lives under a single root directory, <span class="mono-inline">/</span>. There are no drive letters like C: — disks, USB sticks, even devices appear as folders somewhere under this one tree. Each standard folder has a well-defined job.</p>
+        <p class="tr"><span class="flag">TR</span>Linux'ta her şey tek bir kök dizinin, <span class="mono-inline">/</span>'ün altında yaşar. C: gibi sürücü harfleri yoktur — diskler, USB bellekler, hatta aygıtlar bile bu tek ağacın altında birer klasör olarak görünür. Her standart klasörün iyi tanımlanmış bir görevi vardır.</p>
+        <p class="de"><span class="flag">DE</span>Unter Linux lebt alles unter einem einzigen Wurzelverzeichnis, <span class="mono-inline">/</span>. Es gibt keine Laufwerksbuchstaben wie C: — Festplatten, USB-Sticks und sogar Geräte erscheinen als Ordner irgendwo in diesem einen Baum. Jeder Standardordner hat eine klar definierte Aufgabe.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Directory</th><th>What lives there</th></tr>
+          <tr><td><code>/</code></td><td>The root — the starting point of the entire tree</td></tr>
+          <tr><td><code>/home</code></td><td>Personal folders of human users (<code>/home/user</code>)</td></tr>
+          <tr><td><code>/root</code></td><td>The home directory of the root user (not <code>/</code>!)</td></tr>
+          <tr><td><code>/etc</code></td><td>System-wide configuration files (<code>passwd</code>, <code>group</code>…)</td></tr>
+          <tr><td><code>/var</code></td><td>Variable data: logs, caches, spool files</td></tr>
+          <tr><td><code>/tmp</code></td><td>Temporary files — may be wiped at reboot</td></tr>
+          <tr><td><code>/bin</code>, <code>/usr/bin</code></td><td>Executable programs (commands)</td></tr>
+          <tr><td><code>/opt</code></td><td>Optional / third-party software</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Dizin</th><th>Orada ne yaşar</th></tr>
+          <tr><td><code>/</code></td><td>Kök — tüm ağacın başlangıç noktası</td></tr>
+          <tr><td><code>/home</code></td><td>İnsan kullanıcıların kişisel klasörleri (<code>/home/user</code>)</td></tr>
+          <tr><td><code>/root</code></td><td>root kullanıcısının ev dizini (<code>/</code> değil!)</td></tr>
+          <tr><td><code>/etc</code></td><td>Sistem geneli yapılandırma dosyaları (<code>passwd</code>, <code>group</code>…)</td></tr>
+          <tr><td><code>/var</code></td><td>Değişken veri: loglar, önbellekler, kuyruk dosyaları</td></tr>
+          <tr><td><code>/tmp</code></td><td>Geçici dosyalar — yeniden başlatmada silinebilir</td></tr>
+          <tr><td><code>/bin</code>, <code>/usr/bin</code></td><td>Çalıştırılabilir programlar (komutlar)</td></tr>
+          <tr><td><code>/opt</code></td><td>Opsiyonel / üçüncü parti yazılımlar</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Verzeichnis</th><th>Was dort lebt</th></tr>
+          <tr><td><code>/</code></td><td>Die Wurzel — der Startpunkt des gesamten Baums</td></tr>
+          <tr><td><code>/home</code></td><td>Persönliche Ordner menschlicher Benutzer (<code>/home/user</code>)</td></tr>
+          <tr><td><code>/root</code></td><td>Das Home-Verzeichnis des root-Benutzers (nicht <code>/</code>!)</td></tr>
+          <tr><td><code>/etc</code></td><td>Systemweite Konfigurationsdateien (<code>passwd</code>, <code>group</code>…)</td></tr>
+          <tr><td><code>/var</code></td><td>Variable Daten: Logs, Caches, Spool-Dateien</td></tr>
+          <tr><td><code>/tmp</code></td><td>Temporäre Dateien — können beim Neustart gelöscht werden</td></tr>
+          <tr><td><code>/bin</code>, <code>/usr/bin</code></td><td>Ausführbare Programme (Befehle)</td></tr>
+          <tr><td><code>/opt</code></td><td>Optionale Software / Drittanbieter-Software</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>ls /                 <span class="c"># kök dizinin içeriğine bak: bin, etc, home, tmp, var…</span>
+cd /etc
+cat passwd           <span class="c"># kullanıcı hesaplarının kayıtlı olduğu gerçek dosya</span>
+cd ~                 <span class="c"># ev dizinine geri dön</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> This standard layout is called the <b>FHS</b> (Filesystem Hierarchy Standard) — it's why you can sit down at any Linux machine and already know where the config files are.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Bu standart yerleşime <b>FHS</b> (Filesystem Hierarchy Standard) denir — herhangi bir Linux makinesinin başına oturduğunda yapılandırma dosyalarının nerede olduğunu zaten bilmeni sağlayan şey budur.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Dieses Standardlayout heißt <b>FHS</b> (Filesystem Hierarchy Standard) — deshalb kannst du dich an jede Linux-Maschine setzen und weißt bereits, wo die Konfigurationsdateien liegen.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">navigasyon</span> Navigation Power Moves <span class="title-tr">— Gezinme incelikleri</span><span class="title-de">— Navigations-Profi-Tricks</span></h3>
+        <p class="en">Beyond plain <span class="mono-inline">cd</span> and <span class="mono-inline">ls</span>, a few extra flags and shortcuts make you dramatically faster at moving around.</p>
+        <p class="tr"><span class="flag">TR</span>Düz <span class="mono-inline">cd</span> ve <span class="mono-inline">ls</span>'in ötesinde, birkaç ek bayrak ve kısayol seni gezinirken çok daha hızlı yapar.</p>
+        <p class="de"><span class="flag">DE</span>Über das einfache <span class="mono-inline">cd</span> und <span class="mono-inline">ls</span> hinaus machen dich ein paar zusätzliche Flags und Abkürzungen beim Navigieren deutlich schneller.</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>ls -a                <span class="c"># gizli dosyaları da göster (adı . ile başlayanlar)</span>
+ls -l /home/user     <span class="c"># uzun format: izinler, boyut, isim</span>
+cd ..                <span class="c"># bir üst dizine çık</span>
+cd ~                 <span class="c"># nereden olursan ol, ev dizinine dön</span></pre></div>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>cd -                 <span class="c"># bir önceki dizine geri zıpla (ileri-geri geçiş)</span>
+mkdir -p a/b/c       <span class="c"># ara dizinler yoksa hepsini tek seferde oluştur</span>
+ls -R                <span class="c"># alt dizinleri de özyinelemeli (recursive) listele</span>
+cp -r kaynak/ hedef/ <span class="c"># klasörü içeriğiyle birlikte kopyala (-r şart!)</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> On real Linux, <span class="mono-inline">cp</span> refuses to copy a directory without <span class="mono-inline">-r</span> — forgetting it is one of the most common beginner errors.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Gerçek Linux'ta <span class="mono-inline">cp</span>, <span class="mono-inline">-r</span> olmadan bir klasörü kopyalamayı reddeder — bunu unutmak en yaygın başlangıç hatalarından biridir.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Auf echtem Linux weigert sich <span class="mono-inline">cp</span>, ein Verzeichnis ohne <span class="mono-inline">-r</span> zu kopieren — das zu vergessen ist einer der häufigsten Anfängerfehler.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">link</span> Hard &amp; Symbolic Links <span class="title-tr">— Sabit ve sembolik bağlantılar</span><span class="title-de">— Harte &amp; symbolische Links</span></h3>
+        <p class="en">A <b>link</b> lets one file appear under multiple names. Every file's data is stored in an <b>inode</b> (an internal record with a number); a <b>hard link</b> is a second name pointing at the <i>same inode</i>, while a <b>symbolic link</b> (symlink) is a small separate file that merely stores a <i>path</i> to the target — like a Windows shortcut.</p>
+        <p class="tr"><span class="flag">TR</span>Bir <b>bağlantı (link)</b>, tek bir dosyanın birden fazla isimle görünmesini sağlar. Her dosyanın verisi bir <b>inode</b>'da (numaralı bir iç kayıt) tutulur; <b>hard link</b>, <i>aynı inode'u</i> gösteren ikinci bir isimdir; <b>sembolik link</b> (symlink) ise hedefe giden <i>yolu</i> saklayan küçük, ayrı bir dosyadır — Windows kısayolu gibi.</p>
+        <p class="de"><span class="flag">DE</span>Ein <b>Link</b> lässt eine Datei unter mehreren Namen erscheinen. Die Daten jeder Datei liegen in einem <b>Inode</b> (ein nummerierter interner Eintrag); ein <b>Hard Link</b> ist ein zweiter Name, der auf <i>denselben Inode</i> zeigt, während ein <b>symbolischer Link</b> (Symlink) eine kleine separate Datei ist, die nur einen <i>Pfad</i> zum Ziel speichert — wie eine Windows-Verknüpfung.</p>
+        <table class="tbl tbl-en">
+          <tr><th></th><th>Hard link (<code>ln</code>)</th><th>Symlink (<code>ln -s</code>)</th></tr>
+          <tr><td>Points at</td><td>The inode (the data itself)</td><td>A path (the name)</td></tr>
+          <tr><td>Original deleted?</td><td>Data survives — other name still works</td><td>Link breaks ("dangling")</td></tr>
+          <tr><td>Across filesystems / to dirs</td><td>No</td><td>Yes</td></tr>
+          <tr><td>Shown by <code>ls -l</code></td><td>Looks like a normal file</td><td><code>l</code> type + <code>name -&gt; target</code></td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th></th><th>Hard link (<code>ln</code>)</th><th>Symlink (<code>ln -s</code>)</th></tr>
+          <tr><td>Neyi gösterir</td><td>Inode'u (verinin kendisini)</td><td>Bir yolu (ismi)</td></tr>
+          <tr><td>Orijinal silinirse?</td><td>Veri yaşar — diğer isim çalışmaya devam eder</td><td>Bağlantı kopar ("dangling")</td></tr>
+          <tr><td>Dosya sistemleri arası / klasöre</td><td>Hayır</td><td>Evet</td></tr>
+          <tr><td><code>ls -l</code>'de görünümü</td><td>Normal dosya gibi görünür</td><td><code>l</code> türü + <code>isim -&gt; hedef</code></td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th></th><th>Hard Link (<code>ln</code>)</th><th>Symlink (<code>ln -s</code>)</th></tr>
+          <tr><td>Zeigt auf</td><td>Den Inode (die Daten selbst)</td><td>Einen Pfad (den Namen)</td></tr>
+          <tr><td>Original gelöscht?</td><td>Daten überleben — anderer Name funktioniert weiter</td><td>Link bricht ("dangling")</td></tr>
+          <tr><td>Über Dateisysteme / auf Ordner</td><td>Nein</td><td>Ja</td></tr>
+          <tr><td>In <code>ls -l</code></td><td>Sieht aus wie eine normale Datei</td><td>Typ <code>l</code> + <code>name -&gt; ziel</code></td></tr>
+        </table>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>ln rapor.txt yedek-isim.txt      <span class="c"># hard link: aynı veriye ikinci isim</span>
+ln -s rapor.txt kisayol.txt      <span class="c"># symlink: rapor.txt'ye işaret eden kısayol</span>
+ls -li                           <span class="c"># -i: inode numaralarını göster ve karşılaştır</span>
+rm rapor.txt
+cat yedek-isim.txt               <span class="c"># hard link hâlâ çalışır — veri yaşıyor</span>
+cat kisayol.txt                  <span class="c"># symlink artık kırık: No such file or directory</span></pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">wildcard</span> Wildcards (Globbing) <span class="title-tr">— Joker karakterler</span><span class="title-de">— Platzhalter (Globbing)</span></h3>
+        <p class="en">Wildcards let one pattern select many files at once. The shell expands the pattern <i>before</i> the command runs — <span class="mono-inline">rm *.log</span> becomes <span class="mono-inline">rm a.log b.log c.log</span> automatically.</p>
+        <p class="tr"><span class="flag">TR</span>Joker karakterler, tek bir desenle birden çok dosyayı aynı anda seçmeni sağlar. Shell, deseni komut çalışmadan <i>önce</i> genişletir — <span class="mono-inline">rm *.log</span> otomatik olarak <span class="mono-inline">rm a.log b.log c.log</span> haline gelir.</p>
+        <p class="de"><span class="flag">DE</span>Platzhalter lassen ein Muster viele Dateien auf einmal auswählen. Die Shell expandiert das Muster, <i>bevor</i> der Befehl läuft — aus <span class="mono-inline">rm *.log</span> wird automatisch <span class="mono-inline">rm a.log b.log c.log</span>.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Pattern</th><th>Matches</th><th>Example</th></tr>
+          <tr><td><code>*</code></td><td>Any string (including empty)</td><td><code>*.txt</code> → all .txt files</td></tr>
+          <tr><td><code>?</code></td><td>Exactly one character</td><td><code>data?.csv</code> → data1.csv, dataX.csv</td></tr>
+          <tr><td><code>[ ]</code></td><td>One character from a set/range</td><td><code>log[1-3].txt</code> → log1, log2, log3</td></tr>
+          <tr><td><code>{ }</code></td><td>Brace expansion: each listed option</td><td><code>touch a.{txt,md}</code> → a.txt a.md</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Desen</th><th>Eşleştirdiği</th><th>Örnek</th></tr>
+          <tr><td><code>*</code></td><td>Herhangi bir dizi (boş dahil)</td><td><code>*.txt</code> → tüm .txt dosyaları</td></tr>
+          <tr><td><code>?</code></td><td>Tam olarak tek karakter</td><td><code>data?.csv</code> → data1.csv, dataX.csv</td></tr>
+          <tr><td><code>[ ]</code></td><td>Küme/aralıktan tek karakter</td><td><code>log[1-3].txt</code> → log1, log2, log3</td></tr>
+          <tr><td><code>{ }</code></td><td>Süslü genişletme: listelenen her seçenek</td><td><code>touch a.{txt,md}</code> → a.txt a.md</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Muster</th><th>Trifft auf</th><th>Beispiel</th></tr>
+          <tr><td><code>*</code></td><td>Beliebige Zeichenkette (auch leer)</td><td><code>*.txt</code> → alle .txt-Dateien</td></tr>
+          <tr><td><code>?</code></td><td>Genau ein Zeichen</td><td><code>data?.csv</code> → data1.csv, dataX.csv</td></tr>
+          <tr><td><code>[ ]</code></td><td>Ein Zeichen aus einer Menge/einem Bereich</td><td><code>log[1-3].txt</code> → log1, log2, log3</td></tr>
+          <tr><td><code>{ }</code></td><td>Klammer-Expansion: jede gelistete Option</td><td><code>touch a.{txt,md}</code> → a.txt a.md</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>touch not1.txt not2.txt plan.md
+find . -name "*.txt"        <span class="c"># find, joker desenle .txt dosyalarını bulur</span></pre></div>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>ls *.txt                    <span class="c"># shell genişletmesi: tüm .txt dosyalarını listele</span>
+cp rapor-[0-9].pdf yedek/   <span class="c"># rapor-0.pdf … rapor-9.pdf hepsini kopyala</span>
+mkdir proje-{web,api,db}    <span class="c"># üç klasörü tek komutla oluştur</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> Before a destructive command like <span class="mono-inline">rm *.log</span>, run <span class="mono-inline">ls *.log</span> first with the same pattern — see exactly what will be hit.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">rm *.log</span> gibi yıkıcı bir komuttan önce aynı desenle önce <span class="mono-inline">ls *.log</span> çalıştır — tam olarak neyin vurulacağını gör.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Führe vor einem zerstörerischen Befehl wie <span class="mono-inline">rm *.log</span> zuerst <span class="mono-inline">ls *.log</span> mit demselben Muster aus — so siehst du genau, was getroffen wird.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">görüntüle</span> Viewing Large Files Safely <span class="title-tr">— Büyük dosyaları güvenle görüntüleme</span><span class="title-de">— Große Dateien sicher ansehen</span></h3>
+        <p class="en"><span class="mono-inline">cat</span> dumps the <i>whole</i> file — fine for five lines, terrible for a 100&nbsp;MB log. For big files use a pager or grab just the ends. And never trust a file extension: <span class="mono-inline">file</span> inspects the actual content.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">cat</span> dosyanın <i>tamamını</i> basar — beş satır için iyi, 100&nbsp;MB'lık bir log için berbat. Büyük dosyalar için bir sayfalayıcı kullan ya da sadece uçlarını al. Ve dosya uzantısına asla güvenme: <span class="mono-inline">file</span> gerçek içeriğe bakar.</p>
+        <p class="de"><span class="flag">DE</span><span class="mono-inline">cat</span> gibt die <i>ganze</i> Datei aus — gut für fünf Zeilen, furchtbar für ein 100&nbsp;MB-Log. Nutze für große Dateien einen Pager oder greife nur die Enden ab. Und traue niemals einer Dateiendung: <span class="mono-inline">file</span> untersucht den tatsächlichen Inhalt.</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>head -n 3 welcome.txt     <span class="c"># ilk 3 satır</span>
+tail -n 2 welcome.txt     <span class="c"># son 2 satır</span></pre></div>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>less /var/log/syslog      <span class="c"># sayfa sayfa gez: ↑↓ kaydır, /kelime ara, q çık</span>
+tail -f /var/log/syslog   <span class="c"># canlı takip: dosyaya eklenen yeni satırları izle</span>
+file rapor.pdf            <span class="c"># uzantıya değil içeriğe bakarak türü söyler</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> <span class="mono-inline">tail -f</span> is the DevOps engineer's window into a running server — you will use it to watch logs live almost every day.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">tail -f</span>, DevOps mühendisinin çalışan sunucuya açılan penceresidir — logları canlı izlemek için neredeyse her gün kullanacaksın.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> <span class="mono-inline">tail -f</span> ist das Fenster des DevOps-Engineers in einen laufenden Server — du wirst es fast täglich benutzen, um Logs live zu beobachten.</div>
+      </div>
+
+
+      <div class="scen-box" data-scen="p1-proje">
+        <div class="scen-head"><span class="tag">proje</span> Mini Görev: Günlük Klasörü <span class="title-tr">— gerçek terminalde çöz</span><span class="title-de">— im echten Terminal lösen</span></div>
+        <p class="en">Build a small "daily log" habit with what you just learned. Inside <span class="mono-inline">linux-lessons</span>, create a folder named <span class="mono-inline">gunluk</span>. Inside it, create three files: <span class="mono-inline">pazartesi.txt</span>, <span class="mono-inline">sali.txt</span>, <span class="mono-inline">carsamba.txt</span>. Write the exact text <span class="mono-inline">Bugün grep komutunu öğrendim</span> into <span class="mono-inline">pazartesi.txt</span> (hint: <span class="mono-inline">echo "..." &gt; pazartesi.txt</span>). Finally, delete <span class="mono-inline">sali.txt</span> — you decided you didn't need it after all.</p>
+        <p class="tr"><span class="flag">TR</span>Az önce öğrendiklerinle küçük bir "günlük tutma" alışkanlığı kur. <span class="mono-inline">linux-lessons</span> içine <span class="mono-inline">gunluk</span> adında bir klasör oluştur. İçine üç dosya aç: <span class="mono-inline">pazartesi.txt</span>, <span class="mono-inline">sali.txt</span>, <span class="mono-inline">carsamba.txt</span>. <span class="mono-inline">pazartesi.txt</span>'nin içine tam olarak <span class="mono-inline">Bugün grep komutunu öğrendim</span> yazısını yaz (ipucu: <span class="mono-inline">echo "..." &gt; pazartesi.txt</span>). Son olarak <span class="mono-inline">sali.txt</span>'yi sil — gerek olmadığına karar verdin.</p>
+        <p class="de"><span class="flag">DE</span>Nutze das gerade Gelernte, um eine kleine "Tagebuch"-Gewohnheit aufzubauen. Erstelle innerhalb von <span class="mono-inline">linux-lessons</span> einen Ordner namens <span class="mono-inline">gunluk</span>. Erstelle darin drei Dateien: <span class="mono-inline">pazartesi.txt</span>, <span class="mono-inline">sali.txt</span>, <span class="mono-inline">carsamba.txt</span>. Schreibe in <span class="mono-inline">pazartesi.txt</span> genau den Text <span class="mono-inline">Bugün grep komutunu öğrendim</span> (Tipp: <span class="mono-inline">echo "..." &gt; pazartesi.txt</span>). Lösche zum Schluss <span class="mono-inline">sali.txt</span> — du hast entschieden, dass du sie doch nicht brauchst.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p1-proje')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p1-proje')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p1-proje"></div>
+      </div>
+      <div class="scen-box" data-scen="p1-proje2">
+        <div class="scen-head"><span class="tag">proje 2/3</span> Backup and Clean Up <span class="title-tr">— yedekle ve temizle</span><span class="title-de">— sichern und aufräumen</span></div>
+        <p class="en">In your home directory, create <span class="mono-inline">rapor-taslak.txt</span> containing the exact text <span class="mono-inline">ilk taslak</span>. Copy it to <span class="mono-inline">rapor-final.txt</span> (<span class="mono-inline">cp</span>). Then delete the draft.</p>
+        <p class="tr"><span class="flag">TR</span>Ev dizininde <span class="mono-inline">rapor-taslak.txt</span> oluştur, içine tam olarak <span class="mono-inline">ilk taslak</span> yaz. <span class="mono-inline">cp</span> ile <span class="mono-inline">rapor-final.txt</span>'e kopyala. Sonra taslağı sil.</p>
+        <p class="de"><span class="flag">DE</span>Erstelle in deinem Home-Verzeichnis <span class="mono-inline">rapor-taslak.txt</span> mit genau dem Text <span class="mono-inline">ilk taslak</span>. Kopiere sie mit <span class="mono-inline">cp</span> nach <span class="mono-inline">rapor-final.txt</span>. Lösche danach den Entwurf.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p1-proje2')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p1-proje2')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p1-proje2"></div>
+      </div>
+      <div class="scen-box" data-scen="p1-proje3">
+        <div class="scen-head"><span class="tag">proje 3/3</span> Count the Log Files <span class="title-tr">— log dosyalarını say</span><span class="title-de">— Logdateien zählen</span></div>
+        <p class="en">Inside <span class="mono-inline">loglar</span>, use <span class="mono-inline">find</span> to locate files ending in <span class="mono-inline">.log</span>, pipe the result into <span class="mono-inline">wc -l</span>, and save the count into <span class="mono-inline">sayi.txt</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">loglar</span> klasöründe <span class="mono-inline">.log</span> ile biten dosyaları <span class="mono-inline">find</span> ile bul, sonucu <span class="mono-inline">wc -l</span>'ye pipe'la, sayıyı <span class="mono-inline">sayi.txt</span>'ye kaydet.</p>
+        <p class="de"><span class="flag">DE</span>Finde im Ordner <span class="mono-inline">loglar</span> mit <span class="mono-inline">find</span> die auf <span class="mono-inline">.log</span> endenden Dateien, leite das Ergebnis mit einer Pipe an <span class="mono-inline">wc -l</span> weiter und speichere die Anzahl in <span class="mono-inline">sayi.txt</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p1-proje3')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p1-proje3')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p1-proje3"></div>
+      </div>

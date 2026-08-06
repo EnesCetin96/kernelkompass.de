@@ -1,0 +1,21 @@
+# Internal session-continuity notes — not part of the public repo
+PROJECT_SUMMARY.md
+
+# Local dev / sandbox test scripts (not needed for deployment)
+harness.py
+e2e.py
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Node
+node_modules/
+
+# Environment / secrets
+.env
+*.pem
+
+# OS
+.DS_Store

@@ -1,0 +1,26 @@
+      <div class="eyebrow">$ ./final-exam.sh</div>
+      <h1 class="h-en">Level Completion Exam</h1>
+      <p class="h-tr">Seviye Bitirme Sınavı</p>
+      <p class="h-de">Abschlussprüfung</p>
+
+      <div class="purpose">
+        <p class="en">15 questions modeled on LPI's official "Linux Essentials" (010-160) certification standard, drawn at random from a large question pool so no two attempts look the same. Score 12/15 or higher to unlock the next level.</p>
+        <p class="tr">LPI'nin resmi "Linux Essentials" (010-160) sertifikasyon standardına göre hazırlanmış 15 soru — geniş bir soru havuzundan rastgele seçiliyor, bu yüzden iki deneme birbirinin aynı olmuyor. 15'te 12 veya üstü doğru yaparsan bir sonraki seviyenin kilidi açılıyor.</p>
+        <p class="de">15 Fragen nach dem offiziellen LPI-Zertifizierungsstandard "Linux Essentials" (010-160), zufällig aus einem großen Fragenpool gezogen, sodass keine zwei Versuche gleich aussehen. Erreiche 12/15 oder mehr, um die nächste Stufe freizuschalten.</p>
+      </div>
+
+      <div id="examIntro">
+        <div class="topic">
+          <h3><span class="tag">bilgi</span> How It Works <span class="title-tr">— nasıl çalışır?</span><span class="title-de">— wie funktioniert es?</span></h3>
+          <p class="en">10 multiple-choice questions, then 5 hands-on scenarios solved in a real (simulated) terminal. Everything is graded automatically the moment you finish — nothing is scored question-by-question along the way, just like a real exam.</p>
+          <p class="tr"><span class="flag">TR</span>10 çoktan seçmeli soru, ardından gerçek (simüle) bir terminalde çözülen 5 uygulamalı senaryo. Her şey sınavı bitirdiğin anda otomatik olarak notlandırılır — gerçek bir sınavda olduğu gibi, yol boyunca soru soru puan gösterilmez.</p>
+          <p class="tr"><span class="flag">TR</span>Sorular şu zorluk dağılımına göre seçilir: 4 kolay, 8 orta, 3 zor (senaryoların sadece 1 tanesi zor). Geçme notu: 15'te 12.</p>
+          <p class="de"><span class="flag">DE</span>10 Multiple-Choice-Fragen, danach 5 praktische Szenarien, die in einem echten (simulierten) Terminal gelöst werden. Alles wird automatisch bewertet, sobald du fertig bist — es gibt unterwegs keine Punktzahl Frage für Frage, genau wie bei einer echten Prüfung.</p>
+          <p class="de"><span class="flag">DE</span>Die Fragen werden nach folgender Schwierigkeitsverteilung ausgewählt: 4 leicht, 8 mittel, 3 schwer (nur 1 der Szenarien ist schwer). Bestehensgrenze: 12 von 15.</p>
+        </div>
+        <button class="btn" onclick="kkStartExam()" data-i18n-ui="exam-start">▶ Sınavı Başlat</button>
+      </div>
+
+      <div id="examMC" style="display:none;"></div>
+      <div id="examScenario" style="display:none;"></div>
+      <div id="examResult" style="display:none;"></div>

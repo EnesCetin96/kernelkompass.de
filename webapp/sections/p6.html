@@ -1,0 +1,285 @@
+      <div class="eyebrow">$ cd part-06/</div>
+      <h1 class="h-en">Shell Scripting Basics</h1>
+      <p class="h-tr">Shell Script Yazmanın Temelleri</p>
+      <p class="h-de">Grundlagen der Shell-Skripterstellung</p>
+      <div class="purpose">
+        <p class="en">Purpose: write your first bash scripts, use variables, read user input, work with command-line arguments and arrays, and do simple arithmetic.</p>
+        <p class="tr">Amaç: ilk bash scriptlerini yazmak, değişken kullanmak, kullanıcıdan girdi almak, komut satırı argümanları ve dizilerle (array) çalışmak, basit aritmetik işlemler yapmak.</p>
+        <p class="de">Zweck: deine ersten Bash-Skripte schreiben, Variablen verwenden, Benutzereingaben lesen, mit Kommandozeilenargumenten und Arrays arbeiten und einfache Arithmetik durchführen.</p>
+      </div>
+
+      <details class="notebox">
+        <summary>✎ Notlarım — Shell Script Temelleri</summary>
+        <textarea placeholder="Bu bölümle ilgili notların... buraya yaz." data-note="p6"></textarea>
+      </details>
+
+      <div class="topic">
+        <h3><span class="tag">script</span> Your First Script <span class="title-tr">— İlk scriptin</span><span class="title-de">— Dein erstes Skript</span></h3>
+        <p class="en">A shell script is just a text file full of commands, run all at once. The first line — the <b>shebang</b> <span class="mono-inline">#!/bin/bash</span> — tells the system which interpreter to use.</p>
+        <p class="tr"><span class="flag">TR</span>Bir shell script'i, tek seferde çalıştırılan komutlarla dolu bir metin dosyasından ibarettir. İlk satır — <b>shebang</b> denen <span class="mono-inline">#!/bin/bash</span> — sisteme "bu dosyayı bash ile çalıştır" der. "Shebang" adı, <span class="mono-inline">#</span> (hash) + <span class="mono-inline">!</span> (bang) harflerinden gelir.</p>
+        <p class="de"><span class="flag">DE</span>Ein Shell-Skript ist einfach eine Textdatei voller Befehle, die alle auf einmal ausgeführt werden. Die erste Zeile — der <b>Shebang</b> <span class="mono-inline">#!/bin/bash</span> — sagt dem System, welchen Interpreter es verwenden soll. Der Name "Shebang" kommt von <span class="mono-inline">#</span> (hash) + <span class="mono-inline">!</span> (bang).</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>mkdir shell-scripting &amp;&amp; cd shell-scripting
+nano basic.sh</pre></div>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="write-into-badge">basic.sh İÇİNE YAZ</span></div>
+<pre>#!/bin/bash
+echo "Hello World"</pre></div>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>chmod +x basic.sh   <span class="c"># scripti çalıştırılabilir yap</span>
+./basic.sh          <span class="c"># çalıştır — "./" bulunduğun klasörden çalıştır demektir</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> If you type it without <span class="mono-inline">./</span> (<span class="mono-inline">basic.sh</span>), the shell only searches the folders in PATH and won't find it. <span class="mono-inline">./</span> means "look in the current folder".</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">./</span> olmadan yazarsan (<span class="mono-inline">basic.sh</span>), shell dosyayı sadece PATH'teki klasörlerde arar ve bulamaz. <span class="mono-inline">./</span> "bulunduğun klasörde ara" demektir.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Wenn du es ohne <span class="mono-inline">./</span> schreibst (<span class="mono-inline">basic.sh</span>), sucht die Shell nur in den Ordnern in PATH und findet es nicht. <span class="mono-inline">./</span> bedeutet "im aktuellen Ordner suchen".</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">yorum</span> Comments &amp; Heredoc <span class="title-tr">— Yorum satırları ve Heredoc</span><span class="title-de">— Kommentare und Heredoc</span></h3>
+        <p class="en">Bash ignores everything after <span class="mono-inline">#</span> (except the shebang's first line). Bash has no native multi-line comment — but a <b>heredoc</b> block can serve as one.</p>
+        <p class="tr"><span class="flag">TR</span>Bash, <span class="mono-inline">#</span>'den sonraki her şeyi yok sayar (ilk satırdaki shebang hariç). Bash'te çok satırlı yorum diye bir şey yoktur — ama bir <b>heredoc</b> bloğu bu işi görebilir.</p>
+        <p class="de"><span class="flag">DE</span>Bash ignoriert alles nach <span class="mono-inline">#</span> (außer der Shebang-Zeile). Bash hat keinen nativen mehrzeiligen Kommentar — aber ein <b>Heredoc</b>-Block kann diese Rolle übernehmen.</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge">basic.sh</span></div>
+<pre>#!/bin/bash
+echo "hello"
+<span class="c"># date   ← bu satır çalışmaz, yorum</span>
+pwd  <span class="c"># bu bir satır-içi (inline) yorumdur</span>
+
+&lt;&lt; multiline-comment
+Bu satırlar hiç çalışmaz,
+heredoc bloğunun içindeki
+her şey bir yorum gibi davranır.
+multiline-comment</pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">değişken</span> Variables &amp; Command Substitution <span class="title-tr">— Değişkenler ve komut yerine koyma</span><span class="title-de">— Variablen und Befehlssubstitution</span></h3>
+        <p class="en"><b>Command substitution</b> captures a command's output and stores it as a variable's value, using <span class="mono-inline">$(...)</span> or backticks.</p>
+        <p class="tr"><span class="flag">TR</span><b>Command substitution (komut yerine koyma)</b>, bir komutun çıktısını alıp bir değişkene atamanı sağlar — <span class="mono-inline">$(...)</span> veya backtick (`) ile yapılır.</p>
+        <p class="de"><span class="flag">DE</span><b>Befehlssubstitution</b> erfasst die Ausgabe eines Befehls und speichert sie als Wert einer Variablen — mit <span class="mono-inline">$(...)</span> oder Backticks (`).</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge">command-substitution.sh</span></div>
+<pre>#!/bin/bash
+working_directory=$(pwd)
+echo "Welcome, your working directory is $working_directory."
+<span class="c"># veya doğrudan, değişken kullanmadan:</span>
+echo "Today is $(date)"
+echo "You are $(whoami)"</pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">read</span> Console Input <span class="title-tr">— Kullanıcıdan girdi alma</span><span class="title-de">— Benutzereingabe lesen</span></h3>
+        <table class="tbl tbl-en">
+          <tr><th>Usage</th><th>What it does</th></tr>
+          <tr><td><code>read NAME</code></td><td>Saves what the user types into the NAME variable</td></tr>
+          <tr><td><code>read -p "Message: " NAME</code></td><td>With <code>-p</code>, shows a message first, then waits for input</td></tr>
+          <tr><td><code>read -s -p "Password: " PASS</code></td><td>With <code>-s</code>, what's typed isn't shown on screen (for password input)</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Kullanım</th><th>Ne yapar</th></tr>
+          <tr><td><code>read NAME</code></td><td>Kullanıcının yazdığını NAME değişkenine kaydeder</td></tr>
+          <tr><td><code>read -p "Mesaj: " NAME</code></td><td><code>-p</code> ile önce bir mesaj gösterir, sonra girdi bekler</td></tr>
+          <tr><td><code>read -s -p "Şifre: " PASS</code></td><td><code>-s</code> ile yazılan şey ekranda görünmez (şifre girişi için)</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Verwendung</th><th>Was es macht</th></tr>
+          <tr><td><code>read NAME</code></td><td>Speichert die Eingabe des Benutzers in der Variable NAME</td></tr>
+          <tr><td><code>read -p "Nachricht: " NAME</code></td><td>Mit <code>-p</code> wird zuerst eine Nachricht angezeigt, dann auf Eingabe gewartet</td></tr>
+          <tr><td><code>read -s -p "Passwort: " PASS</code></td><td>Mit <code>-s</code> wird die Eingabe nicht auf dem Bildschirm angezeigt (für Passworteingabe)</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge">variable.sh</span></div>
+<pre>#!/bin/bash
+read -p "Enter your name: " NAME
+echo "Welcome $NAME"
+
+read -s -p "Enter your password: " PASSWORD
+echo -e "\nYour password is $PASSWORD"</pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">args</span> Command-Line Arguments <span class="title-tr">— Komut satırı argümanları</span><span class="title-de">— Kommandozeilenargumente</span></h3>
+        <table class="tbl tbl-en">
+          <tr><th>Variable</th><th>Meaning</th></tr>
+          <tr><td><code>$0</code></td><td>The script's own name</td></tr>
+          <tr><td><code>$1</code> – <code>$9</code></td><td>Arguments 1 through 9, in order</td></tr>
+          <tr><td><code>$@</code></td><td>All arguments</td></tr>
+          <tr><td><code>$#</code></td><td>How many arguments were given (a number)</td></tr>
+          <tr><td><code>$RANDOM</code></td><td>Generates a random number</td></tr>
+          <tr><td><code>$LINENO</code></td><td>The current line number inside the script</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Değişken</th><th>Anlamı</th></tr>
+          <tr><td><code>$0</code></td><td>Script'in kendi adı</td></tr>
+          <tr><td><code>$1</code> – <code>$9</code></td><td>1'den 9'a kadar sıradaki argümanlar</td></tr>
+          <tr><td><code>$@</code></td><td>Tüm argümanlar</td></tr>
+          <tr><td><code>$#</code></td><td>Kaç argüman verildiği (sayı)</td></tr>
+          <tr><td><code>$RANDOM</code></td><td>Rastgele bir sayı üretir</td></tr>
+          <tr><td><code>$LINENO</code></td><td>Script içindeki o anki satır numarası</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Variable</th><th>Bedeutung</th></tr>
+          <tr><td><code>$0</code></td><td>Der eigene Name des Skripts</td></tr>
+          <tr><td><code>$1</code> – <code>$9</code></td><td>Argumente 1 bis 9, der Reihe nach</td></tr>
+          <tr><td><code>$@</code></td><td>Alle Argumente</td></tr>
+          <tr><td><code>$#</code></td><td>Wie viele Argumente übergeben wurden (eine Zahl)</td></tr>
+          <tr><td><code>$RANDOM</code></td><td>Erzeugt eine Zufallszahl</td></tr>
+          <tr><td><code>$LINENO</code></td><td>Die aktuelle Zeilennummer im Skript</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>./argument.sh Joe Matt Timothy
+<span class="c"># $0=argument.sh  $1=Joe  $2=Matt  $3=Timothy  $#=3</span></pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">array</span> Arrays <span class="title-tr">— Diziler</span><span class="title-de">— Arrays</span></h3>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>devops_tools=("docker" "kubernetes" "ansible" "terraform" "jenkins")
+echo ${devops_tools[0]}     <span class="c"># → docker (ilk eleman, index 0'dan başlar)</span>
+echo ${devops_tools[@]}     <span class="c"># → tüm elemanlar</span>
+echo ${#devops_tools[@]}    <span class="c"># → 5 (eleman sayısı)</span></pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">aritmetik</span> Simple Arithmetic: expr, let, (( )) <span class="title-tr">— Basit aritmetik</span><span class="title-de">— Einfache Arithmetik</span></h3>
+        <table class="tbl tbl-en">
+          <tr><th>Method</th><th>Property</th></tr>
+          <tr><td><code>expr 3 + 5</code></td><td>Prints the result directly <b>to the screen</b>. Spaces between numbers/operator are required, <span class="mono-inline">*</span> must be escaped (<code>\*</code>)</td></tr>
+          <tr><td><code>let "sum = 3 + 5"</code></td><td>Saves the result <b>into a variable</b>, doesn't print it</td></tr>
+          <tr><td><code>sum=$((3 + 5))</code></td><td>Arithmetic with double parentheses — the most commonly used modern method</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Yöntem</th><th>Özellik</th></tr>
+          <tr><td><code>expr 3 + 5</code></td><td>Sonucu direkt <b>ekrana yazdırır</b>. Sayılar ve operatör arasında boşluk şart, <span class="mono-inline">*</span> kaçırılmalı (<code>\*</code>)</td></tr>
+          <tr><td><code>let "sum = 3 + 5"</code></td><td>Sonucu bir <b>değişkene kaydeder</b>, ekrana yazmaz</td></tr>
+          <tr><td><code>sum=$((3 + 5))</code></td><td>Çift parantez ile aritmetik — en yaygın kullanılan modern yöntem</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Methode</th><th>Eigenschaft</th></tr>
+          <tr><td><code>expr 3 + 5</code></td><td>Gibt das Ergebnis direkt <b>auf dem Bildschirm aus</b>. Leerzeichen zwischen Zahlen/Operator sind erforderlich, <span class="mono-inline">*</span> muss escaped werden (<code>\*</code>)</td></tr>
+          <tr><td><code>let "sum = 3 + 5"</code></td><td>Speichert das Ergebnis <b>in einer Variable</b>, gibt es nicht aus</td></tr>
+          <tr><td><code>sum=$((3 + 5))</code></td><td>Arithmetik mit doppelten Klammern — die am häufigsten verwendete moderne Methode</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge">calculator.sh</span></div>
+<pre>#!/bin/bash
+read -p "Input first number: " first_number
+read -p "Input second number: " second_number
+
+echo "SUM=$(( first_number + second_number ))"
+echo "SUB=$(( first_number - second_number ))"
+echo "MUL=$(( first_number * second_number ))"
+echo "DIV=$(( first_number / second_number ))"</pre></div>
+        <p class="en"><span class="mono-inline">num++</span> (post-increment) uses the current value first, THEN increments it. <span class="mono-inline">++num</span> (pre-increment) increments first, THEN uses the value. This subtle difference is a classic source of script bugs.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">num++</span> (post-increment) önce mevcut değeri kullanır, SONRA artırır. <span class="mono-inline">++num</span> (pre-increment) önce artırır, SONRA değeri kullanır. Bu ince fark script hatalarının klasik bir sebebidir.</p>
+        <p class="de"><span class="flag">DE</span><span class="mono-inline">num++</span> (Post-Inkrement) verwendet zuerst den aktuellen Wert und erhöht ihn DANACH. <span class="mono-inline">++num</span> (Prä-Inkrement) erhöht zuerst und verwendet DANACH den Wert. Dieser feine Unterschied ist eine klassische Ursache für Skriptfehler.</p>
+      </div>
+
+
+      <div class="topic">
+        <h3><span class="tag">sabit</span> readonly Constants &amp; $@ vs $* <span class="title-tr">— Sabitler ve $@ ile $* farkı</span><span class="title-de">— Konstanten &amp; $@ vs. $*</span></h3>
+        <p class="en">Two refinements that separate tidy scripts from fragile ones: <span class="mono-inline">readonly</span> makes a variable a true constant (any later change is an error), and <span class="mono-inline">"$@"</span> vs <span class="mono-inline">"$*"</span> decide whether arguments stay separate words or collapse into one.</p>
+        <p class="tr"><span class="flag">TR</span>Derli toplu scriptleri kırılganlardan ayıran iki incelik: <span class="mono-inline">readonly</span>, bir değişkeni gerçek bir sabite dönüştürür (sonradan her değişiklik hatadır); <span class="mono-inline">"$@"</span> ile <span class="mono-inline">"$*"</span> ise argümanların ayrı kelimeler mi kalacağına, yoksa tek kelimeye mi çökeceğine karar verir.</p>
+        <p class="de"><span class="flag">DE</span>Zwei Feinheiten, die ordentliche Skripte von fragilen trennen: <span class="mono-inline">readonly</span> macht eine Variable zu einer echten Konstante (jede spätere Änderung ist ein Fehler), und <span class="mono-inline">"$@"</span> vs. <span class="mono-inline">"$*"</span> entscheiden, ob Argumente getrennte Wörter bleiben oder zu einem einzigen zusammenfallen.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Syntax</th><th>With args <code>a "b c"</code> becomes</th></tr>
+          <tr><td><code>"$@"</code></td><td><code>a</code> and <code>b c</code> — separate words preserved (almost always what you want)</td></tr>
+          <tr><td><code>"$*"</code></td><td><code>a b c</code> — one single word</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Sözdizimi</th><th><code>a "b c"</code> argümanlarıyla sonuç</th></tr>
+          <tr><td><code>"$@"</code></td><td><code>a</code> ve <code>b c</code> — ayrı kelimeler korunur (neredeyse her zaman istediğin bu)</td></tr>
+          <tr><td><code>"$*"</code></td><td><code>a b c</code> — tek bir kelime</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Syntax</th><th>Mit den Argumenten <code>a "b c"</code> wird daraus</th></tr>
+          <tr><td><code>"$@"</code></td><td><code>a</code> und <code>b c</code> — getrennte Wörter bleiben erhalten (fast immer das Richtige)</td></tr>
+          <tr><td><code>"$*"</code></td><td><code>a b c</code> — ein einziges Wort</td></tr>
+        </table>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>readonly MAX_DENEME=3      <span class="c"># sabit tanımla</span>
+MAX_DENEME=5               <span class="c"># → hata: readonly variable</span></pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">savunma</span> Defensive Scripting: set -e, -u, -o pipefail <span class="title-tr">— Savunmacı scripting</span><span class="title-de">— Defensives Scripting</span></h3>
+        <p class="en">By default bash keeps marching after an error — line 3 fails, line 4 runs anyway, often on garbage data. Three <span class="mono-inline">set</span> options at the top of every serious script flip bash into "stop at the first problem" mode.</p>
+        <p class="tr"><span class="flag">TR</span>Varsayılan olarak bash bir hatadan sonra yürümeye devam eder — 3. satır başarısız olur, 4. satır yine de çalışır, çoğu zaman çöp veriyle. Her ciddi scriptin başındaki üç <span class="mono-inline">set</span> seçeneği, bash'i "ilk sorunda dur" moduna geçirir.</p>
+        <p class="de"><span class="flag">DE</span>Standardmäßig marschiert bash nach einem Fehler weiter — Zeile 3 scheitert, Zeile 4 läuft trotzdem, oft mit Mülldaten. Drei <span class="mono-inline">set</span>-Optionen am Anfang jedes ernsthaften Skripts schalten bash in den Modus "beim ersten Problem anhalten".</p>
+        <table class="tbl tbl-en">
+          <tr><th>Option</th><th>Effect</th></tr>
+          <tr><td><code>set -e</code></td><td>Exit immediately when any command fails</td></tr>
+          <tr><td><code>set -u</code></td><td>Using an unset variable is an error (catches typos!)</td></tr>
+          <tr><td><code>set -o pipefail</code></td><td>A pipeline fails if ANY stage fails, not just the last</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Seçenek</th><th>Etkisi</th></tr>
+          <tr><td><code>set -e</code></td><td>Herhangi bir komut başarısız olduğunda derhal çık</td></tr>
+          <tr><td><code>set -u</code></td><td>Tanımsız değişken kullanımı hatadır (yazım hatalarını yakalar!)</td></tr>
+          <tr><td><code>set -o pipefail</code></td><td>Pipeline, yalnızca sonuncusu değil, HERHANGİ bir aşaması başarısız olursa başarısız olur</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Option</th><th>Wirkung</th></tr>
+          <tr><td><code>set -e</code></td><td>Sofort beenden, wenn irgendein Befehl fehlschlägt</td></tr>
+          <tr><td><code>set -u</code></td><td>Verwendung einer nicht gesetzten Variable ist ein Fehler (fängt Tippfehler!)</td></tr>
+          <tr><td><code>set -o pipefail</code></td><td>Eine Pipeline scheitert, wenn IRGENDEINE Stufe scheitert, nicht nur die letzte</td></tr>
+        </table>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>#!/bin/bash
+set -euo pipefail        <span class="c"># üçü tek satırda — profesyonel script başlığı</span>
+cp "$KAYNAK" /yedek/     <span class="c"># KAYNAK tanımsızsa script BURADA durur,</span>
+rm "$KAYNAK"             <span class="c"># bu tehlikeli satıra asla ulaşmaz</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> Memorize <span class="mono-inline">set -euo pipefail</span> as one unit. In DevOps interviews and code reviews, its absence in a deploy script is a red flag.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">set -euo pipefail</span>'i tek parça olarak ezberle. DevOps mülakatlarında ve kod incelemelerinde bir deploy scriptinde bunun yokluğu kırmızı bayraktır.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Merke dir <span class="mono-inline">set -euo pipefail</span> als eine Einheit. In DevOps-Interviews und Code-Reviews ist ihr Fehlen in einem Deploy-Skript ein Warnsignal.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">hataayıkla</span> Debugging &amp; Meaningful Exit Codes <span class="title-tr">— Hata ayıklama ve anlamlı çıkış kodları</span><span class="title-de">— Debugging &amp; aussagekräftige Exit-Codes</span></h3>
+        <p class="en">When a script misbehaves, don't guess — watch it. <span class="mono-inline">bash -x</span> prints every line as it executes, with variables already expanded. And when your script ends, exit with a <i>meaningful</i> code so other tools can react.</p>
+        <p class="tr"><span class="flag">TR</span>Bir script yaramazlık yaptığında tahmin etme — izle. <span class="mono-inline">bash -x</span>, her satırı çalışırken, değişkenleri genişletilmiş haliyle basar. Ve scriptin bittiğinde, diğer araçlar tepki verebilsin diye <i>anlamlı</i> bir kodla çık.</p>
+        <p class="de"><span class="flag">DE</span>Wenn ein Skript sich falsch verhält, rate nicht — schau zu. <span class="mono-inline">bash -x</span> gibt jede Zeile während der Ausführung aus, mit bereits expandierten Variablen. Und wenn dein Skript endet, beende es mit einem <i>aussagekräftigen</i> Code, damit andere Werkzeuge reagieren können.</p>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>bash -x yedekle.sh          <span class="c"># scripti izleme modunda çalıştır: her satır '+' ile basılır</span>
+<span class="c"># script içinde bölgesel izleme:</span>
+set -x                      <span class="c"># buradan itibaren izlemeyi aç</span>
+tar -czf yedek.tar.gz /veri
+set +x                      <span class="c"># izlemeyi kapat</span>
+
+<span class="c"># anlamlı çıkış kodları:</span>
+[ -d "/veri" ] || { echo "HATA: /veri yok"; exit 2; }
+exit 0                      <span class="c"># her şey yolunda</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> Convention: 0 = success, 1 = general error, 2 = wrong usage/missing input. Pick codes and document them — future-you will thank present-you.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Gelenek: 0 = başarı, 1 = genel hata, 2 = yanlış kullanım/eksik girdi. Kodları seç ve belgele — gelecekteki sen, şimdiki sana teşekkür edecek.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Konvention: 0 = Erfolg, 1 = allgemeiner Fehler, 2 = falsche Verwendung/fehlende Eingabe. Wähle Codes und dokumentiere sie — dein zukünftiges Ich wird deinem jetzigen danken.</div>
+      </div>
+
+
+      <div class="scen-box" data-scen="p6-proje1">
+        <div class="scen-head"><span class="tag">proje 1/3</span> Command Substitution <span class="title-tr">— komut yerine koyma</span><span class="title-de">— Befehlssubstitution</span></div>
+        <p class="en">Write today's date into <span class="mono-inline">bilgi.txt</span> in the form "Bugünün tarihi: ..." using command substitution with <span class="mono-inline">date</span>.</p>
+        <p class="tr"><span class="flag">TR</span>Komut yerine koyma ile <span class="mono-inline">date</span> kullanarak bugünün tarihini "Bugünün tarihi: ..." biçiminde <span class="mono-inline">bilgi.txt</span>'ye yaz.</p>
+        <p class="de"><span class="flag">DE</span>Schreibe das heutige Datum mit Befehlssubstitution und <span class="mono-inline">date</span> im Format "Bugünün tarihi: ..." in <span class="mono-inline">bilgi.txt</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p6-proje1')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p6-proje1')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p6-proje1"></div>
+      </div>
+      <div class="scen-box" data-scen="p6-proje2">
+        <div class="scen-head"><span class="tag">proje 2/3</span> Arithmetic Expansion <span class="title-tr">— aritmetik genişletme</span><span class="title-de">— arithmetische Erweiterung</span></div>
+        <p class="en">Using <span class="mono-inline">$(( ))</span>, write "Toplam: 42" into <span class="mono-inline">toplam.txt</span> — but don't just type 42, calculate 15+27.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">$(( ))</span> kullanarak "Toplam: 42" yazısını <span class="mono-inline">toplam.txt</span>'ye yaz — ama 42'yi elle yazma, 15+27'yi hesaplat.</p>
+        <p class="de"><span class="flag">DE</span>Schreibe mit <span class="mono-inline">$(( ))</span> "Toplam: 42" in <span class="mono-inline">toplam.txt</span> — aber tippe nicht einfach 42, sondern berechne 15+27.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p6-proje2')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p6-proje2')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p6-proje2"></div>
+      </div>
+      <div class="scen-box" data-scen="p6-proje3">
+        <div class="scen-head"><span class="tag">proje 3/3</span> Your First Script <span class="title-tr">— ilk scriptin</span><span class="title-de">— dein erstes Skript</span></div>
+        <p class="en">Use <span class="mono-inline">nano</span> to write a small script that prints exactly "Merhaba, DevOps!". Run it and redirect its output into <span class="mono-inline">cikti.txt</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">nano</span> ile tam olarak "Merhaba, DevOps!" yazdıran küçük bir script yaz. Çalıştır, çıktısını <span class="mono-inline">cikti.txt</span>'ye yönlendir.</p>
+        <p class="de"><span class="flag">DE</span>Schreibe mit <span class="mono-inline">nano</span> ein kleines Skript, das genau "Merhaba, DevOps!" ausgibt. Führe es aus und leite die Ausgabe in <span class="mono-inline">cikti.txt</span> um.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p6-proje3')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p6-proje3')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p6-proje3"></div>
+      </div>

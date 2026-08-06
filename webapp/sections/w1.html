@@ -1,0 +1,143 @@
+      <div class="eyebrow">$ cd -2/</div>
+      <h1 class="h-en">Unit -2 — What's Really Happening Inside?</h1>
+      <p class="h-tr">Bölüm -2 — Aslında İçeride Ne Oluyor?</p>
+      <p class="h-de">Einheit -2 — Was passiert wirklich im Inneren?</p>
+
+      <div class="purpose">
+        <p class="en">Purpose: before you ever type a Linux command, you need one honest answer to a question almost nobody explains properly: what actually happens inside a computer or a game console when you press a button? No jargon yet — just the one idea everything else in this workbook is built on.</p>
+        <p class="tr">Amaç: bir Linux komutu yazmadan önce, neredeyse hiç kimsenin düzgün açıklamadığı bir soruya dürüst bir cevap almalısın: bir bilgisayarın ya da oyun konsolunun içinde, bir tuşa bastığında gerçekte ne oluyor? Henüz hiç jargon yok — sadece bu çalışma kitabının geri kalanının üzerine kurulduğu tek fikir.</p>
+        <p class="de">Zweck: Bevor du jemals einen Linux-Befehl eintippst, brauchst du eine ehrliche Antwort auf eine Frage, die kaum jemand richtig erklärt: Was passiert eigentlich im Inneren eines Computers oder einer Spielkonsole, wenn du einen Knopf drückst? Noch kein Fachjargon — nur die eine Idee, auf der der Rest dieses Arbeitsbuchs aufbaut.</p>
+      </div>
+
+      <details class="notebox">
+        <summary>✎ Notlarım — Bölüm -2</summary>
+        <textarea placeholder="Bu bölümle ilgili notların, aklına takılanlar... buraya yaz." data-note="w1"></textarea>
+      </details>
+
+      <div class="topic">
+        <h3><span class="tag">oyun</span> The Game Console Secret <span class="title-tr">— Oyun Konsolunun Sırrı</span><span class="title-de">— Das Geheimnis der Spielkonsole</span></h3>
+        <p class="en">When you press the jump button in a game, the console doesn't "understand" jumping. It runs a tiny, exact list of steps: check if your character is standing on the ground, if yes then start moving it upward, then keep drawing a new picture on screen — and it does this whole list roughly 60 times every single second. That exact list of steps is called a <b>program</b>.</p>
+        <p class="tr"><span class="flag">TR</span>Bir oyunda zıplama tuşuna bastığında, konsol "zıplamayı" anlamaz. Küçük ama tam olarak belirlenmiş bir adım listesi çalıştırır: karakterin yerde olup olmadığını kontrol et, evetse yukarı hareket ettirmeye başla, sonra ekrana yeni bir resim çiz — ve bu listenin tamamını saniyede yaklaşık 60 kere tekrarlar. Bu tam adım listesine <b>program</b> denir.</p>
+        <p class="de"><span class="flag">DE</span>Wenn du in einem Spiel die Sprungtaste drückst, "versteht" die Konsole das Springen nicht. Sie führt eine winzige, exakt festgelegte Liste von Schritten aus: prüfe, ob deine Figur auf dem Boden steht, wenn ja, beginne sie nach oben zu bewegen, zeichne dann ein neues Bild auf dem Bildschirm — und diese ganze Liste wiederholt sie etwa 60-mal pro Sekunde. Diese exakte Schrittliste nennt man ein <b>Programm</b>.</p>
+
+        <div class="svg-wrap">
+          <svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+            <style>
+              .w1box{fill:#161b10;stroke:#333a24;stroke-width:1;}
+              .w1lbl{font-family:'JetBrains Mono',monospace;font-size:12px;fill:#eae6d8;}
+              .w1sub{font-family:Inter,sans-serif;font-size:9.5px;fill:#9a9682;}
+              .w1conn{stroke:#5fb8a6;stroke-width:1.3;marker-end:url(#arrw1);}
+            </style>
+            <defs>
+              <marker id="arrw1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 Z" fill="#5fb8a6"/>
+              </marker>
+            </defs>
+            <rect class="w1box" x="20" y="70" width="140" height="50" rx="6" stroke="#e3a94a"/>
+            <text x="90" y="92" text-anchor="middle" class="w1lbl" fill="#e3a94a">🎮 tuşa bas</text>
+            <text x="90" y="107" text-anchor="middle" class="w1sub">"zıpla" sinyali</text>
+
+            <rect class="w1box" x="230" y="70" width="180" height="50" rx="6"/>
+            <text x="320" y="88" text-anchor="middle" class="w1lbl">adım listesi (program)</text>
+            <text x="320" y="103" text-anchor="middle" class="w1sub">yerde mi? → yukarı it → çiz</text>
+
+            <rect class="w1box" x="480" y="70" width="140" height="50" rx="6" stroke="#5fb8a6"/>
+            <text x="550" y="92" text-anchor="middle" class="w1lbl" fill="#5fb8a6">🖥 ekran</text>
+            <text x="550" y="107" text-anchor="middle" class="w1sub">yeni kare çizilir</text>
+
+            <line x1="160" y1="95" x2="228" y2="95" class="w1conn"/>
+            <line x1="410" y1="95" x2="478" y2="95" class="w1conn"/>
+            <path d="M320,120 q0,45 -110,45 q-90,0 -95,-40" fill="none" stroke="#e3a94a" stroke-width="1.2" marker-end="url(#arrw1)"/>
+            <text x="185" y="185" text-anchor="middle" class="w1sub" fill="#e3a94a">saniyede ~60 kere baştan tekrar</text>
+          </svg>
+          <div class="svg-cap">tuş → adım listesi (program) → ekran, ve bu döngü sürekli tekrar eder</div>
+        </div>
+
+        <div class="tip tip-en"><b>💡 Tip:</b> A computer has zero imagination and zero opinions. It only ever does exactly what its instruction list says — nothing more, nothing less. That single fact explains almost every "weird" computer behavior you'll ever see.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Bir bilgisayarın hiç hayal gücü, hiç fikri yoktur. Sadece adım listesinde ne yazıyorsa tam olarak onu yapar — ne fazla, ne eksik. Göreceğin hemen hemen her "tuhaf" bilgisayar davranışının sebebi tam olarak bu tek gerçektir.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Ein Computer hat null Fantasie und null Meinung. Er tut immer genau das, was in seiner Schrittliste steht — nicht mehr, nicht weniger. Diese eine Tatsache erklärt fast jedes "seltsame" Computerverhalten, das du je sehen wirst.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">dil</span> Two Languages, One Idea <span class="title-tr">— İki Dil, Tek Fikir</span><span class="title-de">— Zwei Sprachen, eine Idee</span></h3>
+        <p class="en">"Writing code" sounds mysterious, but it's just writing that same instruction list in a language a computer can follow with zero confusion. Compare the same idea written two ways below — same meaning, different language.</p>
+        <p class="tr"><span class="flag">TR</span>"Kod yazmak" gizemli görünür ama aslında aynı adım listesini, bir bilgisayarın hiç kafası karışmadan takip edebileceği bir dilde yazmaktan ibarettir. Aşağıda aynı fikri iki farklı şekilde yazılmış hâlde karşılaştır — anlam aynı, dil farklı.</p>
+        <p class="de"><span class="flag">DE</span>"Code schreiben" klingt geheimnisvoll, ist aber nur das Aufschreiben derselben Schrittliste in einer Sprache, der ein Computer ohne jede Verwirrung folgen kann. Vergleiche unten dieselbe Idee, auf zwei Arten geschrieben — gleiche Bedeutung, andere Sprache.</p>
+
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>echo "1. isigi ac"          <span class="c"># insan dili: bir tarif gibi okunur</span>
+echo "2. suyu kaynat"        <span class="c"># hâlâ sadece sıralı bir liste</span>
+echo "3. cayi demle"         <span class="c"># kod da tam olarak aynı fikir — sadece bilgisayarın anlayacağı biçimde</span></pre></div>
+
+        <p class="en">Every line above is still just "step 1, then step 2, then step 3" — the exact same idea as the recipe in your kitchen. Real code looks stricter (semicolons, brackets, keywords), but underneath, it's this same plain idea: an ordered list of exact steps.</p>
+        <p class="tr"><span class="flag">TR</span>Yukarıdaki her satır hâlâ sadece "1. adım, sonra 2. adım, sonra 3. adım" demek — mutfağındaki bir tarifle tamamen aynı fikir. Gerçek kod daha katı görünür (noktalı virgüller, parantezler, anahtar kelimeler), ama altında yatan hâlâ bu basit fikirdir: tam, sıralı bir adım listesi.</p>
+        <p class="de"><span class="flag">DE</span>Jede Zeile oben bedeutet immer noch nur "Schritt 1, dann Schritt 2, dann Schritt 3" — genau dieselbe Idee wie das Rezept in deiner Küche. Echter Code sieht strenger aus (Semikolons, Klammern, Schlüsselwörter), aber darunter steckt genau diese einfache Idee: eine geordnete Liste exakter Schritte.</p>
+
+        <div class="tip tip-en"><b>💡 Tip:</b> New vocabulary, plain meaning: <b>code</b> = the written instructions, <b>program</b> = a complete, working set of code, <b>command</b> = one single instruction you give right now.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Yeni kelimeler, sade anlamları: <b>kod</b> = yazılı talimatlar, <b>program</b> = tam, çalışan bir kod bütünü, <b>komut</b> = şu an verdiğin tek bir talimat.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Neue Wörter, einfache Bedeutung: <b>Code</b> = die geschriebenen Anweisungen, <b>Programm</b> = ein vollständiger, funktionierender Code, <b>Befehl</b> = eine einzelne Anweisung, die du gerade jetzt gibst.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">trafik</span> Who's the Traffic Cop? <span class="title-tr">— Trafik Polisi Kim?</span><span class="title-de">— Wer ist der Verkehrspolizist?</span></h3>
+        <p class="en">A computer runs many programs at once — music, browser, this workbook. Someone has to make sure they don't crash into each other while sharing the same hardware. That manager is called the <b>operating system</b> — think of it as a traffic cop, standing in the middle, giving each program its turn and its own lane.</p>
+        <p class="tr"><span class="flag">TR</span>Bir bilgisayar aynı anda birçok programı çalıştırır — müzik, tarayıcı, bu çalışma kitabı. Aynı donanımı paylaşırken bunların birbirine çarpmamasını birinin sağlaması gerekir. Bu yöneticiye <b>işletim sistemi</b> denir — onu ortada duran, her programa sırasını ve kendi şeridini veren bir trafik polisi gibi düşün.</p>
+        <p class="de"><span class="flag">DE</span>Ein Computer führt viele Programme gleichzeitig aus — Musik, Browser, dieses Arbeitsbuch. Jemand muss dafür sorgen, dass sie sich nicht in die Quere kommen, während sie sich dieselbe Hardware teilen. Dieser Manager heißt <b>Betriebssystem</b> — stell es dir wie einen Verkehrspolizisten vor, der in der Mitte steht und jedem Programm seine Reihe und seine eigene Spur zuweist.</p>
+
+        <div class="svg-wrap">
+          <svg viewBox="0 0 640 190" xmlns="http://www.w3.org/2000/svg">
+            <style>
+              .w1b2{fill:#161b10;stroke:#333a24;stroke-width:1;}
+              .w1t2{font-family:'JetBrains Mono',monospace;font-size:12px;fill:#eae6d8;}
+              .w1s2{font-family:Inter,sans-serif;font-size:9.5px;fill:#9a9682;}
+              .w1c2{stroke:#5fb8a6;stroke-width:1.2;}
+            </style>
+            <rect class="w1b2" x="270" y="15" width="100" height="42" rx="6" stroke="#e3a94a"/>
+            <text x="320" y="41" text-anchor="middle" class="w1t2" fill="#e3a94a">🚦 Linux</text>
+
+            <rect class="w1b2" x="30" y="120" width="130" height="42" rx="6"/>
+            <text x="95" y="146" text-anchor="middle" class="w1t2">müzik</text>
+            <rect class="w1b2" x="255" y="120" width="130" height="42" rx="6"/>
+            <text x="320" y="146" text-anchor="middle" class="w1t2">tarayıcı</text>
+            <rect class="w1b2" x="480" y="120" width="130" height="42" rx="6"/>
+            <text x="545" y="146" text-anchor="middle" class="w1t2">workbook</text>
+
+            <line x1="320" y1="57" x2="95" y2="118" class="w1c2"/>
+            <line x1="320" y1="57" x2="320" y2="118" class="w1c2"/>
+            <line x1="320" y1="57" x2="545" y2="118" class="w1c2"/>
+          </svg>
+          <div class="svg-cap">işletim sistemi, tüm programlara sırayla donanımı paylaştırır</div>
+        </div>
+
+        <p class="en">Linux is simply one operating system — one specific traffic cop, used to run phones, game consoles, and almost every server on the internet. The <b>terminal</b> you'll meet starting in Unit 0 is just you talking directly to that traffic cop, typing your instructions instead of clicking icons.</p>
+        <p class="tr"><span class="flag">TR</span>Linux, basitçe bir işletim sistemidir — telefonları, oyun konsollarını ve internetteki neredeyse tüm sunucuları çalıştırmak için kullanılan, belirli bir trafik polisi. Unit 0'dan itibaren tanışacağın <b>terminal</b>, tam olarak bu trafik polisiyle doğrudan konuşman demek — ikonlara tıklamak yerine talimatlarını yazıyorsun.</p>
+        <p class="de"><span class="flag">DE</span>Linux ist einfach ein Betriebssystem — ein bestimmter Verkehrspolizist, der Telefone, Spielkonsolen und fast jeden Server im Internet betreibt. Das <b>Terminal</b>, dem du ab Unit 0 begegnest, bedeutet nur, dass du direkt mit diesem Verkehrspolizisten sprichst — du tippst deine Anweisungen, statt auf Symbole zu klicken.</p>
+
+        <div class="tip tip-en"><b>💡 Tip:</b> You don't need to memorize "operating system" theory. Just remember: someone always manages the sharing, and on this workbook's server, that someone is Linux.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> "İşletim sistemi" teorisini ezberlemene gerek yok. Sadece şunu hatırla: paylaşımı her zaman biri yönetir, ve bu çalışma kitabının sunucusunda o kişi Linux'tur.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Du musst die Theorie des "Betriebssystems" nicht auswendig lernen. Merk dir nur: Jemand verwaltet immer das gemeinsame Nutzen, und auf dem Server dieses Arbeitsbuchs ist das Linux.</div>
+      </div>
+
+      <div class="scen-box" data-scen="w1-ilk-program">
+        <div class="scen-head"><span class="tag">görev 1/2</span> Görev: İlk Programın <span class="title-tr">— gerçek terminalde çöz</span><span class="title-de">— im echten Terminal lösen</span></div>
+        <p class="en">Time to write your very first "program" — a one-step instruction list. In your home directory, create a file named <span class="mono-inline">programim.txt</span> containing exactly the text <span class="mono-inline">MERHABA BEN BIR PROGRAMIM</span> (hint: <span class="mono-inline">echo "..." &gt; programim.txt</span>).</p>
+        <p class="tr"><span class="flag">TR</span>İlk "programını" yazma zamanı — tek adımlık bir talimat listesi. Ev dizininde <span class="mono-inline">programim.txt</span> adında bir dosya oluştur, içine tam olarak <span class="mono-inline">MERHABA BEN BIR PROGRAMIM</span> yazısını koy (ipucu: <span class="mono-inline">echo "..." &gt; programim.txt</span>).</p>
+        <p class="de"><span class="flag">DE</span>Zeit für dein allererstes "Programm" — eine einschrittige Anweisungsliste. Erstelle in deinem Home-Verzeichnis eine Datei namens <span class="mono-inline">programim.txt</span> mit genau dem Text <span class="mono-inline">MERHABA BEN BIR PROGRAMIM</span> (Tipp: <span class="mono-inline">echo "..." &gt; programim.txt</span>).</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('w1-ilk-program')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('w1-ilk-program')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-w1-ilk-program"></div>
+      </div>
+
+      <div class="scen-box" data-scen="w1-sahne-kur">
+        <div class="scen-head"><span class="tag">görev 2/2</span> Görev: İlk Sahneni Kur <span class="title-tr">— gerçek terminalde çöz</span><span class="title-de">— im echten Terminal lösen</span></div>
+        <p class="en">A real program usually lives inside its own folder. Create a folder named <span class="mono-inline">oyunum</span>, step inside it, and create a file named <span class="mono-inline">sahne1.txt</span> containing exactly <span class="mono-inline">BASLA</span>.</p>
+        <p class="tr"><span class="flag">TR</span>Gerçek bir program genelde kendi klasörünün içinde yaşar. <span class="mono-inline">oyunum</span> adında bir klasör oluştur, içine gir ve <span class="mono-inline">sahne1.txt</span> adında, tam olarak <span class="mono-inline">BASLA</span> içeriğine sahip bir dosya oluştur.</p>
+        <p class="de"><span class="flag">DE</span>Ein echtes Programm lebt meist in seinem eigenen Ordner. Erstelle einen Ordner namens <span class="mono-inline">oyunum</span>, wechsle hinein und erstelle eine Datei namens <span class="mono-inline">sahne1.txt</span> mit genau dem Inhalt <span class="mono-inline">BASLA</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('w1-sahne-kur')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('w1-sahne-kur')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-w1-sahne-kur"></div>
+      </div>

@@ -1,0 +1,266 @@
+      <div class="eyebrow">$ cat appendix/crontab.md</div>
+      <h1 class="h-en">Appendix: Crontab Format</h1>
+      <p class="h-tr">Ek: Crontab Zamanlama Formatı</p>
+      <p class="h-de">Anhang: Crontab-Format</p>
+      <div class="purpose">
+        <p class="en">Purpose: schedule scripts to run automatically at fixed times using cron — essential for DevOps automation (backups, log rotation, health checks).</p>
+        <p class="tr">Amaç: cron kullanarak scriptlerin belirli zamanlarda otomatik çalışmasını sağlamak — DevOps otomasyonunda (yedekleme, log döndürme, sağlık kontrolleri) temel bir araç.</p>
+        <p class="de">Zweck: Skripte mit cron zu festen Zeiten automatisch ausführen lassen — essenziell für DevOps-Automatisierung (Backups, Log-Rotation, Health-Checks).</p>
+      </div>
+
+      <details class="notebox">
+        <summary>✎ Notlarım — Crontab</summary>
+        <textarea placeholder="Bu bölümle ilgili notların... buraya yaz." data-note="app"></textarea>
+      </details>
+
+      <div class="topic">
+        <h3><span class="tag">cron</span> The 5-Star Format <span class="title-tr">— 5 yıldızlı format</span><span class="title-de">— Das 5-Sterne-Format</span></h3>
+        <div class="svg-wrap svg-wrap-tr">
+          <svg viewBox="0 0 560 190" xmlns="http://www.w3.org/2000/svg">
+            <style>.b{fill:#161b10;stroke:#333a24;} .t{font-family:'JetBrains Mono',monospace;font-size:16px;fill:#e3a94a;font-weight:700;} .lbl{font-family:Inter,sans-serif;font-size:10.5px;fill:#9a9682;text-anchor:middle;} .ln{stroke:#333a24;}</style>
+            <rect class="b" x="10" y="10" width="90" height="40" rx="6"/><text x="55" y="36" text-anchor="middle" class="t">*</text>
+            <rect class="b" x="110" y="10" width="90" height="40" rx="6"/><text x="155" y="36" text-anchor="middle" class="t">*</text>
+            <rect class="b" x="210" y="10" width="90" height="40" rx="6"/><text x="255" y="36" text-anchor="middle" class="t">*</text>
+            <rect class="b" x="310" y="10" width="90" height="40" rx="6"/><text x="355" y="36" text-anchor="middle" class="t">*</text>
+            <rect class="b" x="410" y="10" width="90" height="40" rx="6"/><text x="455" y="36" text-anchor="middle" class="t">*</text>
+            <rect class="b" x="510" y="10" width="40" height="40" rx="6" stroke="#5fb8a6"/><text x="530" y="36" text-anchor="middle" class="t" font-size="11" fill="#5fb8a6">cmd</text>
+
+            <line class="ln" x1="55" y1="50" x2="55" y2="75"/><text x="55" y="90" class="lbl">Dakika</text><text x="55" y="103" class="lbl">0-59</text>
+            <line class="ln" x1="155" y1="50" x2="155" y2="75"/><text x="155" y="90" class="lbl">Saat</text><text x="155" y="103" class="lbl">0-23</text>
+            <line class="ln" x1="255" y1="50" x2="255" y2="75"/><text x="255" y="90" class="lbl">Ayın Günü</text><text x="255" y="103" class="lbl">1-31</text>
+            <line class="ln" x1="355" y1="50" x2="355" y2="75"/><text x="355" y="90" class="lbl">Ay</text><text x="355" y="103" class="lbl">1-12</text>
+            <line class="ln" x1="455" y1="50" x2="455" y2="75"/><text x="455" y="90" class="lbl">Haftanın Günü</text><text x="455" y="103" class="lbl">0-6 (0=Pazar)</text>
+
+            <text x="280" y="140" text-anchor="middle" class="lbl" font-family="'JetBrains Mono',monospace" fill="#eae6d8" font-size="13">0 13 * * * date &gt;&gt; /home/ec2-user/date.log</text>
+            <text x="280" y="160" text-anchor="middle" class="lbl">→ her gün saat 13:00'te tarihi date.log'a yaz</text>
+          </svg>
+          <div class="svg-cap">dakika · saat · ayın günü · ay · haftanın günü · komut</div>
+        </div>
+        <div class="svg-wrap svg-wrap-de">
+          <svg viewBox="0 0 560 190" xmlns="http://www.w3.org/2000/svg">
+            <style>.b{fill:#161b10;stroke:#333a24;} .t{font-family:'JetBrains Mono',monospace;font-size:16px;fill:#e3a94a;font-weight:700;} .lbl{font-family:Inter,sans-serif;font-size:10.5px;fill:#9a9682;text-anchor:middle;} .ln{stroke:#333a24;}</style>
+            <rect class="b" x="10" y="10" width="90" height="40" rx="6"/><text x="55" y="36" text-anchor="middle" class="t">*</text>
+            <rect class="b" x="110" y="10" width="90" height="40" rx="6"/><text x="155" y="36" text-anchor="middle" class="t">*</text>
+            <rect class="b" x="210" y="10" width="90" height="40" rx="6"/><text x="255" y="36" text-anchor="middle" class="t">*</text>
+            <rect class="b" x="310" y="10" width="90" height="40" rx="6"/><text x="355" y="36" text-anchor="middle" class="t">*</text>
+            <rect class="b" x="410" y="10" width="90" height="40" rx="6"/><text x="455" y="36" text-anchor="middle" class="t">*</text>
+            <rect class="b" x="510" y="10" width="40" height="40" rx="6" stroke="#5fb8a6"/><text x="530" y="36" text-anchor="middle" class="t" font-size="11" fill="#5fb8a6">cmd</text>
+
+            <line class="ln" x1="55" y1="50" x2="55" y2="75"/><text x="55" y="90" class="lbl">Minute</text><text x="55" y="103" class="lbl">0-59</text>
+            <line class="ln" x1="155" y1="50" x2="155" y2="75"/><text x="155" y="90" class="lbl">Stunde</text><text x="155" y="103" class="lbl">0-23</text>
+            <line class="ln" x1="255" y1="50" x2="255" y2="75"/><text x="255" y="90" class="lbl">Tag des Monats</text><text x="255" y="103" class="lbl">1-31</text>
+            <line class="ln" x1="355" y1="50" x2="355" y2="75"/><text x="355" y="90" class="lbl">Monat</text><text x="355" y="103" class="lbl">1-12</text>
+            <line class="ln" x1="455" y1="50" x2="455" y2="75"/><text x="455" y="90" class="lbl">Wochentag</text><text x="455" y="103" class="lbl">0-6 (0=Sonntag)</text>
+
+            <text x="280" y="140" text-anchor="middle" class="lbl" font-family="'JetBrains Mono',monospace" fill="#eae6d8" font-size="13">0 13 * * * date &gt;&gt; /home/ec2-user/date.log</text>
+            <text x="280" y="160" text-anchor="middle" class="lbl">→ jeden Tag um 13:00 Uhr das Datum in date.log schreiben</text>
+          </svg>
+          <div class="svg-cap">Minute · Stunde · Tag des Monats · Monat · Wochentag · Befehl</div>
+        </div>
+        <table class="tbl tbl-en">
+          <tr><th>Symbol</th><th>Meaning</th></tr>
+          <tr><td><code>*</code></td><td>Any/all value</td></tr>
+          <tr><td><code>,</code></td><td>A list of multiple values (e.g. <code>1,15</code>)</td></tr>
+          <tr><td><code>-</code></td><td>A range (e.g. <code>1-5</code>)</td></tr>
+          <tr><td><code>/</code></td><td>A step value (e.g. <code>*/3</code> = every 3 units)</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Sembol</th><th>Anlamı</th></tr>
+          <tr><td><code>*</code></td><td>Her değer (any/all)</td></tr>
+          <tr><td><code>,</code></td><td>Birden çok değer listesi (örn. <code>1,15</code>)</td></tr>
+          <tr><td><code>-</code></td><td>Aralık (örn. <code>1-5</code>)</td></tr>
+          <tr><td><code>/</code></td><td>Adım değeri (örn. <code>*/3</code> = her 3 birimde bir)</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Symbol</th><th>Bedeutung</th></tr>
+          <tr><td><code>*</code></td><td>Jeder Wert (any/all)</td></tr>
+          <tr><td><code>,</code></td><td>Eine Liste mehrerer Werte (z. B. <code>1,15</code>)</td></tr>
+          <tr><td><code>-</code></td><td>Ein Bereich (z. B. <code>1-5</code>)</td></tr>
+          <tr><td><code>/</code></td><td>Ein Schrittwert (z. B. <code>*/3</code> = alle 3 Einheiten)</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>crontab -e     <span class="c"># kendi crontab dosyanı düzenle</span>
+crontab -l     <span class="c"># mevcut cron görevlerini listele</span>
+
+<span class="c"># örnek görevler:</span>
+0 3 * * sun sudo yum update -y   <span class="c"># her Pazar saat 3'te sistemi güncelle</span>
+0 1 * * * date &gt;&gt; ~/date.log    <span class="c"># her gün saat 1'de tarihi kaydet</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> Instead of calculating complex cron expressions by hand, use <a href="https://crontab.guru/" style="color:#5fb8a6" target="_blank">crontab.guru</a> — it instantly explains what you wrote, in English.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Karmaşık cron ifadelerini elle hesaplamak yerine <a href="https://crontab.guru/" style="color:#5fb8a6" target="_blank">crontab.guru</a> sitesini kullan — yazdığın ifadeyi anında İngilizce olarak açıklar.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Anstatt komplexe Cron-Ausdrücke von Hand zu berechnen, nutze <a href="https://crontab.guru/" style="color:#5fb8a6" target="_blank">crontab.guru</a> — es erklärt sofort auf Englisch, was du geschrieben hast.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">komut</span> Managing Crontab: -e / -l / -r / -u <span class="title-tr">— Crontab yönetimi: -e / -l / -r / -u</span><span class="title-de">— Crontab verwalten: -e / -l / -r / -u</span></h3>
+        <p class="en">Four flags cover almost everything you'll do with your own or another user's crontab.</p>
+        <p class="tr"><span class="flag">TR</span>Dört bayrak, kendi veya başka bir kullanıcının crontab'ıyla yapacağın hemen hemen her şeyi kapsar.</p>
+        <p class="de"><span class="flag">DE</span>Vier Flags decken fast alles ab, was du mit deiner eigenen oder einer fremden crontab machen wirst.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Command</th><th>Effect</th></tr>
+          <tr><td><code>crontab -e</code></td><td>Edit your own crontab (opens in default editor)</td></tr>
+          <tr><td><code>crontab -l</code></td><td>List your current cron jobs</td></tr>
+          <tr><td><code>crontab -r</code></td><td>Remove your ENTIRE crontab (no confirmation!)</td></tr>
+          <tr><td><code>crontab -u user -e</code></td><td>Edit another user's crontab (needs root)</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Komut</th><th>Etkisi</th></tr>
+          <tr><td><code>crontab -e</code></td><td>Kendi crontab'ını düzenle (varsayılan editörde açılır)</td></tr>
+          <tr><td><code>crontab -l</code></td><td>Mevcut cron görevlerini listele</td></tr>
+          <tr><td><code>crontab -r</code></td><td>TÜM crontab'ını sil (onay istemez!)</td></tr>
+          <tr><td><code>crontab -u kullanici -e</code></td><td>Başka bir kullanıcının crontab'ını düzenle (root gerekir)</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Befehl</th><th>Wirkung</th></tr>
+          <tr><td><code>crontab -e</code></td><td>Eigene crontab bearbeiten (öffnet im Standardeditor)</td></tr>
+          <tr><td><code>crontab -l</code></td><td>Aktuelle Cron-Jobs auflisten</td></tr>
+          <tr><td><code>crontab -r</code></td><td>GESAMTE crontab löschen (ohne Bestätigung!)</td></tr>
+          <tr><td><code>crontab -u benutzer -e</code></td><td>Crontab eines anderen Benutzers bearbeiten (Root nötig)</td></tr>
+        </table>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>crontab -l                 <span class="c"># once mevcut gorevlere bak</span>
+crontab -e                 <span class="c"># duzenlemeye basla</span>
+sudo crontab -u www-data -l <span class="c"># baska kullanicinin gorevlerini gormek icin root gerekir</span></pre></div>
+        <div class="tip tip-en"><b>⚠️ Warning:</b> <span class="mono-inline">crontab -r</span> deletes everything instantly with zero confirmation prompt — always run <span class="mono-inline">crontab -l</span> first and back up the output before touching <span class="mono-inline">-r</span>.</div>
+        <div class="tip tip-tr"><b>⚠️ Dikkat:</b> <span class="mono-inline">crontab -r</span> sıfır onay istemi olmadan her şeyi anında siler — <span class="mono-inline">-r</span>'ye dokunmadan önce her zaman <span class="mono-inline">crontab -l</span>'i çalıştır ve çıktısını yedekle.</div>
+        <div class="tip tip-de"><b>⚠️ Achtung:</b> <span class="mono-inline">crontab -r</span> löscht alles sofort ohne jede Bestätigung — führe immer zuerst <span class="mono-inline">crontab -l</span> aus und sichere die Ausgabe, bevor du <span class="mono-inline">-r</span> anfasst.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">kısayol</span> Nickname Shortcuts: @reboot, @daily... <span class="title-tr">— Takma ad kısayolları: @reboot, @daily...</span><span class="title-de">— Nickname-Abkürzungen: @reboot, @daily...</span></h3>
+        <p class="en">Instead of writing out all five time fields, cron accepts a handful of readable shortcuts for the most common schedules.</p>
+        <p class="tr"><span class="flag">TR</span>Beş zaman alanının tamamını yazmak yerine, cron en yaygın zamanlamalar için birkaç okunabilir kısayolu kabul eder.</p>
+        <p class="de"><span class="flag">DE</span>Anstatt alle fünf Zeitfelder auszuschreiben, akzeptiert cron einige lesbare Abkürzungen für die häufigsten Zeitpläne.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Shortcut</th><th>Equivalent to</th><th>Runs</th></tr>
+          <tr><td><code>@reboot</code></td><td>—</td><td>Once, at every system startup</td></tr>
+          <tr><td><code>@yearly</code></td><td><code>0 0 1 1 *</code></td><td>Once a year, Jan 1st midnight</td></tr>
+          <tr><td><code>@monthly</code></td><td><code>0 0 1 * *</code></td><td>Once a month, on the 1st</td></tr>
+          <tr><td><code>@weekly</code></td><td><code>0 0 * * 0</code></td><td>Once a week, Sunday midnight</td></tr>
+          <tr><td><code>@daily</code></td><td><code>0 0 * * *</code></td><td>Once a day, midnight</td></tr>
+          <tr><td><code>@hourly</code></td><td><code>0 * * * *</code></td><td>Once every hour</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Kısayol</th><th>Karşılığı</th><th>Çalıştığı zaman</th></tr>
+          <tr><td><code>@reboot</code></td><td>—</td><td>Her sistem açılışında bir kez</td></tr>
+          <tr><td><code>@yearly</code></td><td><code>0 0 1 1 *</code></td><td>Yılda bir kez, 1 Ocak gece yarısı</td></tr>
+          <tr><td><code>@monthly</code></td><td><code>0 0 1 * *</code></td><td>Ayda bir kez, ayın 1'i</td></tr>
+          <tr><td><code>@weekly</code></td><td><code>0 0 * * 0</code></td><td>Haftada bir kez, Pazar gece yarısı</td></tr>
+          <tr><td><code>@daily</code></td><td><code>0 0 * * *</code></td><td>Günde bir kez, gece yarısı</td></tr>
+          <tr><td><code>@hourly</code></td><td><code>0 * * * *</code></td><td>Saatte bir kez</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Abkürzung</th><th>Entspricht</th><th>Läuft</th></tr>
+          <tr><td><code>@reboot</code></td><td>—</td><td>Einmal, bei jedem Systemstart</td></tr>
+          <tr><td><code>@yearly</code></td><td><code>0 0 1 1 *</code></td><td>Einmal im Jahr, 1. Januar Mitternacht</td></tr>
+          <tr><td><code>@monthly</code></td><td><code>0 0 1 * *</code></td><td>Einmal im Monat, am 1.</td></tr>
+          <tr><td><code>@weekly</code></td><td><code>0 0 * * 0</code></td><td>Einmal pro Woche, Sonntag Mitternacht</td></tr>
+          <tr><td><code>@daily</code></td><td><code>0 0 * * *</code></td><td>Einmal täglich, Mitternacht</td></tr>
+          <tr><td><code>@hourly</code></td><td><code>0 * * * *</code></td><td>Einmal pro Stunde</td></tr>
+        </table>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>@reboot /home/user/baslangic.sh        <span class="c"># sunucu her acildiginda bir kez calisir</span>
+@daily /home/user/gunluk-yedek.sh      <span class="c"># her gece yarisi calisir</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> <span class="mono-inline">@reboot</span> is the go-to way to auto-start a script after a server reboot — no need for a full systemd unit for simple cases.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">@reboot</span>, sunucu yeniden başlatıldıktan sonra bir scripti otomatik başlatmanın en pratik yoludur — basit durumlar için tam bir systemd unit'e gerek yok.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> <span class="mono-inline">@reboot</span> ist die naheliegende Möglichkeit, ein Skript nach einem Server-Neustart automatisch zu starten — für einfache Fälle braucht es keine vollständige systemd-Unit.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">ortam</span> Cron Environment Traps <span class="title-tr">— Cron ortam tuzakları</span><span class="title-de">— Cron-Umgebungsfallen</span></h3>
+        <p class="en">A cron job doesn't run in your interactive shell — it gets a minimal environment. Scripts that "work fine when I run them by hand" often silently fail under cron for exactly this reason.</p>
+        <p class="tr"><span class="flag">TR</span>Bir cron görevi senin etkileşimli shell'inde çalışmaz — minimal bir ortam alır. "Elle çalıştırınca sorunsuz çalışıyor" dediğin scriptler tam olarak bu yüzden cron altında sessizce başarısız olur.</p>
+        <p class="de"><span class="flag">DE</span>Ein Cron-Job läuft nicht in deiner interaktiven Shell — er bekommt eine minimale Umgebung. Skripte, die "von Hand ausgeführt einwandfrei funktionieren", scheitern unter cron oft genau aus diesem Grund stillschweigend.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Trap</th><th>Fix</th></tr>
+          <tr><td>Minimal <code>$PATH</code> (often just <code>/usr/bin:/bin</code>)</td><td>Use absolute paths, or set <code>PATH=</code> at the top of the crontab</td></tr>
+          <tr><td>Relative paths in the script</td><td>Always use absolute paths (<code>/home/user/...</code>), never <code>./file</code></td></tr>
+          <tr><td>No shell startup files loaded (no <code>.bashrc</code>)</td><td>Source needed env vars explicitly inside the script</td></tr>
+          <tr><td>Output silently discarded</td><td>Redirect: <code>&gt;&gt; /home/user/log.txt 2&gt;&amp;1</code></td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Tuzak</th><th>Çözüm</th></tr>
+          <tr><td>Minimal <code>$PATH</code> (genellikle sadece <code>/usr/bin:/bin</code>)</td><td>Mutlak yollar kullan veya crontab'ın başına <code>PATH=</code> ayarla</td></tr>
+          <tr><td>Scriptte göreli (relative) yollar</td><td>Her zaman mutlak yollar kullan (<code>/home/user/...</code>), asla <code>./dosya</code> deme</td></tr>
+          <tr><td>Shell başlangıç dosyaları yüklenmez (<code>.bashrc</code> yok)</td><td>Gereken ortam değişkenlerini scriptin içinde açıkça tanımla</td></tr>
+          <tr><td>Çıktı sessizce atılır</td><td>Yönlendir: <code>&gt;&gt; /home/user/log.txt 2&gt;&amp;1</code></td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Falle</th><th>Lösung</th></tr>
+          <tr><td>Minimaler <code>$PATH</code> (oft nur <code>/usr/bin:/bin</code>)</td><td>Absolute Pfade nutzen oder <code>PATH=</code> oben in der crontab setzen</td></tr>
+          <tr><td>Relative Pfade im Skript</td><td>Immer absolute Pfade verwenden (<code>/home/user/...</code>), niemals <code>./datei</code></td></tr>
+          <tr><td>Keine Shell-Startdateien geladen (kein <code>.bashrc</code>)</td><td>Benötigte Umgebungsvariablen explizit im Skript setzen</td></tr>
+          <tr><td>Ausgabe wird stillschweigend verworfen</td><td>Umleiten: <code>&gt;&gt; /home/user/log.txt 2&gt;&amp;1</code></td></tr>
+        </table>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>0 2 * * * /home/user/yedekle.sh &gt;&gt; /home/user/yedekle.log 2&gt;&amp;1
+<span class="c"># mutlak yol + tum ciktiyi (stdout ve stderr) log dosyasina yonlendirme</span></pre></div>
+        <div class="tip tip-en"><b>⚠️ Warning:</b> If a cron job "does nothing" and you can't figure out why, add the output redirection above first — 90% of the time the script was actually failing and just hiding it.</div>
+        <div class="tip tip-tr"><b>⚠️ Dikkat:</b> Bir cron görevi "hiçbir şey yapmıyor" ve nedenini bulamıyorsan, önce yukarıdaki çıktı yönlendirmesini ekle — %90 ihtimalle script aslında başarısız oluyordu, sadece bunu gizliyordu.</div>
+        <div class="tip tip-de"><b>⚠️ Achtung:</b> Wenn ein Cron-Job "nichts tut" und du den Grund nicht findest, füge zuerst die obige Ausgabeumleitung hinzu — in 90% der Fälle ist das Skript tatsächlich fehlgeschlagen und hat es nur versteckt.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">at</span> One-Time Jobs: at, atq, atrm <span class="title-tr">— Tek seferlik görevler: at, atq, atrm</span><span class="title-de">— Einmalige Jobs: at, atq, atrm</span></h3>
+        <p class="en">cron is for repeating schedules. When you only need something to run <b>once</b> at a specific future time, <span class="mono-inline">at</span> is the simpler tool.</p>
+        <p class="tr"><span class="flag">TR</span>cron tekrarlayan zamanlamalar içindir. Bir şeyin sadece belirli bir gelecek zamanda <b>bir kez</b> çalışmasını istediğinde, <span class="mono-inline">at</span> daha basit bir araçtır.</p>
+        <p class="de"><span class="flag">DE</span>cron ist für wiederkehrende Zeitpläne gedacht. Wenn etwas nur <b>einmal</b> zu einem bestimmten zukünftigen Zeitpunkt laufen soll, ist <span class="mono-inline">at</span> das einfachere Werkzeug.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Command</th><th>Effect</th></tr>
+          <tr><td><code>at 22:00</code></td><td>Opens a prompt — type commands, end with Ctrl+D</td></tr>
+          <tr><td><code>atq</code></td><td>Lists pending (queued) at-jobs</td></tr>
+          <tr><td><code>atrm 3</code></td><td>Removes queued job number 3</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Komut</th><th>Etkisi</th></tr>
+          <tr><td><code>at 22:00</code></td><td>Bir istem açar — komutları yaz, Ctrl+D ile bitir</td></tr>
+          <tr><td><code>atq</code></td><td>Bekleyen (kuyruktaki) at görevlerini listeler</td></tr>
+          <tr><td><code>atrm 3</code></td><td>Kuyruktaki 3 numaralı görevi siler</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Befehl</th><th>Wirkung</th></tr>
+          <tr><td><code>at 22:00</code></td><td>Öffnet einen Prompt — Befehle eingeben, mit Strg+D beenden</td></tr>
+          <tr><td><code>atq</code></td><td>Listet wartende (in der Warteschlange stehende) at-Jobs</td></tr>
+          <tr><td><code>atrm 3</code></td><td>Entfernt den wartenden Job Nummer 3</td></tr>
+        </table>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>echo "/home/user/bakim.sh" | at 03:00     <span class="c"># bir seferlik gorevi 03:00'e planla</span>
+atq                                        <span class="c"># kuyrukta ne var, gor</span>
+atrm 2                                     <span class="c"># 2 numarali gorevi iptal et</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> Some minimal Linux images don't have <span class="mono-inline">at</span> installed by default — check with <span class="mono-inline">which at</span> and install the <span class="mono-inline">at</span> package if needed before relying on it in a runbook.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Bazı minimal Linux imajlarında <span class="mono-inline">at</span> varsayılan olarak kurulu gelmez — bir runbook'ta ona güvenmeden önce <span class="mono-inline">which at</span> ile kontrol et ve gerekiyorsa <span class="mono-inline">at</span> paketini kur.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Manche minimalen Linux-Images haben <span class="mono-inline">at</span> nicht standardmäßig installiert — prüfe mit <span class="mono-inline">which at</span> und installiere bei Bedarf das <span class="mono-inline">at</span>-Paket, bevor du dich in einem Runbook darauf verlässt.</div>
+      </div>
+
+      <div class="scen-box" data-scen="app-proje1">
+        <div class="scen-head"><span class="tag">proje 1/3</span> Nightly Backup <span class="title-tr">— gece yarısı yedekleme</span><span class="title-de">— nächtliches Backup</span></div>
+        <p class="en">Write the crontab line that runs <span class="mono-inline">/home/user/yedekle.sh</span> every day at midnight. Save it into <span class="mono-inline">gorev1.cron</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">/home/user/yedekle.sh</span>'i her gece yarısı çalıştıracak crontab satırını yaz. <span class="mono-inline">gorev1.cron</span>'a kaydet.</p>
+        <p class="de"><span class="flag">DE</span>Schreibe die crontab-Zeile, die <span class="mono-inline">/home/user/yedekle.sh</span> jeden Tag um Mitternacht ausführt. Speichere sie in <span class="mono-inline">gorev1.cron</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('app-proje1')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('app-proje1')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-app-proje1"></div>
+      </div>
+      <div class="scen-box" data-scen="app-proje2">
+        <div class="scen-head"><span class="tag">proje 2/3</span> Every 15 Minutes <span class="title-tr">— her 15 dakikada bir</span><span class="title-de">— alle 15 Minuten</span></div>
+        <p class="en">Write the crontab line that runs <span class="mono-inline">/home/user/kontrol.sh</span> every 15 minutes. Save it into <span class="mono-inline">gorev2.cron</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">/home/user/kontrol.sh</span>'i her 15 dakikada bir çalıştıracak crontab satırını yaz. <span class="mono-inline">gorev2.cron</span>'a kaydet.</p>
+        <p class="de"><span class="flag">DE</span>Schreibe die crontab-Zeile, die <span class="mono-inline">/home/user/kontrol.sh</span> alle 15 Minuten ausführt. Speichere sie in <span class="mono-inline">gorev2.cron</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('app-proje2')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('app-proje2')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-app-proje2"></div>
+      </div>
+      <div class="scen-box" data-scen="app-proje3">
+        <div class="scen-head"><span class="tag">proje 3/3</span> Weekly Report <span class="title-tr">— haftalık rapor</span><span class="title-de">— wöchentlicher Bericht</span></div>
+        <p class="en">Write the crontab line that runs <span class="mono-inline">/home/user/rapor.sh</span> every Monday at 9am. Save it into <span class="mono-inline">gorev3.cron</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">/home/user/rapor.sh</span>'i her Pazartesi sabah 9'da çalıştıracak crontab satırını yaz. <span class="mono-inline">gorev3.cron</span>'a kaydet.</p>
+        <p class="de"><span class="flag">DE</span>Schreibe die crontab-Zeile, die <span class="mono-inline">/home/user/rapor.sh</span> jeden Montag um 9 Uhr ausführt. Speichere sie in <span class="mono-inline">gorev3.cron</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('app-proje3')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('app-proje3')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-app-proje3"></div>
+      </div>

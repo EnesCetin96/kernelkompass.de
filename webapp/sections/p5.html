@@ -1,0 +1,239 @@
+      <div class="eyebrow">$ cd part-05/</div>
+      <h1 class="h-en">Filters &amp; Control Operators</h1>
+      <p class="h-tr">Filtreler ve Kontrol Operatörleri</p>
+      <p class="h-de">Filter &amp; Kontrolloperatoren</p>
+      <div class="purpose">
+        <p class="en">Purpose: understand stdin/stdout/stderr, chain commands together with pipes and filters, and control command execution flow with operators like <span class="mono-inline">&amp;&amp;</span>, <span class="mono-inline">||</span>, <span class="mono-inline">;</span>.</p>
+        <p class="tr">Amaç: stdin/stdout/stderr kavramlarını, komutları pipe (boru) ve filtrelerle birbirine bağlamayı, <span class="mono-inline">&amp;&amp;</span>, <span class="mono-inline">||</span>, <span class="mono-inline">;</span> gibi operatörlerle komut akışını kontrol etmeyi öğrenmek.</p>
+        <p class="de">Zweck: stdin/stdout/stderr verstehen, Befehle mit Pipes und Filtern verketten, und den Befehlsablauf mit Operatoren wie <span class="mono-inline">&amp;&amp;</span>, <span class="mono-inline">||</span>, <span class="mono-inline">;</span> steuern.</p>
+      </div>
+
+      <details class="notebox">
+        <summary>✎ Notlarım — Filtreler &amp; Kontrol Operatörleri</summary>
+        <textarea placeholder="Bu bölümle ilgili notların... buraya yaz." data-note="p5"></textarea>
+      </details>
+
+      <div class="topic">
+        <h3><span class="tag">i/o</span> stdin, stdout, stderr <span class="title-tr">— Standart giriş/çıkış/hata</span><span class="title-de">— Standard-Ein-/Ausgabe/Fehler</span></h3>
+        <p class="en">Every program has three standard streams: input coming in, normal output going out, and error messages going out separately.</p>
+        <p class="tr"><span class="flag">TR</span>Her programın üç standart "kanalı" (stream) vardır: içeri giren veri, normal çıktı, ve ayrı olarak giden hata mesajları.</p>
+        <p class="de"><span class="flag">DE</span>Jedes Programm hat drei Standard-"Kanäle" (Streams): eingehende Daten, normale Ausgabe und separat ausgehende Fehlermeldungen.</p>
+        <div class="svg-wrap">
+          <svg viewBox="0 0 500 170" xmlns="http://www.w3.org/2000/svg">
+            <style>.b{fill:#161b10;stroke:#333a24;} .t{font-family:'JetBrains Mono',monospace;font-size:12.5px;fill:#eae6d8;} .ar{stroke:#e3a94a;stroke-width:1.4;marker-end:url(#ah4);} .are{stroke:#d9705f;stroke-width:1.4;marker-end:url(#ah5);}</style>
+            <defs>
+              <marker id="ah4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e3a94a"/></marker>
+              <marker id="ah5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#d9705f"/></marker>
+            </defs>
+            <rect class="b" x="180" y="60" width="140" height="50" rx="6"/><text x="250" y="90" text-anchor="middle" class="t">[ program ]</text>
+            <line x1="20" y1="85" x2="178" y2="85" class="ar"/><text x="90" y="76" text-anchor="middle" class="t" font-size="11" fill="#e3a94a">stdin</text>
+            <line x1="322" y1="80" x2="470" y2="45" class="ar"/><text x="410" y="55" text-anchor="middle" class="t" font-size="11" fill="#e3a94a">stdout</text>
+            <line x1="322" y1="90" x2="470" y2="130" class="are"/><text x="410" y="150" text-anchor="middle" class="t" font-size="11" fill="#d9705f">stderr</text>
+          </svg>
+          <div class="svg-cap svg-cap-en">stdin comes in, stdout carries normal output, stderr carries errors separately</div>
+          <div class="svg-cap svg-cap-tr">stdin girer, stdout normal çıktıyı, stderr hataları ayrı taşır</div>
+          <div class="svg-cap svg-cap-de">stdin kommt herein, stdout trägt die normale Ausgabe, stderr trägt Fehler separat</div>
+        </div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">pipe</span> The Pipe <code>|</code> <span class="title-tr">— Boru operatörü</span><span class="title-de">— Der Pipe-Operator</span></h3>
+        <p class="en">A <b>pipe</b> sends the stdout of one command directly into the stdin of the next — this is how you chain small tools into powerful one-liners.</p>
+        <p class="tr"><span class="flag">TR</span><b>Pipe (boru)</b>, bir komutun çıktısını doğrudan bir sonraki komutun girdisine bağlar — küçük araçları zincirleyerek güçlü tek satırlık komutlar yazmanı sağlar.</p>
+        <p class="de"><span class="flag">DE</span>Eine <b>Pipe</b> leitet die stdout-Ausgabe eines Befehls direkt in die stdin-Eingabe des nächsten — so verkettest du kleine Werkzeuge zu mächtigen Einzeilern.</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>cat colors.txt | grep "blue"
+<span class="c">#   ↑ çıktı        ↑ boru  ↑ filtre</span>
+<span class="c"># cat'in çıktısı, grep'in girdisi olur</span></pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">filtre</span> Filter Commands <span class="title-tr">— Filtre komutları</span><span class="title-de">— Filterbefehle</span></h3>
+        <table class="tbl tbl-en">
+          <tr><th>Command</th><th>What it does</th><th>Example</th></tr>
+          <tr><td><code>tee</code></td><td>Writes input to both the screen and a file at the same time</td><td><code>ls -l | tee file.txt | less</code></td></tr>
+          <tr><td><code>cut</code></td><td>Selects a column based on a given delimiter</td><td><code>cut -d: -f1 /etc/passwd</code> — get usernames</td></tr>
+          <tr><td><code>tr</code></td><td>"Translate" — replaces characters (e.g. lowercase→uppercase)</td><td><code>cat f | tr 'a-z' 'A-Z'</code></td></tr>
+          <tr><td><code>wc</code></td><td>Counts lines/words/characters</td><td><code>wc -l file.txt</code> — count lines</td></tr>
+          <tr><td><code>sort</code></td><td>Sorts alphabetically</td><td><code>sort -r file.txt</code> — reverse sort</td></tr>
+          <tr><td><code>uniq</code></td><td>Removes repeated lines (must sort first!)</td><td><code>sort f | uniq</code></td></tr>
+          <tr><td><code>comm</code></td><td>Compares two sorted files line by line (3 columns: only A, only B, in both)</td><td><code>comm a.txt b.txt</code></td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Komut</th><th>Ne yapar</th><th>Örnek</th></tr>
+          <tr><td><code>tee</code></td><td>Girdiyi hem ekrana hem de bir dosyaya yazar (aynı anda ikisine de)</td><td><code>ls -l | tee file.txt | less</code></td></tr>
+          <tr><td><code>cut</code></td><td>Belirtilen ayraca göre sütun (kolon) seçer</td><td><code>cut -d: -f1 /etc/passwd</code> — kullanıcı adlarını al</td></tr>
+          <tr><td><code>tr</code></td><td>"Translate" — karakterleri değiştirir (örn. küçük→büyük harf)</td><td><code>cat f | tr 'a-z' 'A-Z'</code></td></tr>
+          <tr><td><code>wc</code></td><td>Satır/kelime/karakter sayar</td><td><code>wc -l dosya.txt</code> — satır say</td></tr>
+          <tr><td><code>sort</code></td><td>Alfabetik sıralar</td><td><code>sort -r dosya.txt</code> — ters sırala</td></tr>
+          <tr><td><code>uniq</code></td><td>Tekrarlanan satırları kaldırır (önce sort şart!)</td><td><code>sort f | uniq</code></td></tr>
+          <tr><td><code>comm</code></td><td>İki sıralı dosyayı satır satır karşılaştırır (3 sütun: sadece A, sadece B, ikisinde de)</td><td><code>comm a.txt b.txt</code></td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Befehl</th><th>Was er macht</th><th>Beispiel</th></tr>
+          <tr><td><code>tee</code></td><td>Schreibt die Eingabe gleichzeitig auf den Bildschirm und in eine Datei</td><td><code>ls -l | tee file.txt | less</code></td></tr>
+          <tr><td><code>cut</code></td><td>Wählt eine Spalte anhand eines angegebenen Trennzeichens aus</td><td><code>cut -d: -f1 /etc/passwd</code> — Benutzernamen holen</td></tr>
+          <tr><td><code>tr</code></td><td>"Translate" — ersetzt Zeichen (z. B. klein→groß)</td><td><code>cat f | tr 'a-z' 'A-Z'</code></td></tr>
+          <tr><td><code>wc</code></td><td>Zählt Zeilen/Wörter/Zeichen</td><td><code>wc -l datei.txt</code> — Zeilen zählen</td></tr>
+          <tr><td><code>sort</code></td><td>Sortiert alphabetisch</td><td><code>sort -r datei.txt</code> — umgekehrt sortieren</td></tr>
+          <tr><td><code>uniq</code></td><td>Entfernt wiederholte Zeilen (muss vorher sortiert sein!)</td><td><code>sort f | uniq</code></td></tr>
+          <tr><td><code>comm</code></td><td>Vergleicht zwei sortierte Dateien zeilenweise (3 Spalten: nur A, nur B, in beiden)</td><td><code>comm a.txt b.txt</code></td></tr>
+        </table>
+        <div class="tip tip-en"><b>💡 Tip:</b> <span class="mono-inline">uniq</span> only removes adjacent repeated lines — so you almost always need to <span class="mono-inline">sort</span> first: <span class="mono-inline">sort file | uniq</span>.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">uniq</span> yalnızca birbirine bitişik tekrar eden satırları kaldırır — bu yüzden neredeyse her zaman önce <span class="mono-inline">sort</span> ile sıralaman gerekir: <span class="mono-inline">sort dosya | uniq</span>.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> <span class="mono-inline">uniq</span> entfernt nur benachbarte wiederholte Zeilen — deshalb musst du fast immer zuerst mit <span class="mono-inline">sort</span> sortieren: <span class="mono-inline">sort datei | uniq</span>.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">operatör</span> Control Operators <span class="title-tr">— Kontrol operatörleri</span><span class="title-de">— Kontrolloperatoren</span></h3>
+        <table class="tbl tbl-en">
+          <tr><th>Operator</th><th>Meaning</th></tr>
+          <tr><td><code>;</code></td><td>Runs multiple commands on the same line, in sequence (regardless of each other's result)</td></tr>
+          <tr><td><code>&amp;</code></td><td>Runs the command in the background, shell doesn't wait</td></tr>
+          <tr><td><code>$?</code></td><td>Holds the exit code of the last command run: <code>0</code> = success, others = error</td></tr>
+          <tr><td><code>&amp;&amp;</code></td><td>Logical AND — the second command only runs if the first one SUCCEEDED</td></tr>
+          <tr><td><code>||</code></td><td>Logical OR — the second command only runs if the first one FAILED</td></tr>
+          <tr><td><code>#</code></td><td>Comment line — everything after this sign is ignored by the shell</td></tr>
+          <tr><td><code>\</code></td><td>Line-continuation backslash — continues the command on the next line</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Operatör</th><th>Anlamı</th></tr>
+          <tr><td><code>;</code></td><td>Birden fazla komutu aynı satırda, sırayla çalıştırır (birbirinin sonucuna bakmadan)</td></tr>
+          <tr><td><code>&amp;</code></td><td>Komutu arka planda (background) çalıştırır, shell bekletmez</td></tr>
+          <tr><td><code>$?</code></td><td>Son çalışan komutun çıkış kodunu tutar: <code>0</code> = başarılı, diğerleri = hata</td></tr>
+          <tr><td><code>&amp;&amp;</code></td><td>Mantıksal VE — ikinci komut, sadece ilki BAŞARILI olduysa çalışır</td></tr>
+          <tr><td><code>||</code></td><td>Mantıksal VEYA — ikinci komut, sadece ilki BAŞARISIZ olduysa çalışır</td></tr>
+          <tr><td><code>#</code></td><td>Yorum satırı — bu işaretten sonrası shell tarafından yok sayılır</td></tr>
+          <tr><td><code>\</code></td><td>Satır sonu ters bölü — komutu bir sonraki satırdan devam ettirir</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Operator</th><th>Bedeutung</th></tr>
+          <tr><td><code>;</code></td><td>Führt mehrere Befehle in derselben Zeile nacheinander aus (unabhängig vom Ergebnis des jeweils anderen)</td></tr>
+          <tr><td><code>&amp;</code></td><td>Führt den Befehl im Hintergrund aus, die Shell wartet nicht</td></tr>
+          <tr><td><code>$?</code></td><td>Enthält den Exit-Code des zuletzt ausgeführten Befehls: <code>0</code> = Erfolg, andere = Fehler</td></tr>
+          <tr><td><code>&amp;&amp;</code></td><td>Logisches UND — der zweite Befehl läuft nur, wenn der erste ERFOLGREICH war</td></tr>
+          <tr><td><code>||</code></td><td>Logisches ODER — der zweite Befehl läuft nur, wenn der erste FEHLGESCHLAGEN ist</td></tr>
+          <tr><td><code>#</code></td><td>Kommentarzeile — alles nach diesem Zeichen wird von der Shell ignoriert</td></tr>
+          <tr><td><code>\</code></td><td>Zeilenfortsetzungs-Backslash — setzt den Befehl in der nächsten Zeile fort</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>rm dosya.txt &amp;&amp; echo "silindi" || echo "başarısız"
+<span class="c"># rm başarılıysa "silindi", başarısızsa "başarısız" yazar</span>
+<span class="c"># bu, komut satırında bir if-then-else yapısı kurmanın yoludur</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> Using <span class="mono-inline">&amp;&amp;</span> and <span class="mono-inline">||</span> together builds a full if-else logic: "if it succeeds do this, otherwise do that".</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">&amp;&amp;</span> ve <span class="mono-inline">||</span>'yi birlikte kullanmak, tam bir if-else mantığı kurar: "başarılıysa bunu yap, değilse şunu yap".</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Die Verwendung von <span class="mono-inline">&amp;&amp;</span> und <span class="mono-inline">||</span> zusammen baut eine vollständige if-else-Logik auf: "wenn erfolgreich, mache dies, sonst mache das".</div>
+      </div>
+
+
+      <div class="topic">
+        <h3><span class="tag">yönlendirme</span> Redirection: The Full Set <span class="title-tr">— Yönlendirme: tam set</span><span class="title-de">— Umleitung: das komplette Set</span></h3>
+        <p class="en">Every command has three standard streams: <b>stdin</b> (0, input), <b>stdout</b> (1, normal output) and <b>stderr</b> (2, error output). Redirection operators re-plug these streams into files — and the crucial trick is that <i>errors travel on their own channel</i>.</p>
+        <p class="tr"><span class="flag">TR</span>Her komutun üç standart akışı vardır: <b>stdin</b> (0, girdi), <b>stdout</b> (1, normal çıktı) ve <b>stderr</b> (2, hata çıktısı). Yönlendirme operatörleri bu akışları dosyalara yeniden bağlar — kritik incelik, <i>hataların kendi kanalında yolculuk etmesidir</i>.</p>
+        <p class="de"><span class="flag">DE</span>Jeder Befehl hat drei Standard-Streams: <b>stdin</b> (0, Eingabe), <b>stdout</b> (1, normale Ausgabe) und <b>stderr</b> (2, Fehlerausgabe). Umleitungsoperatoren stöpseln diese Streams in Dateien um — der entscheidende Trick ist, dass <i>Fehler auf ihrem eigenen Kanal reisen</i>.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Operator</th><th>Meaning</th></tr>
+          <tr><td><code>&gt;</code></td><td>stdout to file, OVERWRITE</td></tr>
+          <tr><td><code>&gt;&gt;</code></td><td>stdout to file, APPEND</td></tr>
+          <tr><td><code>&lt;</code></td><td>Feed a file in as stdin</td></tr>
+          <tr><td><code>2&gt;</code></td><td>stderr to file (errors only)</td></tr>
+          <tr><td><code>&amp;&gt;</code></td><td>stdout AND stderr to the same file</td></tr>
+          <tr><td><code>2&gt;&amp;1</code></td><td>Merge stderr into wherever stdout is going</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Operatör</th><th>Anlamı</th></tr>
+          <tr><td><code>&gt;</code></td><td>stdout'u dosyaya, ÜZERİNE YAZ</td></tr>
+          <tr><td><code>&gt;&gt;</code></td><td>stdout'u dosyaya, SONUNA EKLE</td></tr>
+          <tr><td><code>&lt;</code></td><td>Bir dosyayı stdin olarak içeri ver</td></tr>
+          <tr><td><code>2&gt;</code></td><td>stderr'i dosyaya (yalnızca hatalar)</td></tr>
+          <tr><td><code>&amp;&gt;</code></td><td>stdout VE stderr'i aynı dosyaya</td></tr>
+          <tr><td><code>2&gt;&amp;1</code></td><td>stderr'i, stdout nereye gidiyorsa oraya birleştir</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Operator</th><th>Bedeutung</th></tr>
+          <tr><td><code>&gt;</code></td><td>stdout in Datei, ÜBERSCHREIBEN</td></tr>
+          <tr><td><code>&gt;&gt;</code></td><td>stdout in Datei, ANHÄNGEN</td></tr>
+          <tr><td><code>&lt;</code></td><td>Eine Datei als stdin einspeisen</td></tr>
+          <tr><td><code>2&gt;</code></td><td>stderr in Datei (nur Fehler)</td></tr>
+          <tr><td><code>&amp;&gt;</code></td><td>stdout UND stderr in dieselbe Datei</td></tr>
+          <tr><td><code>2&gt;&amp;1</code></td><td>stderr dorthin mischen, wohin stdout geht</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>echo "ilk satır" &gt; gunluk.txt      <span class="c"># dosyayı oluştur/üzerine yaz</span>
+echo "ikinci satır" &gt;&gt; gunluk.txt  <span class="c"># sonuna ekle</span>
+cat gunluk.txt</pre></div>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>ls /yok 2&gt; hatalar.txt             <span class="c"># yalnızca hata mesajını dosyaya yaz</span>
+komut &gt; cikti.log 2&gt;&amp;1             <span class="c"># her şeyi tek log dosyasında topla</span>
+wc -l &lt; welcome.txt                <span class="c"># dosyayı stdin'den ver</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> <span class="mono-inline">cmd &gt; file 2&gt;&amp;1</span> — order matters! First point stdout at the file, THEN merge stderr into it. Reversed, errors still go to the screen.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">komut &gt; dosya 2&gt;&amp;1</span> — sıra önemli! Önce stdout'u dosyaya yönelt, SONRA stderr'i ona birleştir. Ters yazarsan hatalar hâlâ ekrana gider.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> <span class="mono-inline">befehl &gt; datei 2&gt;&amp;1</span> — die Reihenfolge zählt! Richte zuerst stdout auf die Datei, DANN mische stderr hinein. Umgekehrt gehen Fehler weiter auf den Bildschirm.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">awk</span> awk: Field Processing <span class="title-tr">— awk ile alan işleme</span><span class="title-de">— Feldverarbeitung mit awk</span></h3>
+        <p class="en">Where <span class="mono-inline">cut</span> slices columns, <span class="mono-inline">awk</span> is a full mini-language for them: it splits every line into fields (<span class="mono-inline">$1</span>, <span class="mono-inline">$2</span>…), can filter rows by condition, and even do arithmetic across a whole file.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">cut</span> sütunları dilimlerken, <span class="mono-inline">awk</span> onlar için tam bir mini dildir: her satırı alanlara böler (<span class="mono-inline">$1</span>, <span class="mono-inline">$2</span>…), satırları koşula göre süzebilir, hatta tüm dosya üzerinde aritmetik yapabilir.</p>
+        <p class="de"><span class="flag">DE</span>Wo <span class="mono-inline">cut</span> Spalten schneidet, ist <span class="mono-inline">awk</span> eine vollständige Mini-Sprache dafür: Es zerlegt jede Zeile in Felder (<span class="mono-inline">$1</span>, <span class="mono-inline">$2</span>…), kann Zeilen nach Bedingung filtern und sogar über eine ganze Datei hinweg rechnen.</p>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>awk '{print $1}' isimler.txt            <span class="c"># her satırın ilk alanını bas</span>
+awk -F: '{print $1}' /etc/passwd        <span class="c"># -F: ayırıcıyı ':' yap → kullanıcı adları</span>
+awk '$3 &gt; 50 {print $1}' notlar.txt     <span class="c"># 3. alanı 50'den büyük satırların 1. alanı</span>
+awk '{toplam += $2} END {print toplam}' satislar.txt   <span class="c"># 2. sütunun toplamı</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> Rule of thumb: one column → <span class="mono-inline">cut</span>; conditions or math → <span class="mono-inline">awk</span>; find &amp; replace → <span class="mono-inline">sed</span>. The three together cover nearly all text surgery.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Pratik kural: tek sütun → <span class="mono-inline">cut</span>; koşul veya matematik → <span class="mono-inline">awk</span>; bul-değiştir → <span class="mono-inline">sed</span>. Üçü birlikte neredeyse tüm metin ameliyatlarını kapsar.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Faustregel: eine Spalte → <span class="mono-inline">cut</span>; Bedingungen oder Mathematik → <span class="mono-inline">awk</span>; Suchen &amp; Ersetzen → <span class="mono-inline">sed</span>. Zusammen decken die drei fast alle Text-Operationen ab.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">durum</span> Exit Status: $? <span class="title-tr">— Çıkış durumu</span><span class="title-de">— Exit-Status</span></h3>
+        <p class="en">Every command finishes with a hidden number: its <b>exit status</b>. <span class="mono-inline">0</span> means success, anything else means failure. The special variable <span class="mono-inline">$?</span> holds the status of the <i>last</i> command — and it's exactly what <span class="mono-inline">&amp;&amp;</span>, <span class="mono-inline">||</span> and <span class="mono-inline">if</span> look at behind the scenes.</p>
+        <p class="tr"><span class="flag">TR</span>Her komut gizli bir sayıyla biter: <b>çıkış durumu (exit status)</b>. <span class="mono-inline">0</span> başarı, diğer her şey başarısızlık demektir. Özel değişken <span class="mono-inline">$?</span>, <i>son</i> komutun durumunu tutar — ve <span class="mono-inline">&amp;&amp;</span>, <span class="mono-inline">||</span> ile <span class="mono-inline">if</span>'in perde arkasında baktığı şey tam olarak budur.</p>
+        <p class="de"><span class="flag">DE</span>Jeder Befehl endet mit einer versteckten Zahl: seinem <b>Exit-Status</b>. <span class="mono-inline">0</span> bedeutet Erfolg, alles andere Misserfolg. Die Spezialvariable <span class="mono-inline">$?</span> hält den Status des <i>letzten</i> Befehls — und genau darauf schauen <span class="mono-inline">&amp;&amp;</span>, <span class="mono-inline">||</span> und <span class="mono-inline">if</span> hinter den Kulissen.</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>true
+echo $?              <span class="c"># → 0 (başarı)</span>
+false
+echo $?              <span class="c"># → 1 (başarısızlık)</span>
+cat olmayan-dosya.txt
+echo $?              <span class="c"># → 0 olmayan bir sayı: komut başarısız oldu</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> In CI/CD pipelines this single number decides everything: a script that exits non-zero turns the whole pipeline red.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> CI/CD pipeline'larında bu tek sayı her şeyi belirler: sıfırdan farklı bir kodla çıkan script, tüm pipeline'ı kırmızıya çevirir.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> In CI/CD-Pipelines entscheidet diese eine Zahl alles: Ein Skript, das mit einem Wert ungleich null endet, färbt die ganze Pipeline rot.</div>
+      </div>
+
+
+      <div class="scen-box" data-scen="p5-proje1">
+        <div class="scen-head"><span class="tag">proje 1/3</span> Sort the Inventory <span class="title-tr">— stoku sırala</span><span class="title-de">— Bestand sortieren</span></div>
+        <p class="en"><span class="mono-inline">stok.csv</span> lists products in random order. Sort it alphabetically and save the result to <span class="mono-inline">stok-sirali.txt</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">stok.csv</span> ürünleri rastgele sırada listeliyor. Alfabetik sırala, sonucu <span class="mono-inline">stok-sirali.txt</span>'ye kaydet.</p>
+        <p class="de"><span class="flag">DE</span><span class="mono-inline">stok.csv</span> listet Produkte in zufälliger Reihenfolge. Sortiere sie alphabetisch und speichere das Ergebnis in <span class="mono-inline">stok-sirali.txt</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p5-proje1')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p5-proje1')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p5-proje1"></div>
+      </div>
+      <div class="scen-box" data-scen="p5-proje2">
+        <div class="scen-head"><span class="tag">proje 2/3</span> Count the Failures <span class="title-tr">— hataları say</span><span class="title-de">— Fehler zählen</span></div>
+        <p class="en"><span class="mono-inline">app.log</span> contains OK and FAIL lines. Count how many say FAIL and save just the number into <span class="mono-inline">fail-sayisi.txt</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">app.log</span> içinde OK ve FAIL satırları var. Kaç tane FAIL olduğunu say, sadece sayıyı <span class="mono-inline">fail-sayisi.txt</span>'ye kaydet.</p>
+        <p class="de"><span class="flag">DE</span><span class="mono-inline">app.log</span> enthält OK- und FAIL-Zeilen. Zähle, wie viele FAIL sind, und speichere nur die Zahl in <span class="mono-inline">fail-sayisi.txt</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p5-proje2')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p5-proje2')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p5-proje2"></div>
+      </div>
+      <div class="scen-box" data-scen="p5-proje3">
+        <div class="scen-head"><span class="tag">proje 3/3</span> Extract a Column <span class="title-tr">— sütun çıkar</span><span class="title-de">— Spalte extrahieren</span></div>
+        <p class="en"><span class="mono-inline">kullanicilar.csv</span> has columns <span class="mono-inline">isim,sehir</span>. Extract just the city column into <span class="mono-inline">sehirler.txt</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">kullanicilar.csv</span> dosyasında <span class="mono-inline">isim,sehir</span> sütunları var. Sadece şehir sütununu <span class="mono-inline">sehirler.txt</span>'ye çıkar.</p>
+        <p class="de"><span class="flag">DE</span><span class="mono-inline">kullanicilar.csv</span> hat die Spalten <span class="mono-inline">isim,sehir</span>. Extrahiere nur die Stadt-Spalte in <span class="mono-inline">sehirler.txt</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p5-proje3')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p5-proje3')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p5-proje3"></div>
+      </div>

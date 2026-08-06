@@ -1,0 +1,61 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-workbook}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-workbook}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-workbook}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: .
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-workbook}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-workbook}
+      SECRET_KEY: ${SECRET_KEY}
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://kernelkompass.de}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-43200}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      FROM_EMAIL: ${FROM_EMAIL:-no-reply@kernelkompass.de}
+      FROM_NAME: ${FROM_NAME:-KernelKompass}
+      APP_BASE_URL: ${APP_BASE_URL:-https://kernelkompass.de}
+    depends_on:
+      db:
+        condition: service_healthy
+    expose:
+      - "8000"
+    volumes:
+      # Reklam görselleri kalıcı olsun diye (container yeniden build
+      # edilince/silinince kaybolmasın) named volume'a bağlanıyor.
+      - ad_uploads:/app/uploads/ads
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - /home/ubuntu/kernelkompass/webapp:/var/www/webapp:ro
+      - /home/ubuntu/kernelkompass/website:/var/www/website:ro
+      # Ortak config.js (KK_API_BASE) — nginx.conf'taki
+      # "location = /config.js { root /var/www; }" bloğu bu dosyayı
+      # /var/www/config.js yolunda arıyor. Tek dosya mount'u; config.js
+      # proje KÖKÜNDE durur (webapp/ veya website/ içinde DEĞİL).
+      - /home/ubuntu/kernelkompass/config.js:/var/www/config.js:ro
+    depends_on:
+      - backend
+
+volumes:
+  db_data:
+  ad_uploads:

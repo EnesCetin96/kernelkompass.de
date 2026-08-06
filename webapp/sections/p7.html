@@ -1,0 +1,350 @@
+      <div class="eyebrow">$ cd part-07/</div>
+      <h1 class="h-en">Conditional Statements</h1>
+      <p class="h-tr">Koşullu İfadeler (if / elif / case)</p>
+      <p class="h-de">Bedingte Anweisungen (if / elif / case)</p>
+      <div class="purpose">
+        <p class="en">Purpose: make scripts make decisions — if/else/elif chains, nested conditions, boolean logic, and case statements.</p>
+        <p class="tr">Amaç: scriptlerin karar vermesini sağlamak — if/else/elif zincirleri, iç içe koşullar, mantıksal (boolean) işlemler ve case ifadeleri.</p>
+        <p class="de">Zweck: Skripte Entscheidungen treffen lassen — if/else/elif-Ketten, verschachtelte Bedingungen, boolesche Logik und case-Anweisungen.</p>
+      </div>
+
+      <details class="notebox">
+        <summary>✎ Notlarım — Koşullu İfadeler</summary>
+        <textarea placeholder="Bu bölümle ilgili notların... buraya yaz." data-note="p7"></textarea>
+      </details>
+
+      <div class="topic">
+        <h3><span class="tag">if</span> Basic If Statement <span class="title-tr">— Temel if ifadesi</span><span class="title-de">— Grundlegende if-Anweisung</span></h3>
+        <p class="en">"If a test is true, do X. If not, don't."</p>
+        <p class="tr"><span class="flag">TR</span>"Eğer bir test doğruysa, X'i yap. Değilse yapma." — mantık bu kadar basit.</p>
+        <p class="de"><span class="flag">DE</span>"Wenn ein Test wahr ist, mache X. Wenn nicht, tue nichts." — so einfach ist die Logik.</p>
+        <div class="svg-wrap svg-wrap-tr">
+          <svg viewBox="0 0 560 210" xmlns="http://www.w3.org/2000/svg">
+            <style>.b{fill:#161b10;stroke:#333a24;} .d{fill:#161b10;stroke:#e3a94a;} .t{font-family:'JetBrains Mono',monospace;font-size:12px;fill:#eae6d8;} .ar{stroke:#9a9682;stroke-width:1.2;marker-end:url(#ah6tr);} .lbl{font-family:Inter,sans-serif;font-size:10.5px;fill:#9a9682;}</style>
+            <defs><marker id="ah6tr" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#9a9682"/></marker></defs>
+            <rect class="b" x="210" y="10" width="140" height="34" rx="6"/><text x="280" y="32" text-anchor="middle" class="t">number gir</text>
+            <line x1="280" y1="44" x2="280" y2="66" class="ar"/>
+            <polygon class="d" points="280,66 360,106 280,146 200,106"/><text x="280" y="102" text-anchor="middle" class="t" font-size="11">$number</text><text x="280" y="118" text-anchor="middle" class="t" font-size="11">-gt 50 ?</text>
+            <line x1="360" y1="106" x2="430" y2="106" class="ar"/><text x="395" y="98" text-anchor="middle" class="lbl">evet</text>
+            <rect class="b" x="430" y="88" width="120" height="36" rx="6"/><text x="490" y="110" text-anchor="middle" class="t" font-size="11">"büyük" yaz</text>
+            <line x1="280" y1="146" x2="280" y2="180" class="ar"/><text x="300" y="165" class="lbl">hayır</text>
+            <rect class="b" x="210" y="180" width="140" height="30" rx="6"/><text x="280" y="200" text-anchor="middle" class="t" font-size="11">hiçbir şey yazma</text>
+          </svg>
+          <div class="svg-cap">if [[ test ]] then ... fi — en basit karar yapısı</div>
+        </div>
+        <div class="svg-wrap svg-wrap-de">
+          <svg viewBox="0 0 560 210" xmlns="http://www.w3.org/2000/svg">
+            <style>.b{fill:#161b10;stroke:#333a24;} .d{fill:#161b10;stroke:#e3a94a;} .t{font-family:'JetBrains Mono',monospace;font-size:12px;fill:#eae6d8;} .ar{stroke:#9a9682;stroke-width:1.2;marker-end:url(#ah6de);} .lbl{font-family:Inter,sans-serif;font-size:10.5px;fill:#9a9682;}</style>
+            <defs><marker id="ah6de" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#9a9682"/></marker></defs>
+            <rect class="b" x="210" y="10" width="140" height="34" rx="6"/><text x="280" y="32" text-anchor="middle" class="t">number eingeben</text>
+            <line x1="280" y1="44" x2="280" y2="66" class="ar"/>
+            <polygon class="d" points="280,66 360,106 280,146 200,106"/><text x="280" y="102" text-anchor="middle" class="t" font-size="11">$number</text><text x="280" y="118" text-anchor="middle" class="t" font-size="11">-gt 50 ?</text>
+            <line x1="360" y1="106" x2="430" y2="106" class="ar"/><text x="395" y="98" text-anchor="middle" class="lbl">ja</text>
+            <rect class="b" x="430" y="88" width="120" height="36" rx="6"/><text x="490" y="110" text-anchor="middle" class="t" font-size="11">"groß" ausgeben</text>
+            <line x1="280" y1="146" x2="280" y2="180" class="ar"/><text x="300" y="165" class="lbl">nein</text>
+            <rect class="b" x="210" y="180" width="140" height="30" rx="6"/><text x="280" y="200" text-anchor="middle" class="t" font-size="11">nichts ausgeben</text>
+          </svg>
+          <div class="svg-cap">if [[ test ]] then ... fi — die einfachste Entscheidungsstruktur</div>
+        </div>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge">if-statement.sh</span></div>
+<pre>#!/bin/bash
+read -p "Input a number: " number
+
+if [[ $number -gt 50 ]]
+then
+  echo "The number is big."
+fi</pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">op</span> Operators <span class="title-tr">— Karşılaştırma operatörleri</span><span class="title-de">— Vergleichsoperatoren</span></h3>
+        <table class="tbl tbl-en">
+          <tr><th>Type</th><th>Operator</th><th>Meaning</th></tr>
+          <tr><td rowspan="6">Numeric (Relational)</td><td><code>-eq</code></td><td>equal</td></tr>
+          <tr><td><code>-ne</code></td><td>not equal</td></tr>
+          <tr><td><code>-gt</code></td><td>greater than</td></tr>
+          <tr><td><code>-lt</code></td><td>less than</td></tr>
+          <tr><td><code>-ge</code></td><td>greater than or equal</td></tr>
+          <tr><td><code>-le</code></td><td>less than or equal</td></tr>
+          <tr><td rowspan="4">String</td><td><code>=</code></td><td>equal</td></tr>
+          <tr><td><code>!=</code></td><td>not equal</td></tr>
+          <tr><td><code>-z</code></td><td>empty string</td></tr>
+          <tr><td><code>-n</code></td><td>non-empty string</td></tr>
+          <tr><td rowspan="4">File Test</td><td><code>-d</code></td><td>is this a directory</td></tr>
+          <tr><td><code>-f</code></td><td>is this a regular file</td></tr>
+          <tr><td><code>-e</code></td><td>does the file exist</td></tr>
+          <tr><td><code>-x</code></td><td>is it executable</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Tür</th><th>Operatör</th><th>Anlamı</th></tr>
+          <tr><td rowspan="6">Sayısal (Relational)</td><td><code>-eq</code></td><td>eşit</td></tr>
+          <tr><td><code>-ne</code></td><td>eşit değil</td></tr>
+          <tr><td><code>-gt</code></td><td>büyük</td></tr>
+          <tr><td><code>-lt</code></td><td>küçük</td></tr>
+          <tr><td><code>-ge</code></td><td>büyük eşit</td></tr>
+          <tr><td><code>-le</code></td><td>küçük eşit</td></tr>
+          <tr><td rowspan="4">Metinsel (String)</td><td><code>=</code></td><td>eşit</td></tr>
+          <tr><td><code>!=</code></td><td>eşit değil</td></tr>
+          <tr><td><code>-z</code></td><td>boş metin</td></tr>
+          <tr><td><code>-n</code></td><td>boş olmayan metin</td></tr>
+          <tr><td rowspan="4">Dosya (File Test)</td><td><code>-d</code></td><td>bu bir dizin mi</td></tr>
+          <tr><td><code>-f</code></td><td>bu normal bir dosya mı</td></tr>
+          <tr><td><code>-e</code></td><td>dosya var mı</td></tr>
+          <tr><td><code>-x</code></td><td>çalıştırılabilir mi</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Typ</th><th>Operator</th><th>Bedeutung</th></tr>
+          <tr><td rowspan="6">Numerisch (Relational)</td><td><code>-eq</code></td><td>gleich</td></tr>
+          <tr><td><code>-ne</code></td><td>nicht gleich</td></tr>
+          <tr><td><code>-gt</code></td><td>größer als</td></tr>
+          <tr><td><code>-lt</code></td><td>kleiner als</td></tr>
+          <tr><td><code>-ge</code></td><td>größer gleich</td></tr>
+          <tr><td><code>-le</code></td><td>kleiner gleich</td></tr>
+          <tr><td rowspan="4">Zeichenkette (String)</td><td><code>=</code></td><td>gleich</td></tr>
+          <tr><td><code>!=</code></td><td>nicht gleich</td></tr>
+          <tr><td><code>-z</code></td><td>leere Zeichenkette</td></tr>
+          <tr><td><code>-n</code></td><td>nicht-leere Zeichenkette</td></tr>
+          <tr><td rowspan="4">Datei (File Test)</td><td><code>-d</code></td><td>ist dies ein Verzeichnis</td></tr>
+          <tr><td><code>-f</code></td><td>ist dies eine reguläre Datei</td></tr>
+          <tr><td><code>-e</code></td><td>existiert die Datei</td></tr>
+          <tr><td><code>-x</code></td><td>ist sie ausführbar</td></tr>
+        </table>
+        <div class="tip tip-en"><b>⚠️ Warning:</b> Numeric operators (<span class="mono-inline">-eq</span>, <span class="mono-inline">-gt</span> etc.) only work for NUMBERS, not for strings — to compare strings use <span class="mono-inline">=</span> and <span class="mono-inline">!=</span>.</div>
+        <div class="tip tip-tr"><b>⚠️ Dikkat:</b> Sayısal operatörler (<span class="mono-inline">-eq</span>, <span class="mono-inline">-gt</span> vb.) sadece SAYILAR için çalışır, metinler için işe yaramaz — metin karşılaştırmak için <span class="mono-inline">=</span> ve <span class="mono-inline">!=</span> kullan.</div>
+        <div class="tip tip-de"><b>⚠️ Achtung:</b> Numerische Operatoren (<span class="mono-inline">-eq</span>, <span class="mono-inline">-gt</span> usw.) funktionieren nur für ZAHLEN, nicht für Zeichenketten — verwende zum Vergleich von Zeichenketten <span class="mono-inline">=</span> und <span class="mono-inline">!=</span>.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">elif</span> If / Elif / Else &amp; Nesting <span class="title-tr">— Çoklu koşullar ve iç içe yapılar</span><span class="title-de">— Mehrfache Bedingungen und Verschachtelung</span></h3>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge">elif-statement.sh</span></div>
+<pre>#!/bin/bash
+read -p "Input a number: " number
+
+if [[ $number -eq 10 ]]
+then
+  echo "The number is equal to 10."
+elif [[ $number -gt 10 ]]
+then
+  echo "The number is bigger than 10"
+else
+  echo "The number is smaller than 10"
+fi</pre></div>
+        <p class="en">If statements can be <b>nested</b> — an if inside another if — to test multiple conditions in sequence.</p>
+        <p class="tr"><span class="flag">TR</span>If ifadeleri <b>iç içe (nested)</b> yazılabilir — bir if'in içine başka bir if koyarak, sırayla birden fazla koşulu test edebilirsin.</p>
+        <p class="de"><span class="flag">DE</span>If-Anweisungen können <b>verschachtelt</b> werden — ein if innerhalb eines anderen if —, um mehrere Bedingungen nacheinander zu prüfen.</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge">nested-if-statement.sh</span></div>
+<pre>#!/bin/bash
+read -p "Input a number: " number
+
+if [[ $number -gt 10 ]]
+then
+  echo "Number is bigger than 10"
+  if (( $number % 2 == 1 ))
+  then
+    echo "And is an odd number."
+  else
+    echo "And is an even number"
+  fi
+else
+  echo "It is not bigger than 10"
+fi</pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">bool</span> Boolean Operators <span class="title-tr">— Mantıksal operatörler</span><span class="title-de">— Boolesche Operatoren</span></h3>
+        <table class="tbl tbl-en">
+          <tr><th>Operator</th><th>Meaning</th></tr>
+          <tr><td><code>!</code></td><td>Negates (true ↔ false)</td></tr>
+          <tr><td><code>&amp;&amp;</code></td><td>AND — true if both are true</td></tr>
+          <tr><td><code>||</code></td><td>OR — true if either is true</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Operatör</th><th>Anlamı</th></tr>
+          <tr><td><code>!</code></td><td>Değili alır (true ↔ false)</td></tr>
+          <tr><td><code>&amp;&amp;</code></td><td>VE — ikisi de doğruysa true</td></tr>
+          <tr><td><code>||</code></td><td>VEYA — biri doğruysa true</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Operator</th><th>Bedeutung</th></tr>
+          <tr><td><code>!</code></td><td>Negiert (true ↔ false)</td></tr>
+          <tr><td><code>&amp;&amp;</code></td><td>UND — true, wenn beide wahr sind</td></tr>
+          <tr><td><code>||</code></td><td>ODER — true, wenn eines wahr ist</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge">boolean.sh</span></div>
+<pre>#!/bin/bash
+read -p "Input your name: " name
+read -sp "Input your password: " password
+
+if [[ $name = $(whoami) ]] &amp;&amp; [[ $password = Aa1234 ]]
+then
+  echo -e "\nWelcome $(whoami)"
+else
+  echo -e "\nIt is wrong account"
+fi</pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">case</span> Case Statements <span class="title-tr">— Case ifadesi (çoklu dallanma)</span><span class="title-de">— Case-Anweisung (Mehrfachverzweigung)</span></h3>
+        <p class="en">When you have many if/elif branches, a <span class="mono-inline">case</span> statement is cleaner — it matches one variable against several possible values.</p>
+        <p class="tr"><span class="flag">TR</span>Çok fazla if/elif dalın varsa, <span class="mono-inline">case</span> ifadesi daha temizdir — bir değişkeni birden fazla olası değerle eşleştirir.</p>
+        <p class="de"><span class="flag">DE</span>Wenn du viele if/elif-Zweige hast, ist eine <span class="mono-inline">case</span>-Anweisung übersichtlicher — sie vergleicht eine Variable mit mehreren möglichen Werten.</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge">case-statement.sh</span></div>
+<pre>#!/bin/bash
+read -p "Select an operation (1-4): " operation
+
+case $operation in
+  "1")
+     echo "addition"
+     ;;
+  "2")
+     echo "subtraction"
+     ;;
+  *)
+     echo "Wrong choice..."
+     ;;
+esac</pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> <span class="mono-inline">*)</span> always goes last — it means "if none of the above matched", think of it like the "default" in other languages.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">*)</span> her zaman en sonda durur — "yukarıdakilerin hiçbiri eşleşmediyse" demektir, diğer dillerdeki "default" gibi düşün.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> <span class="mono-inline">*)</span> steht immer am Ende — es bedeutet "wenn nichts oben Genanntes zutraf", denk daran wie an das "default" in anderen Sprachen.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">üçtest</span> test vs [ ] vs [[ ]] <span class="title-tr">— test, [ ] ve [[ ]] karşılaştırması</span><span class="title-de">— Vergleich: test, [ ] und [[ ]]</span></h3>
+        <p class="en">All three are the same command in disguise: <span class="mono-inline">test cond</span>, <span class="mono-inline">[ cond ]</span>, and <span class="mono-inline">[[ cond ]]</span> evaluate the same conditions. <span class="mono-inline">[[ ]]</span> is a bash keyword with extra safety: it doesn't split unquoted variables into words and supports pattern matching.</p>
+        <p class="tr"><span class="flag">TR</span>Üçü de aslında aynı komutun farklı kılıklarıdır: <span class="mono-inline">test kosul</span>, <span class="mono-inline">[ kosul ]</span> ve <span class="mono-inline">[[ kosul ]]</span> aynı koşulları değerlendirir. <span class="mono-inline">[[ ]]</span>, bash'e özgü bir anahtar kelimedir ve ekstra güvenlik sağlar: tırnaksız değişkenleri kelimelere bölmez, desen (pattern) eşleştirmeyi destekler.</p>
+        <p class="de"><span class="flag">DE</span>Alle drei sind eigentlich derselbe Befehl in unterschiedlicher Form: <span class="mono-inline">test bedingung</span>, <span class="mono-inline">[ bedingung ]</span> und <span class="mono-inline">[[ bedingung ]]</span> werten dieselben Bedingungen aus. <span class="mono-inline">[[ ]]</span> ist ein Bash-Schlüsselwort mit zusätzlicher Sicherheit: es zerlegt unquotierte Variablen nicht in Wörter und unterstützt Mustererkennung (Pattern Matching).</p>
+        <table class="tbl tbl-en">
+          <tr><th>Form</th><th>Type</th><th>Note</th></tr>
+          <tr><td><code>test $x -eq 5</code></td><td>External/builtin command</td><td>Oldest, POSIX form, no brackets</td></tr>
+          <tr><td><code>[ $x -eq 5 ]</code></td><td>Alias for <code>test</code></td><td>Same command, <code>]</code> is its last argument</td></tr>
+          <tr><td><code>[[ $x -eq 5 ]]</code></td><td>Bash keyword</td><td>Safer: no word-splitting, supports <code>&amp;&amp;</code>/<code>||</code>/<code>=~</code> inside</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Biçim</th><th>Tür</th><th>Not</th></tr>
+          <tr><td><code>test $x -eq 5</code></td><td>Harici/builtin komut</td><td>En eski, POSIX biçimi, köşeli parantez yok</td></tr>
+          <tr><td><code>[ $x -eq 5 ]</code></td><td><code>test</code>'in takma adı</td><td>Aynı komut, <code>]</code> onun son argümanıdır</td></tr>
+          <tr><td><code>[[ $x -eq 5 ]]</code></td><td>Bash anahtar kelimesi</td><td>Daha güvenli: kelime bölünmesi yok, içinde <code>&amp;&amp;</code>/<code>||</code>/<code>=~</code> destekler</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Form</th><th>Typ</th><th>Hinweis</th></tr>
+          <tr><td><code>test $x -eq 5</code></td><td>Externer/eingebauter Befehl</td><td>Älteste, POSIX-Form, keine Klammern</td></tr>
+          <tr><td><code>[ $x -eq 5 ]</code></td><td>Alias für <code>test</code></td><td>Derselbe Befehl, <code>]</code> ist sein letztes Argument</td></tr>
+          <tr><td><code>[[ $x -eq 5 ]]</code></td><td>Bash-Schlüsselwort</td><td>Sicherer: kein Word-Splitting, unterstützt <code>&amp;&amp;</code>/<code>||</code>/<code>=~</code> innen</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>x=5
+if [ $x -eq 5 ]
+then
+  echo "esit"          <span class="c"># [ ] test komutunun takma adidir, calisir</span>
+fi</pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> In modern scripts, prefer <span class="mono-inline">[[ ]]</span> over <span class="mono-inline">[ ]</span> — it avoids classic quoting bugs when a variable is empty or contains spaces.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Modern scriptlerde <span class="mono-inline">[ ]</span> yerine <span class="mono-inline">[[ ]]</span> tercih et — bir değişken boşsa veya boşluk içeriyorsa oluşan klasik tırnak hatalarını önler.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Bevorzuge in modernen Skripten <span class="mono-inline">[[ ]]</span> gegenüber <span class="mono-inline">[ ]</span> — es vermeidet klassische Quoting-Fehler, wenn eine Variable leer ist oder Leerzeichen enthält.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">dosyatest</span> File Test Operators <span class="title-tr">— Dosya test operatörleri</span><span class="title-de">— Datei-Testoperatoren</span></h3>
+        <p class="en">Before touching a file, scripts should check it actually exists and has the right type — file test operators answer these questions inside <span class="mono-inline">[ ]</span> or <span class="mono-inline">[[ ]]</span>.</p>
+        <p class="tr"><span class="flag">TR</span>Bir dosyaya dokunmadan önce scriptler onun gerçekten var olup olmadığını ve doğru türde olup olmadığını kontrol etmelidir — dosya test operatörleri bu soruları <span class="mono-inline">[ ]</span> veya <span class="mono-inline">[[ ]]</span> içinde yanıtlar.</p>
+        <p class="de"><span class="flag">DE</span>Bevor ein Skript eine Datei anfasst, sollte es prüfen, ob sie überhaupt existiert und den richtigen Typ hat — Datei-Testoperatoren beantworten das innerhalb von <span class="mono-inline">[ ]</span> oder <span class="mono-inline">[[ ]]</span>.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Operator</th><th>True when...</th></tr>
+          <tr><td><code>-e file</code></td><td>the path exists (any type)</td></tr>
+          <tr><td><code>-f file</code></td><td>it exists and is a regular file</td></tr>
+          <tr><td><code>-d file</code></td><td>it exists and is a directory</td></tr>
+          <tr><td><code>-s file</code></td><td>it exists and has a size greater than zero</td></tr>
+          <tr><td><code>-r/-w/-x file</code></td><td>it is readable / writable / executable</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Operatör</th><th>Ne zaman doğru...</th></tr>
+          <tr><td><code>-e dosya</code></td><td>yol var (herhangi bir tür)</td></tr>
+          <tr><td><code>-f dosya</code></td><td>var ve normal bir dosya</td></tr>
+          <tr><td><code>-d dosya</code></td><td>var ve bir dizin</td></tr>
+          <tr><td><code>-s dosya</code></td><td>var ve boyutu sıfırdan büyük</td></tr>
+          <tr><td><code>-r/-w/-x dosya</code></td><td>okunabilir / yazılabilir / çalıştırılabilir</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Operator</th><th>Wahr, wenn...</th></tr>
+          <tr><td><code>-e datei</code></td><td>der Pfad existiert (jeder Typ)</td></tr>
+          <tr><td><code>-f datei</code></td><td>existiert und eine reguläre Datei ist</td></tr>
+          <tr><td><code>-d datei</code></td><td>existiert und ein Verzeichnis ist</td></tr>
+          <tr><td><code>-s datei</code></td><td>existiert und größer als null Byte ist</td></tr>
+          <tr><td><code>-r/-w/-x datei</code></td><td>lesbar / schreibbar / ausführbar ist</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>touch veri.txt
+if [ -f veri.txt ]
+then
+  echo "veri.txt normal bir dosya"
+fi
+if [ -d /home ]
+then
+  echo "/home bir dizin"
+fi</pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> Always check <span class="mono-inline">-f</span> or <span class="mono-inline">-d</span> before reading/writing a path in a script — it prevents cryptic errors when the path doesn't exist yet.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Bir scriptte bir yola okuma/yazma yapmadan önce her zaman <span class="mono-inline">-f</span> veya <span class="mono-inline">-d</span> kontrolü yap — yol henüz yoksa çıkan anlaşılmaz hataları önler.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Prüfe in einem Skript vor dem Lesen/Schreiben eines Pfads immer <span class="mono-inline">-f</span> oder <span class="mono-inline">-d</span> — das verhindert kryptische Fehler, wenn der Pfad noch nicht existiert.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">mantık</span> Combining Conditions: -a/-o vs &amp;&amp; / || <span class="title-tr">— Koşulları birleştirme: -a/-o vs &amp;&amp; / ||</span><span class="title-de">— Bedingungen kombinieren: -a/-o vs &amp;&amp; / ||</span></h3>
+        <p class="en">Older scripts combine two tests inside one <span class="mono-inline">[ ]</span> with <span class="mono-inline">-a</span> (AND) / <span class="mono-inline">-o</span> (OR). This is deprecated — modern style uses two separate <span class="mono-inline">[[ ]]</span> tests joined by shell <span class="mono-inline">&amp;&amp;</span> / <span class="mono-inline">||</span>.</p>
+        <p class="tr"><span class="flag">TR</span>Eski scriptler tek bir <span class="mono-inline">[ ]</span> içinde iki testi <span class="mono-inline">-a</span> (VE) / <span class="mono-inline">-o</span> (VEYA) ile birleştirir. Bu artık önerilmez — modern yaklaşım, iki ayrı <span class="mono-inline">[[ ]]</span> testini shell'in <span class="mono-inline">&amp;&amp;</span> / <span class="mono-inline">||</span>'siyle birleştirmektir.</p>
+        <p class="de"><span class="flag">DE</span>Ältere Skripte kombinieren zwei Tests innerhalb eines <span class="mono-inline">[ ]</span> mit <span class="mono-inline">-a</span> (UND) / <span class="mono-inline">-o</span> (ODER). Das gilt als veraltet — moderner Stil verbindet zwei separate <span class="mono-inline">[[ ]]</span>-Tests mit der Shell <span class="mono-inline">&amp;&amp;</span> / <span class="mono-inline">||</span>.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Style</th><th>Example</th><th>Status</th></tr>
+          <tr><td>Legacy, single test</td><td><code>[ -f a.txt -a -f b.txt ]</code></td><td>Deprecated, POSIX-only</td></tr>
+          <tr><td>Modern, chained tests</td><td><code>[[ -f a.txt ]] &amp;&amp; [[ -f b.txt ]]</code></td><td>Recommended</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Biçim</th><th>Örnek</th><th>Durum</th></tr>
+          <tr><td>Eski, tek test</td><td><code>[ -f a.txt -a -f b.txt ]</code></td><td>Önerilmiyor, sadece POSIX</td></tr>
+          <tr><td>Modern, zincirleme test</td><td><code>[[ -f a.txt ]] &amp;&amp; [[ -f b.txt ]]</code></td><td>Önerilir</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Stil</th><th>Beispiel</th><th>Status</th></tr>
+          <tr><td>Legacy, einzelner Test</td><td><code>[ -f a.txt -a -f b.txt ]</code></td><td>Veraltet, nur POSIX</td></tr>
+          <tr><td>Modern, verkettete Tests</td><td><code>[[ -f a.txt ]] &amp;&amp; [[ -f b.txt ]]</code></td><td>Empfohlen</td></tr>
+        </table>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>[ -f a.txt -a -f b.txt ]              <span class="c"># legacy -a/-o birlesimi</span>
+[[ -f a.txt &amp;&amp; -f b.txt ]]             <span class="c"># [[ ]] icinde &amp;&amp; / || destegi</span>
+[ -f a.txt ] &amp;&amp; [ -f b.txt ]           <span class="c"># iki ayri [ ] testi, shell ile birlestirilir</span></pre></div>
+        <div class="tip tip-en"><b>⚠️ Warning:</b> This simulator's condition checker doesn't support <span class="mono-inline">&amp;&amp;</span>/<span class="mono-inline">||</span> or <span class="mono-inline">-a</span>/<span class="mono-inline">-o</span> inside a single bracket test — on real Linux both styles work as shown above.</div>
+        <div class="tip tip-tr"><b>⚠️ Dikkat:</b> Bu simülatörün koşul denetleyicisi tek bir köşeli parantez testinin içinde <span class="mono-inline">&amp;&amp;</span>/<span class="mono-inline">||</span> veya <span class="mono-inline">-a</span>/<span class="mono-inline">-o</span>'yu desteklemez — gerçek Linux'ta her iki biçim de yukarıdaki gibi çalışır.</div>
+        <div class="tip tip-de"><b>⚠️ Achtung:</b> Der Bedingungsprüfer dieses Simulators unterstützt <span class="mono-inline">&amp;&amp;</span>/<span class="mono-inline">||</span> oder <span class="mono-inline">-a</span>/<span class="mono-inline">-o</span> nicht innerhalb eines einzelnen Klammertests — auf echtem Linux funktionieren beide Stile wie oben gezeigt.</div>
+      </div>
+
+      <div class="scen-box" data-scen="p7-proje1">
+        <div class="scen-head"><span class="tag">proje 1/3</span> if / else <span class="title-tr">— if / else</span><span class="title-de">— if / else</span></div>
+        <p class="en">Set <span class="mono-inline">sayi=7</span>. If it's greater than 10 print "Büyük", otherwise "Küçük". Redirect the output into <span class="mono-inline">sonuc.txt</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">sayi=7</span> ata. 10'dan büyükse "Büyük", değilse "Küçük" yaz. Çıktıyı <span class="mono-inline">sonuc.txt</span>'ye yönlendir.</p>
+        <p class="de"><span class="flag">DE</span>Setze <span class="mono-inline">sayi=7</span>. Wenn größer als 10, gib "Büyük" aus, sonst "Küçük". Leite die Ausgabe in <span class="mono-inline">sonuc.txt</span> um.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p7-proje1')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p7-proje1')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p7-proje1"></div>
+      </div>
+      <div class="scen-box" data-scen="p7-proje2">
+        <div class="scen-head"><span class="tag">proje 2/3</span> Grading with elif <span class="title-tr">— elif ile notlandırma</span><span class="title-de">— Benotung mit elif</span></div>
+        <p class="en">Set <span class="mono-inline">nota=55</span>. Using an elif chain (&gt;=85 AA, &gt;=70 BA, &gt;=50 CC, else FF), write the letter grade into <span class="mono-inline">not-sonucu.txt</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">nota=55</span> ata. elif zinciriyle (&gt;=85 AA, &gt;=70 BA, &gt;=50 CC, yoksa FF) harf notunu <span class="mono-inline">not-sonucu.txt</span>'ye yaz.</p>
+        <p class="de"><span class="flag">DE</span>Setze <span class="mono-inline">nota=55</span>. Schreibe mit einer elif-Kette (&gt;=85 AA, &gt;=70 BA, &gt;=50 CC, sonst FF) die Buchstabennote in <span class="mono-inline">not-sonucu.txt</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p7-proje2')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p7-proje2')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p7-proje2"></div>
+      </div>
+      <div class="scen-box" data-scen="p7-proje3">
+        <div class="scen-head"><span class="tag">proje 3/3</span> Day of the Week with case <span class="title-tr">— case ile haftanın günü</span><span class="title-de">— Wochentag mit case</span></div>
+        <p class="en">Set <span class="mono-inline">gun=3</span>. Using <span class="mono-inline">case</span>, map 1→Pazartesi, 2→Salı, 3→Çarşamba... and write the result into <span class="mono-inline">gun-adi.txt</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">gun=3</span> ata. <span class="mono-inline">case</span> ile 1→Pazartesi, 2→Salı, 3→Çarşamba... eşle, sonucu <span class="mono-inline">gun-adi.txt</span>'ye yaz.</p>
+        <p class="de"><span class="flag">DE</span>Setze <span class="mono-inline">gun=3</span>. Ordne mit <span class="mono-inline">case</span> 1→Pazartesi, 2→Salı, 3→Çarşamba... zu und schreibe das Ergebnis in <span class="mono-inline">gun-adi.txt</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p7-proje3')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p7-proje3')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p7-proje3"></div>
+      </div>

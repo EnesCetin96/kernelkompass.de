@@ -1,0 +1,193 @@
+      <div class="eyebrow">$ cd part-00/</div>
+      <h1 class="h-en">Unit 0 — The Explorer's First Steps</h1>
+      <p class="h-tr">Sıfırıncı Bölüm — Kaşifin İlk Adımları</p>
+      <p class="h-de">Einheit 0 — Die ersten Schritte des Entdeckers</p>
+      <div class="purpose">
+        <p class="en">Purpose: before touching any "real" Linux command, meet your tool — the terminal — and take your first steps as an Explorer. Nothing here can break anything. Every risky move comes with a safety net, so you can experiment freely.</p>
+        <p class="tr">Amaç: "gerçek" bir Linux komutuna dokunmadan önce aracınla — terminalle — tanışmak ve bir Kaşif olarak ilk adımlarını atmak. Burada hiçbir şeyi bozamazsın. Riskli görünen her adımın bir güvenlik ağı var, yani özgürce denemeler yapabilirsin.</p>
+        <p class="de">Zweck: Bevor du einen "echten" Linux-Befehl anfasst, lerne dein Werkzeug — das Terminal — kennen und mach deine ersten Schritte als Entdecker. Hier kannst du nichts kaputt machen. Jeder riskant wirkende Schritt hat ein Sicherheitsnetz, du kannst also frei ausprobieren.</p>
+      </div>
+
+      <details class="notebox">
+        <summary>✎ Notlarım — Ön Bölüm</summary>
+        <textarea placeholder="Bu bölümle ilgili notların, takıldığın komutlar, kendi örneklerin... buraya yaz." data-note="p0"></textarea>
+      </details>
+
+      <div class="topic">
+        <h3><span class="tag">adım 0</span> Meet Your Compass <span class="title-tr">— Pusulanı Tanı</span><span class="title-de">— Lerne deinen Kompass kennen</span></h3>
+        <p class="en">That blinking line at the bottom of the screen is called the <b>terminal</b>. It's not scary — it's just waiting for you to type something and press <span class="mono-inline">Enter</span>. That's it. No command is required yet: just get used to the feeling of "type → send → something happens".</p>
+        <p class="tr"><span class="flag">TR</span>Ekranın altındaki yanıp sönen o çizgiye <b>terminal</b> denir. Korkulacak bir şey değil — sadece senin bir şeyler yazıp <span class="mono-inline">Enter</span>'a basmanı bekliyor. Hepsi bu. Henüz hiçbir komut gerekmiyor: sadece "yaz → gönder → bir şey olur" hissine alış.</p>
+        <p class="de"><span class="flag">DE</span>Diese blinkende Linie unten auf dem Bildschirm heißt <b>Terminal</b>. Das ist nicht gruselig — es wartet nur darauf, dass du etwas eintippst und <span class="mono-inline">Enter</span> drückst. Das ist alles. Noch ist kein Befehl nötig: gewöhne dich einfach an das Gefühl "tippen → senden → etwas passiert".</p>
+
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>help                      <span class="c"># Pusula sana neler yapabileceğini anlatır — sadece oku, bir şeyi bozmuyor</span>
+pwd                       <span class="c"># Şu an haritada neredesin? — ilk gerçek sinyalin</span></pre></div>
+
+        <p class="en">The <span class="mono-inline">$</span> sign at the end of the prompt matters: it means "I'm ready, waiting for your command."</p>
+        <p class="tr"><span class="flag">TR</span>Prompt'un sonundaki <span class="mono-inline">$</span> işareti "Ben hazırım, komutunu bekliyorum" demek. Sen yazdıkça o satırda görünür, <span class="mono-inline">Enter</span>'a basınca terminal onu okur ve cevap verir.</p>
+        <p class="de"><span class="flag">DE</span>Das <span class="mono-inline">$</span>-Zeichen am Ende der Eingabeaufforderung bedeutet "Ich bin bereit, ich warte auf deinen Befehl". Während du tippst, erscheint es in dieser Zeile, und wenn du <span class="mono-inline">Enter</span> drückst, liest das Terminal es und antwortet.</p>
+
+        <div class="tip tip-en"><b>💡 Tip:</b> Made a typo? Nothing bad happens — the terminal will just say it doesn't recognize the command. That's not failure, that's just feedback. Try again.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Yazım hatası mı yaptın? Kötü bir şey olmaz — terminal sadece o komutu tanımadığını söyler. Bu başarısızlık değil, sadece geri bildirimdir. Tekrar dene.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Hast du dich vertippt? Es passiert nichts Schlimmes — das Terminal sagt nur, dass es den Befehl nicht kennt. Das ist kein Scheitern, nur eine Rückmeldung. Versuch es noch einmal.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">adım 1</span> Draw the Map <span class="title-tr">— Haritayı Çiz</span><span class="title-de">— Zeichne die Karte</span></h3>
+        <p class="en">A computer's files live inside folders, and folders live inside other folders — like nested boxes. <span class="mono-inline">pwd</span> tells you which box you're standing in, <span class="mono-inline">ls</span> shows you what's inside it, and <span class="mono-inline">cd</span> lets you step into another box.</p>
+        <p class="tr"><span class="flag">TR</span>Bir bilgisayarın dosyaları klasörlerin içinde yaşar, klasörler de başka klasörlerin içinde — iç içe kutular gibi. <span class="mono-inline">pwd</span> hangi kutunun içinde durduğunu söyler, <span class="mono-inline">ls</span> içinde ne olduğunu gösterir, <span class="mono-inline">cd</span> ise başka bir kutuya adım atmanı sağlar.</p>
+        <p class="de"><span class="flag">DE</span>Die Dateien eines Computers leben in Ordnern, und Ordner leben in anderen Ordnern — wie ineinander verschachtelte Kisten. <span class="mono-inline">pwd</span> sagt dir, in welcher Kiste du gerade stehst, <span class="mono-inline">ls</span> zeigt dir, was darin ist, und mit <span class="mono-inline">cd</span> steigst du in eine andere Kiste.</p>
+
+        <div class="svg-wrap">
+          <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg">
+            <style>
+              .box{fill:#161b10;stroke:#333a24;stroke-width:1;}
+              .boxlbl{font-family:'JetBrains Mono',monospace;font-size:13px;fill:#eae6d8;}
+              .boxsub{font-family:Inter,sans-serif;font-size:10px;fill:#9a9682;}
+              .conn{stroke:#5fb8a6;stroke-width:1.3;}
+            </style>
+            <rect class="box" x="20" y="20" width="180" height="46" rx="6" stroke="#e3a94a"/>
+            <text x="110" y="40" text-anchor="middle" class="boxlbl" fill="#e3a94a">~ (ev üssün)</text>
+            <text x="110" y="54" text-anchor="middle" class="boxsub">pwd burada olduğunu söyler</text>
+
+            <rect class="box" x="240" y="20" width="180" height="46" rx="6" stroke="#5fb8a6"/>
+            <text x="330" y="40" text-anchor="middle" class="boxlbl" fill="#5fb8a6">linux-lessons/</text>
+            <text x="330" y="54" text-anchor="middle" class="boxsub">ls ile görünür bir kutu</text>
+
+            <rect class="box" x="460" y="20" width="160" height="46" rx="6"/>
+            <text x="540" y="40" text-anchor="middle" class="boxlbl">merkez-us/</text>
+            <text x="540" y="54" text-anchor="middle" class="boxsub">cd ile içine girilir</text>
+
+            <line x1="200" y1="43" x2="238" y2="43" class="conn"/>
+            <line x1="420" y1="43" x2="458" y2="43" class="conn"/>
+
+            <rect class="box" x="240" y="110" width="180" height="46" rx="6"/>
+            <text x="330" y="130" text-anchor="middle" class="boxlbl">welcome.txt</text>
+            <text x="330" y="144" text-anchor="middle" class="boxsub">bir dosya — kutu değil</text>
+            <line x1="330" y1="66" x2="330" y2="108" class="conn"/>
+          </svg>
+          <div class="svg-cap">pwd = "neredeyim?" · ls = "burada ne var?" · cd = "şuraya git"</div>
+        </div>
+
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>pwd                       <span class="c"># tam olarak hangi kutudasın?</span>
+ls                        <span class="c"># bu kutunun içinde ne var?</span>
+cd linux-lessons          <span class="c"># o kutunun içine gir</span>
+pwd                       <span class="c"># harita güncellendi mi, kontrol et</span>
+cd ..                     <span class="c"># bir üst kutuya geri dön</span></pre></div>
+
+        <div class="tip tip-en"><b>💡 Tip:</b> <span class="mono-inline">cd ..</span> always means "go back up one box" — it works everywhere, memorize it, it's your emergency exit.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">cd ..</span> her zaman "bir üst kutuya çık" demektir — her yerde işe yarar, ezberle, bu senin acil çıkışın.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> <span class="mono-inline">cd ..</span> bedeutet immer "eine Kiste nach oben gehen" — funktioniert überall, präg es dir ein, es ist dein Notausgang.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">adım 2</span> First Signal <span class="title-tr">— İlk Sinyal</span><span class="title-de">— Erstes Signal</span></h3>
+        <p class="en">Time for instant feedback. <span class="mono-inline">echo</span> makes the terminal repeat back whatever you tell it — your first "I made something happen" moment.</p>
+        <p class="tr"><span class="flag">TR</span>Anında geri bildirim zamanı. <span class="mono-inline">echo</span>, terminalin senin söylediğin şeyi aynen tekrar etmesini sağlar — "bir şey oldu!" hissini yaşayacağın ilk an.</p>
+        <p class="de"><span class="flag">DE</span>Zeit für sofortiges Feedback. <span class="mono-inline">echo</span> lässt das Terminal genau das wiederholen, was du ihm sagst — dein erster "Ich habe etwas bewirkt!"-Moment.</p>
+
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>echo Merhaba Kaşif!             <span class="c"># terminal seni selamlar, aynen tekrar eder</span>
+echo "Sinyal gonderildi\nPusula calisiyor"   <span class="c"># \n yeni satıra geçirir — küçük bir "sinyal ekranı"</span></pre></div>
+
+        <p class="en">The <span class="mono-inline">\n</span> inside quotes means "start a new line" — you just made a two-line message with one command.</p>
+        <p class="tr"><span class="flag">TR</span>Tırnak içindeki <span class="mono-inline">\n</span> "yeni satıra geç" demektir — tek bir komutla iki satırlık bir mesaj oluşturdun.</p>
+        <p class="de"><span class="flag">DE</span>Das <span class="mono-inline">\n</span> in Anführungszeichen bedeutet "beginne eine neue Zeile" — mit einem einzigen Befehl hast du gerade eine zweizeilige Nachricht erstellt.</p>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">adım 3</span> Build Your Base <span class="title-tr">— Üssünü Kur</span><span class="title-de">— Baue deine Basis</span></h3>
+        <p class="en">Creating something is much less scary than deleting it. <span class="mono-inline">mkdir</span> builds a new folder (a new box), <span class="mono-inline">touch</span> creates a new, empty file inside it. Nothing here can go wrong — you're only adding, not removing.</p>
+        <p class="tr"><span class="flag">TR</span>Bir şey yaratmak, onu silmekten çok daha az korkutucudur. <span class="mono-inline">mkdir</span> yeni bir klasör (yeni bir kutu) inşa eder, <span class="mono-inline">touch</span> ise içine boş, yeni bir dosya oluşturur. Burada hiçbir şey ters gidemez — sadece ekliyorsun, çıkarmıyorsun.</p>
+        <p class="de"><span class="flag">DE</span>Etwas zu erschaffen ist viel weniger beängstigend, als es zu löschen. <span class="mono-inline">mkdir</span> baut einen neuen Ordner (eine neue Kiste), <span class="mono-inline">touch</span> erstellt darin eine neue, leere Datei. Hier kann nichts schiefgehen — du fügst nur hinzu, du entfernst nichts.</p>
+
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>mkdir merkez-us          <span class="c"># yeni bir üs kur</span>
+cd merkez-us             <span class="c"># üssüne gir</span>
+touch sinyal.txt         <span class="c"># ilk dosyanı oluştur — şu an boş</span>
+ls                       <span class="c"># üssünde ne var, kontrol et</span></pre></div>
+
+        <div class="tip tip-en"><b>💡 Tip:</b> <span class="mono-inline">touch</span> only creates an empty file — it doesn't write anything inside it. For that, you need Step 4.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> <span class="mono-inline">touch</span> sadece boş bir dosya oluşturur — içine bir şey yazmaz. Onun için Adım 4'e ihtiyacın var.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> <span class="mono-inline">touch</span> erstellt nur eine leere Datei — es schreibt nichts hinein. Dafür brauchst du Schritt 4.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">adım 4</span> Leave a Note <span class="title-tr">— Not Bırak</span><span class="title-de">— Hinterlasse eine Notiz</span></h3>
+        <p class="en"><span class="mono-inline">nano</span> opens a simple text editor right inside the terminal — type freely, then save. Afterwards, <span class="mono-inline">cat</span> lets you read any file's content back on screen.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">nano</span> terminalin içinde basit bir metin editörü açar — özgürce yaz, sonra kaydet. Ardından <span class="mono-inline">cat</span> ile herhangi bir dosyanın içeriğini ekranda okuyabilirsin.</p>
+        <p class="de"><span class="flag">DE</span><span class="mono-inline">nano</span> öffnet direkt im Terminal einen einfachen Texteditor — schreib frei drauflos und speichere dann. Danach kannst du mit <span class="mono-inline">cat</span> den Inhalt jeder Datei auf dem Bildschirm lesen.</p>
+
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>nano sinyal.txt          <span class="c"># editör açılır — bir şeyler yaz, "Kaydet" e bas</span>
+cat sinyal.txt           <span class="c"># az önce yazdığın notu ekranda oku</span></pre></div>
+
+        <div class="tip tip-en"><b>💡 Tip:</b> You can also write into a file without opening an editor: <span class="mono-inline">echo "merhaba" &gt; sinyal.txt</span> writes straight into the file — the <span class="mono-inline">&gt;</span> arrow means "send this text into that file".</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Editör açmadan da bir dosyaya yazabilirsin: <span class="mono-inline">echo "merhaba" &gt; sinyal.txt</span> doğrudan dosyanın içine yazar — <span class="mono-inline">&gt;</span> oku "bu yazıyı o dosyanın içine gönder" demektir.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Du kannst auch ohne Editor in eine Datei schreiben: <span class="mono-inline">echo "merhaba" &gt; sinyal.txt</span> schreibt direkt in die Datei — der Pfeil <span class="mono-inline">&gt;</span> bedeutet "sende diesen Text in diese Datei".</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">adım 5</span> The Responsibility Task <span class="title-tr">— Sorumluluk Görevi</span><span class="title-de">— Die Verantwortungsaufgabe</span></h3>
+        <p class="en">Every explorer eventually has to delete something. <span class="mono-inline">rm</span> removes a file — but in this workbook, it doesn't vanish forever. It gets moved into a safety folder called <span class="mono-inline">cop-kutusu</span> (trash bin). If you change your mind, <span class="mono-inline">kurtar &lt;isim&gt;</span> ("rescue") brings it straight back to where it was.</p>
+        <p class="tr"><span class="flag">TR</span>Her kaşif er ya da geç bir şeyi silmek zorunda kalır. <span class="mono-inline">rm</span> bir dosyayı kaldırır — ama bu çalışma kitabında dosya sonsuza dek yok olmaz. <span class="mono-inline">cop-kutusu</span> adında güvenli bir klasöre taşınır. Fikrini değiştirirsen, <span class="mono-inline">kurtar &lt;isim&gt;</span> onu tam olarak eski yerine geri getirir.</p>
+        <p class="de"><span class="flag">DE</span>Jeder Entdecker muss irgendwann etwas löschen. <span class="mono-inline">rm</span> entfernt eine Datei — aber in diesem Arbeitsbuch verschwindet sie nicht für immer. Sie wird in einen Sicherheitsordner namens <span class="mono-inline">cop-kutusu</span> (Papierkorb) verschoben. Wenn du deine Meinung änderst, bringt <span class="mono-inline">kurtar &lt;isim&gt;</span> ("retten") sie genau an ihren alten Platz zurück.</p>
+
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>rm sinyal.txt            <span class="c"># siliniyor gibi görünür ama cop-kutusu'na taşınır</span>
+ls cop-kutusu            <span class="c"># bak, orada duruyor</span>
+kurtar sinyal.txt        <span class="c"># pişman oldun, geri getir</span>
+ls                       <span class="c"># eski yerinde, aynen geri geldi</span></pre></div>
+
+        <div class="tip tip-en"><b>💡 Tip:</b> Careful — this safety net only exists here, in Unit 0. Starting from Unit 1, <span class="mono-inline">rm</span> becomes real and permanent, exactly like on a real Linux system. Enjoy the training wheels while they last!</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Dikkat — bu güvenlik ağı sadece burada, Ön Bölüm'de var. Unit 1'den itibaren <span class="mono-inline">rm</span> gerçek Linux'taki gibi kalıcı ve gerçek hale gelir. Eğitim tekerlekleri dururken tadını çıkar!</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Achtung — dieses Sicherheitsnetz gibt es nur hier, in Einheit 0. Ab Unit 1 wird <span class="mono-inline">rm</span> genau wie auf einem echten Linux-System endgültig und real. Genieße die Stützräder, solange es sie gibt!</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">adım 6</span> Graduation <span class="title-tr">— Mezuniyet</span><span class="title-de">— Abschluss</span></h3>
+        <p class="en">You've drawn the map, sent your first signal, built a base, left a note, and handled a real responsibility with a safety net underneath you. That's every core habit a Linux user relies on daily — you just did it as an Explorer.</p>
+        <p class="tr"><span class="flag">TR</span>Haritayı çizdin, ilk sinyalini gönderdin, bir üs kurdun, bir not bıraktın ve altında bir güvenlik ağı varken gerçek bir sorumluluğu yönettin. Bunların hepsi bir Linux kullanıcısının her gün dayandığı temel alışkanlıklar — sen bunları bir Kaşif olarak yaptın.</p>
+        <p class="de"><span class="flag">DE</span>Du hast die Karte gezeichnet, dein erstes Signal gesendet, eine Basis gebaut, eine Notiz hinterlassen und mit einem Sicherheitsnetz unter dir eine echte Verantwortung übernommen. Das sind genau die Grundgewohnheiten, auf die sich ein Linux-Nutzer täglich verlässt — du hast sie gerade als Entdecker gemeistert.</p>
+
+        <div class="tip tip-en"><b>💡 Rank up:</b> Çırak Kaşif → <b>Kaşif</b>. Unit 1 removes the safety net and takes you into real file management — the same commands, but now for real.</div>
+        <div class="tip tip-tr"><b>💡 Rütbe atladın:</b> Çırak Kaşif → <b>Kaşif</b>. Unit 1'de güvenlik ağı kalkıyor ve seni gerçek dosya yönetimine götürüyor — aynı komutlar, ama artık gerçek.</div>
+        <div class="tip tip-de"><b>💡 Rangaufstieg:</b> Lehrling-Entdecker → <b>Entdecker</b>. Unit 1 entfernt das Sicherheitsnetz und führt dich in die echte Dateiverwaltung ein — dieselben Befehle, aber jetzt in echt.</div>
+      </div>
+
+      <div class="scen-box" data-scen="p0-ilk-us">
+        <div class="scen-head"><span class="tag">görev 1/3</span> Kaşif Görevi: İlk Üs <span class="title-tr">— gerçek terminalde çöz</span><span class="title-de">— im echten Terminal lösen</span></div>
+        <p class="en">Build your first base. In your home directory, create a folder named <span class="mono-inline">merkez-us</span>. Inside it, create an empty file named <span class="mono-inline">sinyal.txt</span> (hint: <span class="mono-inline">mkdir</span>, then <span class="mono-inline">cd</span>, then <span class="mono-inline">touch</span>).</p>
+        <p class="tr"><span class="flag">TR</span>İlk üssünü kur. Ev dizininde <span class="mono-inline">merkez-us</span> adında bir klasör oluştur. İçine <span class="mono-inline">sinyal.txt</span> adında boş bir dosya oluştur (ipucu: <span class="mono-inline">mkdir</span>, sonra <span class="mono-inline">cd</span>, sonra <span class="mono-inline">touch</span>).</p>
+        <p class="de"><span class="flag">DE</span>Baue deine erste Basis. Erstelle in deinem Home-Verzeichnis einen Ordner namens <span class="mono-inline">merkez-us</span>. Erstelle darin eine leere Datei namens <span class="mono-inline">sinyal.txt</span> (Tipp: <span class="mono-inline">mkdir</span>, dann <span class="mono-inline">cd</span>, dann <span class="mono-inline">touch</span>).</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p0-ilk-us')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p0-ilk-us')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p0-ilk-us"></div>
+      </div>
+
+      <div class="scen-box" data-scen="p0-not-birak">
+        <div class="scen-head"><span class="tag">görev 2/3</span> Kaşif Görevi: Not Bırak <span class="title-tr">— gerçek terminalde çöz</span><span class="title-de">— im echten Terminal lösen</span></div>
+        <p class="en">Inside <span class="mono-inline">merkez-us</span>, create a file named <span class="mono-inline">kesif-gunlugu.txt</span> containing the exact text <span class="mono-inline">Ilk kesfimi tamamladim</span> — use either <span class="mono-inline">nano</span> or <span class="mono-inline">echo "..." &gt; kesif-gunlugu.txt</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">merkez-us</span> içinde <span class="mono-inline">kesif-gunlugu.txt</span> adında bir dosya oluştur, içine tam olarak <span class="mono-inline">Ilk kesfimi tamamladim</span> yazısını yaz — ister <span class="mono-inline">nano</span>, ister <span class="mono-inline">echo "..." &gt; kesif-gunlugu.txt</span> kullan.</p>
+        <p class="de"><span class="flag">DE</span>Erstelle in <span class="mono-inline">merkez-us</span> eine Datei namens <span class="mono-inline">kesif-gunlugu.txt</span> mit genau dem Text <span class="mono-inline">Ilk kesfimi tamamladim</span> — benutze entweder <span class="mono-inline">nano</span> oder <span class="mono-inline">echo "..." &gt; kesif-gunlugu.txt</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p0-not-birak')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p0-not-birak')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p0-not-birak"></div>
+      </div>
+
+      <div class="scen-box" data-scen="p0-guven-agi">
+        <div class="scen-head"><span class="tag">görev 3/3</span> Kaşif Görevi: Güvenlik Ağını Dene <span class="title-tr">— gerçek terminalde çöz</span><span class="title-de">— im echten Terminal lösen</span></div>
+        <p class="en">Inside <span class="mono-inline">merkez-us</span>, create two empty files: <span class="mono-inline">kesif-notu-1.txt</span> and <span class="mono-inline">kesif-notu-2.txt</span>. Delete both with <span class="mono-inline">rm</span>. Then, change your mind about only the first one: bring back <span class="mono-inline">kesif-notu-1.txt</span> with <span class="mono-inline">kurtar</span>, but leave <span class="mono-inline">kesif-notu-2.txt</span> in <span class="mono-inline">cop-kutusu</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">merkez-us</span> içinde iki boş dosya oluştur: <span class="mono-inline">kesif-notu-1.txt</span> ve <span class="mono-inline">kesif-notu-2.txt</span>. İkisini de <span class="mono-inline">rm</span> ile sil. Sonra sadece birincisi için fikrini değiştir: <span class="mono-inline">kesif-notu-1.txt</span>'yi <span class="mono-inline">kurtar</span> ile geri getir, ama <span class="mono-inline">kesif-notu-2.txt</span>'yi <span class="mono-inline">cop-kutusu</span>'nda bırak.</p>
+        <p class="de"><span class="flag">DE</span>Erstelle in <span class="mono-inline">merkez-us</span> zwei leere Dateien: <span class="mono-inline">kesif-notu-1.txt</span> und <span class="mono-inline">kesif-notu-2.txt</span>. Lösche beide mit <span class="mono-inline">rm</span>. Ändere dann nur bei der ersten deine Meinung: Hole <span class="mono-inline">kesif-notu-1.txt</span> mit <span class="mono-inline">kurtar</span> zurück, aber lass <span class="mono-inline">kesif-notu-2.txt</span> im <span class="mono-inline">cop-kutusu</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p0-guven-agi')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p0-guven-agi')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p0-guven-agi"></div>
+      </div>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-posta Doğrulama — KernelKompass</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="icons/icon-192.png">
+<script src="/config.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0d08; --panel:#12160e; --border:#262c1b; --border2:#333a24;
+  --amber:#e3a94a; --teal:#5fb8a6; --red:#d9705f; --text:#eae6d8; --text-dim:#9a9682;
+  --mono:'JetBrains Mono', ui-monospace, monospace; --sans:'Inter', system-ui, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;}
+.card{ max-width:420px; margin:100px auto; padding:0 20px; text-align:center;}
+.prompt{ font-family:var(--mono); font-size:12px; color:var(--teal);}
+h1{ font-family:var(--mono); font-size:20px; margin:8px 0 20px;}
+.msg{ font-size:14.5px; line-height:1.6; padding:14px 18px; border-radius:8px; margin-bottom:22px;}
+.msg.ok{ background:rgba(95,184,166,0.1); color:var(--teal);}
+.msg.err{ background:rgba(217,112,95,0.1); color:var(--red);}
+.msg.loading{ background:var(--panel); color:var(--text-dim); border:1px solid var(--border);}
+.btn{
+  font-family:var(--mono); font-size:13px; border-radius:22px; padding:10px 20px; cursor:pointer;
+  border:1px solid var(--amber); background:var(--amber); color:#161200; font-weight:700; text-decoration:none; display:inline-block;
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="prompt">user@kernelkompass:~$</div>
+  <h1>./verify-email.sh</h1>
+  <div class="msg loading" id="msg">Doğrulanıyor…</div>
+  <a class="btn" href="index.html">Uygulamaya Dön</a>
+</div>
+
+<script>
+// AYAR: backend adresi ortak config.js'den geliyor (window.KK_API_BASE).
+var KK_API_BASE = window.KK_API_BASE;
+
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  var token = params.get('token');
+  var msgEl = document.getElementById('msg');
+
+  if(!token){
+    msgEl.textContent = 'Geçersiz bağlantı — token bulunamadı.';
+    msgEl.className = 'msg err';
+    return;
+  }
+
+  fetch(KK_API_BASE + '/api/auth/verify-email', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({token: token})
+  }).then(function(res){
+    return res.json().then(function(data){ return {ok: res.ok, data: data}; });
+  }).then(function(result){
+    if(result.ok){
+      msgEl.textContent = result.data.message || 'E-postan doğrulandı.';
+      msgEl.className = 'msg ok';
+    } else {
+      msgEl.textContent = (result.data && result.data.detail) || 'Doğrulama başarısız.';
+      msgEl.className = 'msg err';
+    }
+  }).catch(function(){
+    msgEl.textContent = 'Sunucuya ulaşılamıyor. İnternet bağlantını kontrol edip bu sayfayı yenile.';
+    msgEl.className = 'msg err';
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "KernelKompass.Linux",
+  "short_name": "KernelKompass",
+  "description": "İngilizce + Türkçe + Almanca, Linux ve DevOps öğrenmek isteyen herkes için ücretsiz interaktif çalışma kitabı.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f2efe2",
+  "theme_color": "#12160e",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

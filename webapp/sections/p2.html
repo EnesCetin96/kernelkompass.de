@@ -1,0 +1,304 @@
+      <div class="eyebrow">$ cd part-02/</div>
+      <h1 class="h-en">Linux Environment Variables</h1>
+      <p class="h-tr">Linux Ortam Değişkenleri</p>
+      <p class="h-de">Linux-Umgebungsvariablen</p>
+      <div class="purpose">
+        <p class="en">Purpose: understand environment vs. shell variables, the PATH variable, quoting rules, and the sudo command.</p>
+        <p class="tr">Amaç: ortam değişkenleri ile shell değişkenleri arasındaki farkı, PATH değişkenini, tırnak (quoting) kurallarını ve sudo komutunu anlamak.</p>
+        <p class="de">Zweck: den Unterschied zwischen Umgebungs- und Shell-Variablen, die PATH-Variable, die Anführungszeichen-Regeln und den sudo-Befehl verstehen.</p>
+      </div>
+
+      <details class="notebox">
+        <summary>✎ Notlarım — Ortam Değişkenleri</summary>
+        <textarea placeholder="Bu bölümle ilgili notların... buraya yaz." data-note="p2"></textarea>
+      </details>
+
+      <div class="topic">
+        <h3><span class="tag">kavram</span> Shell vs Environment Variables <span class="title-tr">— İki değişken türü</span><span class="title-de">— Zwei Arten von Variablen</span></h3>
+        <p class="en">A <b>shell variable</b> only exists in your current terminal session. An <b>environment variable</b> is available system-wide, even to programs you launch from that shell.</p>
+        <p class="tr"><span class="flag">TR</span><b>Shell değişkeni</b> sadece şu an içinde bulunduğun terminal oturumunda vardır — terminali kapatınca kaybolur. <b>Ortam (environment) değişkeni</b> ise sistem genelinde geçerlidir, o terminalden başlattığın diğer programlar da bu değişkeni görebilir.</p>
+        <p class="de"><span class="flag">DE</span>Eine <b>Shell-Variable</b> existiert nur in deiner aktuellen Terminal-Sitzung — sie verschwindet, wenn du das Terminal schließt. Eine <b>Umgebungsvariable</b> gilt hingegen systemweit; auch Programme, die du aus dieser Shell startest, können sie sehen.</p>
+        <p class="en">A variable name may only contain letters, numbers, and underscore (<span class="mono-inline">_</span>), and must start with a letter or underscore. There must be <b>no spaces</b> around the <span class="mono-inline">=</span> sign.</p>
+        <p class="tr"><span class="flag">TR</span>Bir değişken adı sadece harf, rakam ve alt çizgi (<span class="mono-inline">_</span>) içerebilir, ve harf veya alt çizgi ile başlamalıdır. <span class="mono-inline">=</span> işaretinin etrafında <b>boşluk olmamalıdır</b>.</p>
+        <p class="de"><span class="flag">DE</span>Ein Variablenname darf nur Buchstaben, Zahlen und Unterstriche (<span class="mono-inline">_</span>) enthalten und muss mit einem Buchstaben oder Unterstrich beginnen. Um das <span class="mono-inline">=</span>-Zeichen dürfen <b>keine Leerzeichen</b> stehen.</p>
+        <table class="tbl tbl-en">
+          <tr><th>✅ Valid</th><th>❌ Invalid — why</th></tr>
+          <tr><td><code>KEY=value</code></td><td><code>3_KEY=value</code> — starts with a digit</td></tr>
+          <tr><td><code>_VAR=5</code></td><td><code>-VAR=5</code> — hyphen (-) is a special character</td></tr>
+          <tr><td><code>LINUX_way=test</code></td><td><code>LINUX-way=test</code> — names can't contain a hyphen</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>✅ Geçerli</th><th>❌ Geçersiz — neden</th></tr>
+          <tr><td><code>KEY=value</code></td><td><code>3_KEY=value</code> — rakamla başlıyor</td></tr>
+          <tr><td><code>_VAR=5</code></td><td><code>-VAR=5</code> — tire (-) özel bir karakter</td></tr>
+          <tr><td><code>LINUX_way=test</code></td><td><code>LINUX-way=test</code> — isimde tire olamaz</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>✅ Gültig</th><th>❌ Ungültig — warum</th></tr>
+          <tr><td><code>KEY=value</code></td><td><code>3_KEY=value</code> — beginnt mit einer Ziffer</td></tr>
+          <tr><td><code>_VAR=5</code></td><td><code>-VAR=5</code> — Bindestrich (-) ist ein Sonderzeichen</td></tr>
+          <tr><td><code>LINUX_way=test</code></td><td><code>LINUX-way=test</code> — Namen dürfen keinen Bindestrich enthalten</td></tr>
+        </table>
+        <div class="tip tip-en"><b>💡 Tip:</b> By convention (not required, but customary), environment variables are written in UPPERCASE: <span class="mono-inline">PATH</span>, <span class="mono-inline">HOME</span>, <span class="mono-inline">USER</span>, etc.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Konvansiyon (zorunlu değil ama gelenek) olarak ortam değişkenleri BÜYÜK_HARF ile yazılır: <span class="mono-inline">PATH</span>, <span class="mono-inline">HOME</span>, <span class="mono-inline">USER</span> gibi.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Konventionell (nicht zwingend, aber üblich) werden Umgebungsvariablen in GROSSBUCHSTABEN geschrieben: <span class="mono-inline">PATH</span>, <span class="mono-inline">HOME</span>, <span class="mono-inline">USER</span> usw.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">liste</span> Common Environment Variables <span class="title-tr">— Sık kullanılan değişkenler</span><span class="title-de">— Häufig verwendete Variablen</span></h3>
+        <table class="tbl tbl-en">
+          <tr><th>Variable</th><th>Description</th></tr>
+          <tr><td><code>PATH</code></td><td>List of folders searched for executable files</td></tr>
+          <tr><td><code>HOME</code></td><td>Path to the user's home directory</td></tr>
+          <tr><td><code>USER</code></td><td>Username</td></tr>
+          <tr><td><code>SHELL</code></td><td>Which shell is being used (e.g. /bin/bash)</td></tr>
+          <tr><td><code>EDITOR</code></td><td>Default text editor</td></tr>
+          <tr><td><code>LANG</code></td><td>Language / locale settings</td></tr>
+          <tr><td><code>TERM</code></td><td>Terminal emulator type</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Değişken</th><th>Açıklama</th></tr>
+          <tr><td><code>PATH</code></td><td>Çalıştırılabilir dosyaların arandığı klasörlerin listesi</td></tr>
+          <tr><td><code>HOME</code></td><td>Kullanıcının ev dizini yolu</td></tr>
+          <tr><td><code>USER</code></td><td>Kullanıcı adı</td></tr>
+          <tr><td><code>SHELL</code></td><td>Hangi shell'in kullanıldığı (örn. /bin/bash)</td></tr>
+          <tr><td><code>EDITOR</code></td><td>Varsayılan metin editörü</td></tr>
+          <tr><td><code>LANG</code></td><td>Dil / yerel ayarlar</td></tr>
+          <tr><td><code>TERM</code></td><td>Terminal emülatörü türü</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Variable</th><th>Beschreibung</th></tr>
+          <tr><td><code>PATH</code></td><td>Liste der Ordner, in denen nach ausführbaren Dateien gesucht wird</td></tr>
+          <tr><td><code>HOME</code></td><td>Pfad zum Home-Verzeichnis des Benutzers</td></tr>
+          <tr><td><code>USER</code></td><td>Benutzername</td></tr>
+          <tr><td><code>SHELL</code></td><td>Welche Shell verwendet wird (z. B. /bin/bash)</td></tr>
+          <tr><td><code>EDITOR</code></td><td>Standard-Texteditor</td></tr>
+          <tr><td><code>LANG</code></td><td>Sprach- / Ländereinstellungen</td></tr>
+          <tr><td><code>TERM</code></td><td>Terminal-Emulator-Typ</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>printenv           <span class="c"># tüm ortam değişkenlerini listele</span>
+env                <span class="c"># aynı şeyi yapar (küçük farklarla)</span>
+printenv HOME      <span class="c"># tek bir değişkenin değerini gör</span>
+echo $HOME         <span class="c"># aynı sonucu $ ile de alabilirsin</span>
+set                <span class="c"># TÜM shell değişkenlerini + fonksiyonları listele (çok uzun bir çıktı!)</span>
+export ENVVAR=value  <span class="c"># yeni bir ortam değişkeni oluştur</span>
+env | grep ENVVAR     <span class="c"># oluştuğunu kontrol et</span>
+unset ENVVAR           <span class="c"># değişkeni sil</span></pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">path</span> The PATH Variable <span class="title-tr">— PATH değişkeni</span><span class="title-de">— Die PATH-Variable</span></h3>
+        <p class="en">Why can you type <span class="mono-inline">ls</span> instead of <span class="mono-inline">/bin/ls</span>? Because the shell checks each directory listed in <span class="mono-inline">PATH</span>, in order, and runs the first matching executable it finds.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">ls</span> yazdığında neden tam yolu (<span class="mono-inline">/bin/ls</span>) yazmana gerek kalmıyor? Çünkü shell, <span class="mono-inline">PATH</span> değişkeninde listelenen klasörleri sırayla kontrol eder ve ilk bulduğu eşleşen çalıştırılabilir dosyayı çalıştırır.</p>
+        <p class="de"><span class="flag">DE</span>Warum kannst du <span class="mono-inline">ls</span> statt <span class="mono-inline">/bin/ls</span> eingeben? Weil die Shell die in <span class="mono-inline">PATH</span> aufgeführten Verzeichnisse der Reihe nach prüft und die erste passende ausführbare Datei ausführt, die sie findet.</p>
+        <div class="svg-wrap">
+          <svg viewBox="0 0 680 190" xmlns="http://www.w3.org/2000/svg">
+            <style>.b{fill:#161b10;stroke:#333a24;} .t{font-family:'JetBrains Mono',monospace;font-size:12px;fill:#eae6d8;} .t2{font-family:Inter,sans-serif;font-size:10px;fill:#9a9682;} .ar{stroke:#e3a94a;stroke-width:1.4;marker-end:url(#ah2);} .found{stroke:#5fb8a6;}</style>
+            <defs><marker id="ah2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e3a94a"/></marker></defs>
+            <rect class="b" x="10" y="70" width="90" height="40" rx="6"/><text x="55" y="94" text-anchor="middle" class="t">$ ls</text>
+            <line x1="100" y1="90" x2="140" y2="90" class="ar"/>
+            <rect class="b" x="140" y="70" width="120" height="40" rx="6"/><text x="200" y="90" text-anchor="middle" class="t2">/usr/local/</text><text x="200" y="103" text-anchor="middle" class="t2">sbin (1)</text>
+            <line x1="260" y1="90" x2="300" y2="90" class="ar"/>
+            <rect class="b" x="300" y="70" width="120" height="40" rx="6"/><text x="360" y="90" text-anchor="middle" class="t2">/usr/local/</text><text x="360" y="103" text-anchor="middle" class="t2">bin (2)</text>
+            <line x1="420" y1="90" x2="460" y2="90" class="ar"/>
+            <rect class="b found" x="460" y="70" width="120" height="40" rx="6"/><text x="520" y="90" text-anchor="middle" class="t" fill="#5fb8a6">/bin (3)</text><text x="520" y="103" text-anchor="middle" class="t2">✓ bulundu!</text>
+            <line x1="580" y1="90" x2="620" y2="90" class="ar"/>
+            <rect class="b" x="620" y="70" width="50" height="40" rx="6"/><text x="645" y="94" text-anchor="middle" class="t2">çalışır</text>
+          </svg>
+          <div class="svg-cap svg-cap-en">The shell tries each folder in PATH in order, stopping at the first match</div>
+          <div class="svg-cap svg-cap-tr">Shell, PATH'teki klasörleri sırayla dener, ilk eşleşmede durur</div>
+          <div class="svg-cap svg-cap-de">Die Shell probiert die Ordner in PATH der Reihe nach aus und stoppt beim ersten Treffer</div>
+        </div>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>printenv PATH
+<span class="c"># örnek çıktı: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin</span>
+export PATH=$PATH:/home/ec2-user/test   <span class="c"># PATH'e yeni bir klasör ekle</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> If you want to run a script you wrote from anywhere without typing <span class="mono-inline">./</span>, you need to add the folder it's in to PATH.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Kendi yazdığın bir scripti her yerden <span class="mono-inline">./</span> yazmadan çalıştırmak istiyorsan, scriptin bulunduğu klasörü PATH'e eklemen gerekir.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Wenn du ein selbst geschriebenes Skript von überall aus ausführen willst, ohne <span class="mono-inline">./</span> einzutippen, musst du den Ordner, in dem es liegt, zu PATH hinzufügen.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">quoting</span> Quoting with Variables <span class="title-tr">— Tırnak kullanımı</span><span class="title-de">— Anführungszeichen verwenden</span></h3>
+        <p class="en">Quoting controls whether the shell expands (substitutes the value of) a variable.</p>
+        <p class="tr"><span class="flag">TR</span>Tırnak kullanımı, shell'in bir değişkeni genişletip genişletmeyeceğini (değerini yerine koyup koymayacağını) belirler.</p>
+        <p class="de"><span class="flag">DE</span>Anführungszeichen bestimmen, ob die Shell eine Variable expandiert (ihren Wert einsetzt) oder nicht.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Type</th><th>Behavior</th><th>Example</th></tr>
+          <tr><td>Double quotes <code>" "</code></td><td>Expands variables, preserves everything except <span class="mono-inline">$ ' " \</span></td><td><code>echo "$SHELL"</code> → /bin/bash</td></tr>
+          <tr><td>Single quotes <code>' '</code></td><td>Expands nothing, preserves everything literally</td><td><code>echo '$SHELL'</code> → $SHELL (literally)</td></tr>
+          <tr><td>Backslash <code>\</code></td><td>Escapes the next character, cancelling its special meaning</td><td><code>echo "hello \$MYNAME"</code> → hello $MYNAME</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Tür</th><th>Davranış</th><th>Örnek</th></tr>
+          <tr><td>Çift tırnak <code>" "</code></td><td>Değişkenleri genişletir (expand eder), <span class="mono-inline">$ ' " \</span> hariç her şeyi korur</td><td><code>echo "$SHELL"</code> → /bin/bash</td></tr>
+          <tr><td>Tek tırnak <code>' '</code></td><td>Hiçbir şeyi genişletmez, her şeyi olduğu gibi korur</td><td><code>echo '$SHELL'</code> → $SHELL (harfiyen)</td></tr>
+          <tr><td>Ters bölü <code>\</code></td><td>Bir sonraki karakteri kaçırır (escape), özel anlamını iptal eder</td><td><code>echo "hello \$MYNAME"</code> → hello $MYNAME</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Typ</th><th>Verhalten</th><th>Beispiel</th></tr>
+          <tr><td>Doppelte Anführungszeichen <code>" "</code></td><td>Expandiert Variablen, bewahrt alles außer <span class="mono-inline">$ ' " \</span></td><td><code>echo "$SHELL"</code> → /bin/bash</td></tr>
+          <tr><td>Einfache Anführungszeichen <code>' '</code></td><td>Expandiert nichts, bewahrt alles wörtlich</td><td><code>echo '$SHELL'</code> → $SHELL (wörtlich)</td></tr>
+          <tr><td>Backslash <code>\</code></td><td>Escaped das nächste Zeichen, hebt seine besondere Bedeutung auf</td><td><code>echo "hello \$MYNAME"</code> → hello $MYNAME</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>MYNAME="james"
+MYVAR="hello $MYNAME"
+echo $MYVAR         <span class="c"># → hello james (çift tırnak: değişken genişler)</span>
+echo '$MYNAME'      <span class="c"># → $MYNAME (tek tırnak: hiç genişlemez)</span></pre></div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">sudo</span> The sudo Command <span class="title-tr">— sudo komutu</span><span class="title-de">— der sudo-Befehl</span></h3>
+        <p class="en"><span class="mono-inline">sudo</span> ("superuser do") temporarily grants admin (root) privileges to a normal user for a single command.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">sudo</span> ("superuser do" — süper kullanıcı olarak yap), normal bir kullanıcıya, tek bir komut için geçici olarak yönetici (root) yetkisi verir.</p>
+        <p class="de"><span class="flag">DE</span><span class="mono-inline">sudo</span> ("superuser do") gewährt einem normalen Benutzer vorübergehend Administratorrechte (root) für einen einzelnen Befehl.</p>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>sudo yum update    <span class="c"># yönetici yetkisiyle sistemi güncelle</span>
+sudo su            <span class="c"># root kullanıcıya geç</span>
+sudo su -          <span class="c"># root'a, root'un kendi ortam ayarlarıyla birlikte geç</span>
+exit               <span class="c"># root'tan çık, önceki kullanıcına dön</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> If you see <span class="mono-inline">#</span> at the end of the prompt, you're now root — be very careful, root can delete/change anything.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Prompt sonunda <span class="mono-inline">#</span> görüyorsan artık root'sundur — çok dikkatli ol, root her şeyi silebilir/değiştirebilir.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Wenn du am Ende der Eingabeaufforderung <span class="mono-inline">#</span> siehst, bist du jetzt root — sei sehr vorsichtig, root kann alles löschen/ändern.</div>
+      </div>
+
+
+      <div class="topic">
+        <h3><span class="tag">kalıcılık</span> Making Variables Permanent: Startup Files <span class="title-tr">— Değişkenleri kalıcı yapmak</span><span class="title-de">— Variablen dauerhaft machen</span></h3>
+        <p class="en">An <span class="mono-inline">export</span> only lives until you close the terminal. To make a setting permanent, it must be written into a <b>startup file</b> — a script the shell reads every time it starts. Which file runs depends on the shell type.</p>
+        <p class="tr"><span class="flag">TR</span>Bir <span class="mono-inline">export</span> yalnızca terminali kapatana kadar yaşar. Bir ayarı kalıcı yapmak için, shell'in her başladığında okuduğu bir <b>başlangıç dosyasına</b> yazılması gerekir. Hangi dosyanın çalışacağı shell türüne bağlıdır.</p>
+        <p class="de"><span class="flag">DE</span>Ein <span class="mono-inline">export</span> lebt nur, bis du das Terminal schließt. Um eine Einstellung dauerhaft zu machen, muss sie in eine <b>Startdatei</b> geschrieben werden — ein Skript, das die Shell bei jedem Start liest. Welche Datei läuft, hängt vom Shell-Typ ab.</p>
+        <table class="tbl tbl-en">
+          <tr><th>File</th><th>Scope</th><th>When it runs</th></tr>
+          <tr><td><code>/etc/environment</code></td><td>System-wide</td><td>Simple KEY=VALUE lines, read at login</td></tr>
+          <tr><td><code>/etc/profile</code></td><td>System-wide</td><td>Every user's <i>login</i> shell</td></tr>
+          <tr><td><code>~/.profile</code> / <code>~/.bash_profile</code></td><td>One user</td><td>That user's <i>login</i> shell</td></tr>
+          <tr><td><code>~/.bashrc</code></td><td>One user</td><td>Every <i>interactive</i> shell (each new terminal tab)</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Dosya</th><th>Kapsam</th><th>Ne zaman çalışır</th></tr>
+          <tr><td><code>/etc/environment</code></td><td>Sistem geneli</td><td>Basit KEY=VALUE satırları, girişte okunur</td></tr>
+          <tr><td><code>/etc/profile</code></td><td>Sistem geneli</td><td>Her kullanıcının <i>login</i> shell'i</td></tr>
+          <tr><td><code>~/.profile</code> / <code>~/.bash_profile</code></td><td>Tek kullanıcı</td><td>O kullanıcının <i>login</i> shell'i</td></tr>
+          <tr><td><code>~/.bashrc</code></td><td>Tek kullanıcı</td><td>Her <i>etkileşimli</i> shell (her yeni terminal sekmesi)</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Datei</th><th>Geltungsbereich</th><th>Wann sie läuft</th></tr>
+          <tr><td><code>/etc/environment</code></td><td>Systemweit</td><td>Einfache KEY=VALUE-Zeilen, beim Login gelesen</td></tr>
+          <tr><td><code>/etc/profile</code></td><td>Systemweit</td><td>Die <i>Login</i>-Shell jedes Benutzers</td></tr>
+          <tr><td><code>~/.profile</code> / <code>~/.bash_profile</code></td><td>Ein Benutzer</td><td>Die <i>Login</i>-Shell dieses Benutzers</td></tr>
+          <tr><td><code>~/.bashrc</code></td><td>Ein Benutzer</td><td>Jede <i>interaktive</i> Shell (jeder neue Terminal-Tab)</td></tr>
+        </table>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>echo 'export PATH=$PATH:$HOME/scripts' &gt;&gt; ~/.bashrc   <span class="c"># kalıcı PATH eki</span>
+source ~/.bashrc          <span class="c"># dosyayı yeniden yükle — yeni terminal açmadan uygula</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> Golden rule: personal tweaks go in <span class="mono-inline">~/.bashrc</span>; machine-wide settings for all users go in <span class="mono-inline">/etc/environment</span>. Never edit system files without a backup.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Altın kural: kişisel ayarlar <span class="mono-inline">~/.bashrc</span>'ye; tüm kullanıcılar için makine geneli ayarlar <span class="mono-inline">/etc/environment</span>'a. Sistem dosyalarını asla yedeksiz düzenleme.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Goldene Regel: Persönliche Anpassungen kommen in <span class="mono-inline">~/.bashrc</span>; maschinenweite Einstellungen für alle Benutzer in <span class="mono-inline">/etc/environment</span>. Bearbeite Systemdateien nie ohne Backup.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">expansion</span> Parameter Expansion: Smart Defaults <span class="title-tr">— Parametre genişletme</span><span class="title-de">— Parameter-Expansion</span></h3>
+        <p class="en">Bash can react to a variable being <i>unset or empty</i> right inside the <span class="mono-inline">${ }</span> syntax. These four patterns turn fragile scripts into robust ones — you'll meet them constantly in real-world DevOps scripts.</p>
+        <p class="tr"><span class="flag">TR</span>Bash, bir değişkenin <i>tanımsız ya da boş</i> olmasına doğrudan <span class="mono-inline">${ }</span> sözdiziminin içinde tepki verebilir. Bu dört desen, kırılgan scriptleri sağlam scriptlere dönüştürür — gerçek dünyadaki DevOps scriptlerinde bunlarla sürekli karşılaşacaksın.</p>
+        <p class="de"><span class="flag">DE</span>Bash kann direkt innerhalb der <span class="mono-inline">${ }</span>-Syntax darauf reagieren, dass eine Variable <i>nicht gesetzt oder leer</i> ist. Diese vier Muster machen aus fragilen Skripten robuste — in echten DevOps-Skripten begegnen sie dir ständig.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Syntax</th><th>Meaning</th></tr>
+          <tr><td><code>${VAR:-default}</code></td><td>Use <i>default</i> if VAR is unset/empty (VAR stays unchanged)</td></tr>
+          <tr><td><code>${VAR:=default}</code></td><td>Use <i>default</i> AND assign it to VAR</td></tr>
+          <tr><td><code>${VAR:+alt}</code></td><td>Use <i>alt</i> only if VAR IS set (else empty)</td></tr>
+          <tr><td><code>${VAR:?message}</code></td><td>Abort with <i>message</i> if VAR is unset/empty</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Sözdizimi</th><th>Anlamı</th></tr>
+          <tr><td><code>${VAR:-default}</code></td><td>VAR tanımsız/boşsa <i>default</i> kullan (VAR değişmez)</td></tr>
+          <tr><td><code>${VAR:=default}</code></td><td><i>default</i> kullan VE VAR'a ata</td></tr>
+          <tr><td><code>${VAR:+alt}</code></td><td>Yalnızca VAR tanımlıysa <i>alt</i> kullan (yoksa boş)</td></tr>
+          <tr><td><code>${VAR:?mesaj}</code></td><td>VAR tanımsız/boşsa <i>mesaj</i> ile iptal et</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Syntax</th><th>Bedeutung</th></tr>
+          <tr><td><code>${VAR:-default}</code></td><td>Nutze <i>default</i>, wenn VAR nicht gesetzt/leer ist (VAR bleibt unverändert)</td></tr>
+          <tr><td><code>${VAR:=default}</code></td><td>Nutze <i>default</i> UND weise es VAR zu</td></tr>
+          <tr><td><code>${VAR:+alt}</code></td><td>Nutze <i>alt</i> nur, wenn VAR gesetzt IST (sonst leer)</td></tr>
+          <tr><td><code>${VAR:?meldung}</code></td><td>Bricht mit <i>meldung</i> ab, wenn VAR nicht gesetzt/leer ist</td></tr>
+        </table>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>echo "Rapor dizini: ${RAPOR_DIR:-/tmp/raporlar}"  <span class="c"># tanımsızsa varsayılanı bas</span>
+: "${API_KEY:?API_KEY tanımlı olmalı!}"           <span class="c"># güvenlik kapısı: yoksa dur</span></pre></div>
+        <div class="tip tip-en"><b>💡 Tip:</b> The <span class="mono-inline">${VAR:?}</span> guard at the top of a deployment script is a professional habit: fail loudly at second 0 instead of mysteriously at minute 20.</div>
+        <div class="tip tip-tr"><b>💡 İpucu:</b> Bir deployment scriptinin başındaki <span class="mono-inline">${VAR:?}</span> koruması profesyonel bir alışkanlıktır: 20. dakikada gizemli biçimde değil, 0. saniyede gürültüyle dur.</div>
+        <div class="tip tip-de"><b>💡 Hinweis:</b> Der <span class="mono-inline">${VAR:?}</span>-Schutz am Anfang eines Deployment-Skripts ist eine professionelle Gewohnheit: Lieber laut in Sekunde 0 scheitern als mysteriös in Minute 20.</div>
+      </div>
+
+      <div class="topic">
+        <h3><span class="tag">anahtar</span> More Key Variables: PS1, OLDPWD, LANG <span class="title-tr">— Diğer önemli değişkenler</span><span class="title-de">— Weitere wichtige Variablen</span></h3>
+        <p class="en">Beyond PATH and HOME, a few other variables silently shape every session you open.</p>
+        <p class="tr"><span class="flag">TR</span>PATH ve HOME'un ötesinde, birkaç değişken daha açtığın her oturumu sessizce şekillendirir.</p>
+        <p class="de"><span class="flag">DE</span>Neben PATH und HOME prägen ein paar weitere Variablen still jede Sitzung, die du öffnest.</p>
+        <table class="tbl tbl-en">
+          <tr><th>Variable</th><th>What it controls</th></tr>
+          <tr><td><code>PS1</code></td><td>The look of your prompt (the <code>user@host:~$</code> text)</td></tr>
+          <tr><td><code>PWD</code> / <code>OLDPWD</code></td><td>Current / previous directory — <code>cd -</code> uses OLDPWD</td></tr>
+          <tr><td><code>SHELL</code></td><td>Path of your login shell (e.g. /bin/bash)</td></tr>
+          <tr><td><code>LANG</code>, <code>LC_*</code></td><td>Language, date, and sorting rules (locale)</td></tr>
+        </table>
+        <table class="tbl tbl-tr">
+          <tr><th>Değişken</th><th>Neyi kontrol eder</th></tr>
+          <tr><td><code>PS1</code></td><td>Prompt'unun görünümü (<code>user@host:~$</code> metni)</td></tr>
+          <tr><td><code>PWD</code> / <code>OLDPWD</code></td><td>Şimdiki / önceki dizin — <code>cd -</code> OLDPWD'yi kullanır</td></tr>
+          <tr><td><code>SHELL</code></td><td>Login shell'inin yolu (örn. /bin/bash)</td></tr>
+          <tr><td><code>LANG</code>, <code>LC_*</code></td><td>Dil, tarih ve sıralama kuralları (locale)</td></tr>
+        </table>
+        <table class="tbl tbl-de">
+          <tr><th>Variable</th><th>Was sie steuert</th></tr>
+          <tr><td><code>PS1</code></td><td>Das Aussehen deines Prompts (der <code>user@host:~$</code>-Text)</td></tr>
+          <tr><td><code>PWD</code> / <code>OLDPWD</code></td><td>Aktuelles / vorheriges Verzeichnis — <code>cd -</code> nutzt OLDPWD</td></tr>
+          <tr><td><code>SHELL</code></td><td>Pfad deiner Login-Shell (z. B. /bin/bash)</td></tr>
+          <tr><td><code>LANG</code>, <code>LC_*</code></td><td>Sprache, Datums- und Sortierregeln (Locale)</td></tr>
+        </table>
+        <div class="term"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="scen-run-badge">TERMİNALDE ÇALIŞTIR</span></div>
+<pre>echo $SHELL          <span class="c"># login shell'in hangisi?</span>
+printenv HOME        <span class="c"># ev dizinin</span></pre></div>
+        <div class="term term-info"><div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="badge" data-i18n-ui="real-linux-badge">GERÇEK LINUX'TA — SİMÜLASYONDA YOK</span></div>
+<pre>echo $PS1                       <span class="c"># mevcut prompt tanımını gör</span>
+PS1="[\u@\h \W]\$ "            <span class="c"># prompt'u anlık değiştir (deneysel!)</span>
+echo $LANG                      <span class="c"># örn. de_DE.UTF-8 ya da tr_TR.UTF-8</span></pre></div>
+      </div>
+
+
+      <div class="scen-box" data-scen="p2-proje1">
+        <div class="scen-head"><span class="tag">proje 1/3</span> Extend PATH <span class="title-tr">— PATH'i genişlet</span><span class="title-de">— PATH erweitern</span></div>
+        <p class="en">Add <span class="mono-inline">/home/user/linux-lessons</span> to your <span class="mono-inline">PATH</span> without losing what was already there.</p>
+        <p class="tr"><span class="flag">TR</span>Mevcut <span class="mono-inline">PATH</span>'i kaybetmeden içine <span class="mono-inline">/home/user/linux-lessons</span> ekle.</p>
+        <p class="de"><span class="flag">DE</span>Füge <span class="mono-inline">/home/user/linux-lessons</span> zu deiner <span class="mono-inline">PATH</span> hinzu, ohne den bestehenden Inhalt zu verlieren.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p2-proje1')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p2-proje1')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p2-proje1"></div>
+      </div>
+      <div class="scen-box" data-scen="p2-proje2">
+        <div class="scen-head"><span class="tag">proje 2/3</span> Your Own Variable <span class="title-tr">— kendi değişkenin</span><span class="title-de">— deine eigene Variable</span></div>
+        <p class="en">Create an environment variable named <span class="mono-inline">PROJE_ADI</span> with the value <span class="mono-inline">KernelKompass</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">PROJE_ADI</span> adında, değeri <span class="mono-inline">KernelKompass</span> olan bir ortam değişkeni oluştur.</p>
+        <p class="de"><span class="flag">DE</span>Erstelle eine Umgebungsvariable namens <span class="mono-inline">PROJE_ADI</span> mit dem Wert <span class="mono-inline">KernelKompass</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p2-proje2')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p2-proje2')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p2-proje2"></div>
+      </div>
+      <div class="scen-box" data-scen="p2-proje3">
+        <div class="scen-head"><span class="tag">proje 3/3</span> Clean Up with unset <span class="title-tr">— unset ile temizlik</span><span class="title-de">— Aufräumen mit unset</span></div>
+        <p class="en">Create <span class="mono-inline">GECICI=deneme</span> and <span class="mono-inline">KALICI=devops</span>. Then remove only <span class="mono-inline">GECICI</span>.</p>
+        <p class="tr"><span class="flag">TR</span><span class="mono-inline">GECICI=deneme</span> ve <span class="mono-inline">KALICI=devops</span> oluştur. Sonra sadece <span class="mono-inline">GECICI</span>'yi kaldır.</p>
+        <p class="de"><span class="flag">DE</span>Erstelle <span class="mono-inline">GECICI=deneme</span> und <span class="mono-inline">KALICI=devops</span>. Entferne danach nur <span class="mono-inline">GECICI</span>.</p>
+        <div class="scen-actions">
+          <button class="btn" onclick="kkStartScenario('p2-proje3')" data-i18n-ui="scen-start">▶ Terminalde Başlat</button>
+          <button class="btn" onclick="kkCheckScenario('p2-proje3')" data-i18n-ui="scen-check">✓ Kontrol Et</button>
+        </div>
+        <div class="scen-msg" id="scenMsg-p2-proje3"></div>
+      </div>

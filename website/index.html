@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KernelKompass — Free, Interactive Linux &amp; DevOps Workbook</title>
+<meta name="description" content="A completely free, interactive workbook that runs in your browser for anyone who wants to learn Linux and DevOps. No installation, just create an account.">
+<link rel="icon" href="../webapp/icons/icon-192.png">
+<script src="/config.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0d08;
+  --panel:#12160e;
+  --panel2:#161b10;
+  --border:#262c1b;
+  --border2:#333a24;
+  --amber:#e3a94a;
+  --amber-soft:#a9863f;
+  --teal:#5fb8a6;
+  --teal-soft:#25453d;
+  --red:#d9705f;
+  --text:#eae6d8;
+  --text-dim:#9a9682;
+  --text-dim2:#6f6c5c;
+  --code-bg:#070805;
+  --mono:'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans:'Inter', system-ui, -apple-system, sans-serif;
+  --r:10px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--sans);}
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(ellipse 1200px 800px at 15% -10%, rgba(227,169,74,0.06), transparent 60%),
+    radial-gradient(ellipse 1000px 700px at 100% 30%, rgba(95,184,166,0.05), transparent 60%);
+}
+.wrap{ position:relative; z-index:1; max-width:920px; margin:0 auto; padding:0 24px;}
+a{ color:var(--teal);}
+
+/* ---------- TOPBAR ---------- */
+.topbar{ display:flex; align-items:center; justify-content:space-between; padding:22px 0;}
+.topbar .logo{ font-family:var(--mono); font-size:15px; font-weight:700; color:var(--text);}
+.topbar .logo .accent{ color:var(--amber);}
+.topbar nav a{ font-family:var(--mono); font-size:12.5px; color:var(--text-dim); text-decoration:none; margin-left:22px;}
+.topbar nav a:hover{ color:var(--text);}
+
+/* ---------- HERO ---------- */
+.hero{ padding:56px 0 40px; display:grid; grid-template-columns:1fr; gap:36px;}
+@media(min-width:800px){ .hero{ grid-template-columns:1.1fr 1fr; align-items:center; gap:44px;} }
+.eyebrow{ font-family:var(--mono); font-size:12.5px; color:var(--teal); letter-spacing:.1em; text-transform:uppercase; margin-bottom:14px;}
+.hero h1{ font-family:var(--mono); font-size:42px; font-weight:700; letter-spacing:-0.02em; line-height:1.1; margin:0 0 16px; color:var(--text);}
+.hero h1 .accent{ color:var(--amber);}
+.hero .tagline{ font-size:17px; line-height:1.6; color:var(--text-dim); margin:0 0 26px; max-width:480px;}
+.hero .cta-row{ display:flex; gap:12px; flex-wrap:wrap;}
+.btn{
+  font-family:var(--mono); font-size:13.5px; border-radius:24px; padding:12px 22px; cursor:pointer;
+  border:1px solid var(--border2); background:none; color:var(--text-dim); text-decoration:none; display:inline-block;
+}
+.btn:hover{ color:var(--text); background:rgba(255,255,255,0.03);}
+.btn-primary{ background:var(--amber); color:#161200; border-color:var(--amber); font-weight:700;}
+.btn-primary:hover{ background:var(--amber); opacity:.92; color:#161200;}
+
+/* Hero terminal mock */
+.term-mock{
+  border:1px solid var(--border2); border-radius:var(--r); overflow:hidden; background:var(--code-bg);
+  box-shadow:0 24px 60px rgba(0,0,0,.35);
+}
+.term-mock .bar{ display:flex; align-items:center; gap:6px; padding:9px 13px; background:var(--panel2); border-bottom:1px solid var(--border2);}
+.term-mock .dot{ width:9px; height:9px; border-radius:50%; display:inline-block;}
+.term-mock .dot.r{background:#e0605a;} .term-mock .dot.y{background:#e3b34a;} .term-mock .dot.g{background:#5fb87a;}
+.term-mock .bar .title{ margin-left:8px; font-family:var(--mono); font-size:11px; color:var(--text-dim2);}
+.term-mock pre{
+  margin:0; padding:20px 20px 26px; font-family:var(--mono); font-size:13.5px; line-height:1.85;
+  color:#d7e8c9; white-space:pre-wrap; word-break:break-word;
+}
+.term-mock .p{ color:#5fb8a6;}
+.term-mock .c{ color:var(--text-dim2);}
+.term-mock .out{ color:#e3c56a;}
+.term-mock .type-1{
+  display:inline-block; overflow:hidden; white-space:nowrap; border-right:2px solid var(--teal);
+  animation: type1 1.6s steps(28) forwards, caret .8s step-end infinite;
+  max-width: 26ch;
+}
+@keyframes type1{ from{ max-width:0; } to{ max-width:26ch; } }
+@keyframes caret{ 50%{ border-color:transparent; } }
+@media (prefers-reduced-motion: reduce){
+  .term-mock .type-1{ animation:none; max-width:26ch; border-right:none;}
+}
+
+/* ---------- SECTIONS ---------- */
+section.sect{ padding:52px 0; border-top:1px solid var(--border);}
+.sect .eyebrow{ margin-bottom:10px;}
+.sect h2{ font-family:var(--mono); font-size:24px; font-weight:700; letter-spacing:-0.01em; margin:0 0 8px; color:var(--text);}
+.sect .lede{ font-size:15px; color:var(--text-dim); max-width:600px; line-height:1.6; margin:0 0 30px;}
+
+/* Features as `ls -la` listing */
+.ls-box{ border:1px solid var(--border2); border-radius:var(--r); overflow:hidden; background:var(--code-bg);}
+.ls-box .bar{ display:flex; align-items:center; gap:6px; padding:9px 13px; background:var(--panel2); border-bottom:1px solid var(--border2);}
+.ls-box .dot{ width:9px; height:9px; border-radius:50%; display:inline-block;}
+.ls-box .dot.r{background:#e0605a;} .ls-box .dot.y{background:#e3b34a;} .ls-box .dot.g{background:#5fb87a;}
+.ls-box .bar .title{ margin-left:8px; font-family:var(--mono); font-size:11px; color:var(--text-dim2);}
+.ls-box .rows{ padding:16px 20px 22px; font-family:var(--mono); font-size:13px; line-height:1.4;}
+.ls-box .rows .total{ color:var(--text-dim2); margin-bottom:12px; display:block;}
+.ls-row{ display:grid; grid-template-columns:auto 1fr; gap:4px 14px; padding:9px 0; border-bottom:1px solid var(--border);}
+.ls-row:last-child{ border-bottom:none;}
+.ls-row .perm{ color:var(--teal); white-space:nowrap;}
+.ls-row .name{ color:var(--amber); font-weight:600;}
+.ls-row .desc{ grid-column:1 / -1; color:var(--text-dim); font-family:var(--sans); font-size:13.5px; line-height:1.55; padding-left:2px;}
+
+/* Why free / license */
+.why-grid{ display:grid; grid-template-columns:1fr; gap:16px;}
+@media(min-width:700px){ .why-grid{ grid-template-columns:1fr 1fr;} }
+.why-card{ border:1px solid var(--border); border-left:3px solid var(--teal-soft); background:var(--panel); border-radius:0 var(--r) var(--r) 0; padding:18px 20px;}
+.why-card h3{ font-family:var(--mono); font-size:14.5px; margin:0 0 8px; color:var(--text);}
+.why-card p{ font-size:13.5px; line-height:1.6; color:var(--text-dim); margin:0;}
+
+/* Install tabs */
+.install-tabs{ display:flex; gap:4px; margin-bottom:26px; border-bottom:1px solid var(--border); flex-wrap:wrap;}
+.install-tab-btn{
+  font-family:var(--mono); font-size:13px; color:var(--text-dim); background:none; border:none;
+  border-bottom:2px solid transparent; padding:9px 6px; cursor:pointer; margin-right:20px;
+}
+.install-tab-btn.active{ color:var(--amber); border-bottom-color:var(--amber); font-weight:600;}
+.install-panel{ display:none;}
+.install-panel.active{ display:block; animation:fadein .2s ease;}
+@keyframes fadein{ from{opacity:0;} to{opacity:1;} }
+.steps{ list-style:none; margin:0; padding:0; counter-reset:step;}
+.steps li{ counter-increment:step; position:relative; padding:0 0 18px 40px; font-size:14.5px; line-height:1.6; color:var(--text);}
+.steps li::before{
+  content:counter(step); position:absolute; left:0; top:0; width:26px; height:26px; border-radius:50%;
+  background:var(--teal-soft); color:var(--teal); font-family:var(--mono); font-size:12px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+}
+.steps li b{ color:var(--amber);}
+
+/* Footer — impressum tucked away, not prominent */
+footer.site-foot{
+  border-top:1px solid var(--border); margin-top:20px; padding:24px 0 60px;
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;
+}
+footer.site-foot .copy{ font-family:var(--mono); font-size:11px; color:var(--text-dim2);}
+footer.site-foot .legal-links{ font-family:var(--mono); font-size:11px; color:var(--text-dim2);}
+footer.site-foot .legal-links a{ color:var(--text-dim2); text-decoration:none; margin-left:14px;}
+footer.site-foot .legal-links a:hover{ color:var(--text-dim);}
+
+@media(max-width:600px){
+  .hero h1{ font-size:32px;}
+}
+
+/* ---------- REKLAM PANOLARI (sol/sağ, sadece website — uygulamada YOK) ---------- */
+/* Sadece görsel, tıklanamaz. Boş slotlar hiç render edilmiyor (JS eklemiyor),
+   bu yüzden reklam yokken container'lar 0 yükseklikte, tamamen görünmez kalır. */
+.ad-rail{ position:fixed; top:50%; transform:translateY(-50%); display:none; flex-direction:column; gap:16px; z-index:5; width:160px;}
+.ad-rail-left{ left:24px;}
+.ad-rail-right{ right:24px;}
+.ad-slot{ border-radius:10px; overflow:hidden; border:1px solid var(--border2); background:var(--panel);}
+.ad-slot img{ display:block; width:100%; height:auto;}
+/* 920px içerik + 2x(160px pano + kenar boşlukları) rahat sığsın diye geniş
+   ekranlarda gösteriliyor; daha dar ekranlarda içerikle çakışmasın diye gizli. */
+@media(min-width:1400px){
+  .ad-rail{ display:flex;}
+}
+
+/* ---------- COMMENTS ---------- */
+.comments-grid{
+  display:grid; grid-template-columns:1fr; gap:14px; margin-bottom:34px;
+}
+@media(min-width:700px){ .comments-grid{ grid-template-columns:1fr 1fr;} }
+.comment-card{
+  border:1px solid var(--border); background:var(--panel); border-radius:var(--r);
+  padding:16px 18px; display:flex; flex-direction:column; gap:8px;
+}
+.comment-card .c-head{ display:flex; align-items:center; gap:8px;}
+.comment-card .c-avatar{
+  width:26px; height:26px; border-radius:50%; background:var(--teal-soft); color:var(--teal);
+  font-family:var(--mono); font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.comment-card .c-user{ font-family:var(--mono); font-size:13px; color:var(--text); font-weight:600;}
+.comment-card .c-date{ font-family:var(--mono); font-size:11px; color:var(--text-dim2); margin-left:auto;}
+.comment-card .c-body{ font-size:13.5px; line-height:1.55; color:var(--text-dim); margin:0; white-space:pre-wrap; word-break:break-word;}
+.comments-empty, .comments-error{
+  font-family:var(--mono); font-size:13px; color:var(--text-dim2); padding:20px 0; text-align:center;
+}
+.comments-loading{ font-family:var(--mono); font-size:13px; color:var(--text-dim2); padding:20px 0; text-align:center;}
+
+.comment-form{
+  border:1px solid var(--border2); border-radius:var(--r); background:var(--code-bg); padding:18px 20px;
+}
+.comment-form textarea{
+  width:100%; min-height:90px; resize:vertical; background:var(--panel2); border:1px solid var(--border2);
+  border-radius:8px; color:var(--text); font-family:var(--sans); font-size:14px; padding:12px 14px; line-height:1.5;
+}
+.comment-form textarea:focus{ outline:none; border-color:var(--teal-soft);}
+.comment-form .cf-row{ display:flex; align-items:center; justify-content:space-between; margin-top:12px; gap:12px; flex-wrap:wrap;}
+.comment-form .cf-hint{ font-family:var(--mono); font-size:11.5px; color:var(--text-dim2);}
+.comment-login-notice{
+  display:none; margin-top:12px; padding:12px 14px; border-radius:8px; background:var(--teal-soft);
+  border:1px solid var(--border2); font-size:13px; line-height:1.5; color:var(--text);
+}
+.comment-login-notice.show{ display:block;}
+.comment-login-notice a{ color:var(--amber); font-weight:600;}
+.comment-success{
+  display:none; margin-top:12px; padding:12px 14px; border-radius:8px; background:var(--panel2);
+  border:1px solid var(--border2); font-size:13px; line-height:1.5; color:var(--text-dim);
+}
+.comment-success.show{ display:block;}
+
+/* ---------- LANGUAGE TOGGLE ---------- */
+body[data-lang="en"] .tr, body[data-lang="en"] .de{ display:none !important; }
+body[data-lang="tr"] .en, body[data-lang="tr"] .de{ display:none !important; }
+body[data-lang="de"] .en, body[data-lang="de"] .tr{ display:none !important; }
+
+.lang-switch{ display:flex; gap:2px; border:1px solid var(--border2); border-radius:20px; padding:3px; margin-left:22px;}
+.lang-switch button{
+  font-family:var(--mono); font-size:11.5px; color:var(--text-dim); background:none; border:none;
+  border-radius:16px; padding:5px 11px; cursor:pointer;
+}
+.lang-switch button.active{ background:var(--amber); color:#161200; font-weight:700;}
+.lang-switch button:hover:not(.active){ color:var(--text);}
+@media(max-width:600px){
+  .topbar nav a{ margin-left:12px;}
+  .lang-switch{ margin-left:12px;}
+}
+</style>
+</head>
+<body data-lang="en">
+
+<!-- Reklam panoları (sol/sağ) — şu an boş, admin panelinden yüklendikçe
+     JS ile dolduruluyor. Bkz. kkLoadAds() aşağıda. Sadece bu landing
+     page'de var; uygulamada (webapp) hiçbir reklam yok. -->
+<div class="ad-rail ad-rail-left" id="adRailLeft"></div>
+<div class="ad-rail ad-rail-right" id="adRailRight"></div>
+
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="logo">./kernel<span class="accent">kompass</span></div>
+    <nav>
+      <a href="#ozellikler"><span class="en">Features</span><span class="tr">Özellikler</span><span class="de">Funktionen</span></a>
+      <a href="#neden-ucretsiz"><span class="en">Why free?</span><span class="tr">Neden ücretsiz?</span><span class="de">Warum kostenlos?</span></a>
+      <a href="#kurulum"><span class="en">Install</span><span class="tr">Kurulum</span><span class="de">Installation</span></a>
+      <a href="#yorumlar"><span class="en">Comments</span><span class="tr">Yorumlar</span><span class="de">Kommentare</span></a>
+      <span class="lang-switch">
+        <button data-lang="en" onclick="kkSetLang('en')">EN</button>
+        <button data-lang="tr" onclick="kkSetLang('tr')">TR</button>
+        <button data-lang="de" onclick="kkSetLang('de')">DE</button>
+      </span>
+    </nav>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div>
+      <div class="eyebrow">$ whoami</div>
+      <h1>Kernel<span class="accent">Kompass</span></h1>
+      <p class="tagline en">A completely free, interactive workbook for anyone who wants to learn Linux &amp; DevOps — including students taking Informatik courses in Germany. No installation, just a browser.</p>
+      <p class="tagline tr">Linux ve DevOps öğrenmek isteyen herkes için — özellikle Almanya'da Informatik dersi alan öğrenciler dahil — tamamen ücretsiz, interaktif bir çalışma kitabı. Kurulum yok, sadece bir tarayıcı yeterli.</p>
+      <p class="tagline de">Ein völlig kostenloses, interaktives Arbeitsbuch für alle, die Linux &amp; DevOps lernen möchten — einschließlich Schüler:innen mit Informatikunterricht in Deutschland. Keine Installation nötig, nur ein Browser.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="../webapp/index.html"><span class="en">Open App →</span><span class="tr">Uygulamayı Aç →</span><span class="de">App öffnen →</span></a>
+        <a class="btn" href="#kurulum"><span class="en">How to install? ↓</span><span class="tr">Nasıl kurulur? ↓</span><span class="de">Wie installieren? ↓</span></a>
+      </div>
+    </div>
+    <div class="term-mock">
+      <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="title">kernelkompass.de</span></div>
+      <pre class="en"><span class="p">$</span> <span class="type-1">cat mission.txt</span>
+<span class="c">Free for everyone.</span>
+<span class="c">No install, no store, no payment.</span>
+<span class="c">Just create an account and start learning.</span>
+
+<span class="p">$</span> ls -la ./languages/
+<span class="out">en  tr  de</span></pre>
+      <pre class="tr"><span class="p">$</span> <span class="type-1">cat mission.txt</span>
+<span class="c">Herkes için ücretsiz.</span>
+<span class="c">Kurulum yok, mağaza yok, ödeme yok.</span>
+<span class="c">Sadece bir hesap oluştur, öğrenmeye başla.</span>
+
+<span class="p">$</span> ls -la ./diller/
+<span class="out">tr  de  en</span></pre>
+      <pre class="de"><span class="p">$</span> <span class="type-1">cat mission.txt</span>
+<span class="c">Kostenlos für alle.</span>
+<span class="c">Keine Installation, kein Store, keine Zahlung.</span>
+<span class="c">Erstelle einfach ein Konto und leg los.</span>
+
+<span class="p">$</span> ls -la ./sprachen/
+<span class="out">de  tr  en</span></pre>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES (ls -la) ============ -->
+  <section class="sect" id="ozellikler">
+    <div class="eyebrow"># cd features/</div>
+    <h2><span class="en">What's inside?</span><span class="tr">Neler var?</span><span class="de">Was gibt's?</span></h2>
+    <p class="lede en">Think of it like a directory — every line here is something you'll actually find in this workbook.</p>
+    <p class="lede tr">Bir dizin gibi düşün — her satır bu çalışma kitabında gerçekten bulacağın bir şey.</p>
+    <p class="lede de">Stell es dir wie ein Verzeichnis vor — jede Zeile ist etwas, das du in diesem Arbeitsbuch wirklich findest.</p>
+
+    <div class="ls-box">
+      <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="title">~/kernelkompass/features</span></div>
+      <div class="rows">
+        <span class="total">total 6</span>
+        <div class="ls-row">
+          <span class="perm">drwxr-xr-x</span><span class="name">interactive-workbook/</span>
+          <span class="desc en">12 chapters — file management, permissions, shell scripting, loops, crontab and more. Every explanation is in English first, with a plain-language translation right below.</span>
+          <span class="desc tr">12 bölüm — dosya yönetimi, izinler, shell script, döngüler, crontab ve daha fazlası. Her açıklama önce İngilizce, hemen altında sade Türkçesiyle.</span>
+          <span class="desc de">12 Kapitel — Dateiverwaltung, Berechtigungen, Shell-Skripte, Schleifen, Crontab und mehr. Jede Erklärung steht zuerst auf Englisch, direkt darunter in einfacher Übersetzung.</span>
+        </div>
+        <div class="ls-row">
+          <span class="perm">drwxr-xr-x</span><span class="name">practice-terminal/</span>
+          <span class="desc en">A simulated Linux shell that runs right in your browser — try commands without touching a real server, nothing breaks if you get it wrong.</span>
+          <span class="desc tr">Tarayıcıda çalışan simüle bir Linux kabuğu — gerçek bir sunucuya dokunmadan komutları dene, yanlış yaparsan hiçbir şey bozulmaz.</span>
+          <span class="desc de">Eine simulierte Linux-Shell, die direkt in deinem Browser läuft — probiere Befehle aus, ohne einen echten Server zu berühren; bei Fehlern geht nichts kaputt.</span>
+        </div>
+        <div class="ls-row">
+          <span class="perm">drwxr-xr-x</span><span class="name">account-sync/</span>
+          <span class="desc en">Your notes, progress and terminal history are saved to your account — pick up right where you left off on another device.</span>
+          <span class="desc tr">Notların, ilerlemen ve terminal geçmişin hesabına kaydedilir; bir cihazda kaldığın yerden başka bir cihazda devam edersin.</span>
+          <span class="desc de">Deine Notizen, dein Fortschritt und dein Terminalverlauf werden in deinem Konto gespeichert — mach auf einem anderen Gerät genau dort weiter, wo du aufgehört hast.</span>
+        </div>
+        <div class="ls-row">
+          <span class="perm">drwxr-xr-x</span><span class="name">multi-language/</span>
+          <span class="desc en">English, Turkish and German are all ready and fully supported — switch anytime with the button above.</span>
+          <span class="desc tr">İngilizce, Türkçe ve Almanca artık hazır ve tam destekli — yukarıdaki butonla istediğin zaman değiştirebilirsin.</span>
+          <span class="desc de">Englisch, Türkisch und Deutsch sind jetzt vollständig verfügbar — wechsle jederzeit über den Button oben.</span>
+        </div>
+        <div class="ls-row">
+          <span class="perm">drwxr-xr-x</span><span class="name">pwa-install/</span>
+          <span class="desc en">Windows, macOS, Linux, Android, iOS — installs for free, no app store required.</span>
+          <span class="desc tr">Windows, macOS, Linux, Android, iOS — hiçbir app store'a gerek kalmadan, ücretsiz kurulur.</span>
+          <span class="desc de">Windows, macOS, Linux, Android, iOS — kostenlose Installation, kein App Store nötig.</span>
+        </div>
+        <div class="ls-row">
+          <span class="perm">drwxr-xr-x</span><span class="name">completely-free/</span>
+          <span class="desc en">No paywall, no ads, no trial period. The source code is protected, but usage is always free.</span>
+          <span class="desc tr">Ödeme ekranı yok, reklam yok, deneme süresi yok. Kaynak kodu korumalı ama kullanım her zaman bedava.</span>
+          <span class="desc de">Keine Bezahlschranke, keine Werbung, keine Testphase. Der Quellcode ist geschützt, die Nutzung bleibt immer kostenlos.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHY FREE / LICENSE ============ -->
+  <section class="sect" id="neden-ucretsiz">
+    <div class="eyebrow"># cat LICENSE</div>
+    <h2><span class="en">Why free, and how is that protected?</span><span class="tr">Neden ücretsiz, nasıl korunuyor?</span><span class="de">Warum kostenlos, und wie ist das geschützt?</span></h2>
+    <p class="lede en">Two different questions, two different answers.</p>
+    <p class="lede tr">İki farklı soru, iki farklı cevap.</p>
+    <p class="lede de">Zwei verschiedene Fragen, zwei verschiedene Antworten.</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <h3 class="en">To use: always free</h3>
+        <h3 class="tr">Kullanman için: her zaman bedava</h3>
+        <h3 class="de">Zur Nutzung: immer kostenlos</h3>
+        <p class="en">Using KernelKompass never requires payment. No paywall, no trial period, no premium tier — it's been that way since day one and will stay that way.</p>
+        <p class="tr">KernelKompass'ı kullanmak hiçbir zaman ücret gerektirmez. Ödeme ekranı, deneme süresi ya da premium sürüm yok — ilk günden beri ve gelecekte de böyle kalacak.</p>
+        <p class="de">Die Nutzung von KernelKompass erfordert nie eine Zahlung. Keine Bezahlschranke, keine Testphase, keine Premium-Stufe — das war seit dem ersten Tag so und bleibt so.</p>
+      </div>
+      <div class="why-card">
+        <h3 class="en">To prevent copying: source protected</h3>
+        <h3 class="tr">Kopyalanmasın diye: kaynak korumalı</h3>
+        <h3 class="de">Gegen Kopieren: Quellcode geschützt</h3>
+        <p class="en">The code is protected under a license (PolyForm Noncommercial) that stops anyone from taking this project and selling it commercially. Not open source, but not restrictive either — just a guarantee that it stays free.</p>
+        <p class="tr">Kod, kimsenin bu projeyi alıp ticari olarak satmasını engelleyen bir lisansla (PolyForm Noncommercial) korunuyor. Açık kaynak değil ama kısıtlayıcı da değil — sadece "bedava kalsın" güvencesi.</p>
+        <p class="de">Der Code ist durch eine Lizenz (PolyForm Noncommercial) geschützt, die verhindert, dass jemand dieses Projekt übernimmt und kommerziell verkauft. Nicht Open Source, aber auch nicht restriktiv — einfach eine Garantie, dass es kostenlos bleibt.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INSTALL ============ -->
+  <section class="sect" id="kurulum">
+    <div class="eyebrow"># ./install.sh</div>
+    <h2><span class="en">How to install it on your device?</span><span class="tr">Cihazına nasıl kurulur?</span><span class="de">Wie installierst du es auf deinem Gerät?</span></h2>
+    <p class="lede en">KernelKompass is a PWA (Progressive Web App) — no app store needed, add it to your home screen or desktop in a few taps.</p>
+    <p class="lede tr">KernelKompass bir PWA (Progressive Web App) — hiçbir app store'a ihtiyacın yok, birkaç dokunuşla ana ekranına/masaüstüne eklenir.</p>
+    <p class="lede de">KernelKompass ist eine PWA (Progressive Web App) — kein App Store nötig, füge sie mit wenigen Tipps zu deinem Startbildschirm oder Desktop hinzu.</p>
+
+    <div class="install-tabs">
+      <button class="install-tab-btn active" data-tab="desktop" onclick="kkShowInstall('desktop')">Windows / macOS / Linux</button>
+      <button class="install-tab-btn" data-tab="android" onclick="kkShowInstall('android')">Android</button>
+      <button class="install-tab-btn" data-tab="ios" onclick="kkShowInstall('ios')">iPhone / iPad</button>
+    </div>
+
+    <div class="install-panel active" id="install-desktop">
+      <ol class="steps en">
+        <li>Open <b>kernelkompass.de/webapp/</b> in Chrome, Edge, or another Chromium-based browser.</li>
+        <li>Click the <b>install icon</b> (⊕ or computer icon) at the right end of the address bar.</li>
+        <li>Click <b>"Install"</b> in the dialog that appears.</li>
+        <li>KernelKompass now opens in its own window alongside your other apps — you can even access previous content while offline.</li>
+      </ol>
+      <ol class="steps tr">
+        <li><b>kernelkompass.de/webapp/</b> adresini Chrome, Edge ya da başka bir Chromium tabanlı tarayıcıda aç.</li>
+        <li>Adres çubuğunun sağ ucundaki <b>yükleme simgesine</b> (⊕ veya bilgisayar ikonu) tıkla.</li>
+        <li>Açılan pencerede <b>"Yükle"</b> butonuna bas.</li>
+        <li>KernelKompass artık diğer uygulamaların yanında, kendi penceresinde açılıyor — internetsizken bile önceki içeriğe erişebilirsin.</li>
+      </ol>
+      <ol class="steps de">
+        <li>Öffne <b>kernelkompass.de/webapp/</b> in Chrome, Edge oder einem anderen Chromium-basierten Browser.</li>
+        <li>Klicke auf das <b>Installationssymbol</b> (⊕ oder Computer-Symbol) am rechten Ende der Adressleiste.</li>
+        <li>Klicke im erscheinenden Fenster auf <b>"Installieren"</b>.</li>
+        <li>KernelKompass öffnet sich nun in einem eigenen Fenster neben deinen anderen Apps — du kannst sogar offline auf vorherige Inhalte zugreifen.</li>
+      </ol>
+    </div>
+
+    <div class="install-panel" id="install-android">
+      <ol class="steps en">
+        <li>Open <b>kernelkompass.de/webapp/</b> in Chrome.</li>
+        <li>Tap the <b>⋮ menu</b> in the top right.</li>
+        <li>Tap <b>"Install app"</b> or <b>"Add to Home screen"</b>.</li>
+        <li>Confirm — KernelKompass is now on your home screen like any other app.</li>
+      </ol>
+      <ol class="steps tr">
+        <li><b>kernelkompass.de/webapp/</b> adresini Chrome ile aç.</li>
+        <li>Sağ üstteki <b>⋮ menüsüne</b> dokun.</li>
+        <li><b>"Uygulamayı yükle"</b> veya <b>"Ana ekrana ekle"</b> seçeneğine dokun.</li>
+        <li>Onayla — KernelKompass artık diğer uygulamalar gibi ana ekranında.</li>
+      </ol>
+      <ol class="steps de">
+        <li>Öffne <b>kernelkompass.de/webapp/</b> in Chrome.</li>
+        <li>Tippe oben rechts auf das <b>⋮-Menü</b>.</li>
+        <li>Tippe auf <b>"App installieren"</b> oder <b>"Zum Startbildschirm hinzufügen"</b>.</li>
+        <li>Bestätige — KernelKompass ist nun wie jede andere App auf deinem Startbildschirm.</li>
+      </ol>
+    </div>
+
+    <div class="install-panel" id="install-ios">
+      <ol class="steps en">
+        <li>Open <b>kernelkompass.de/webapp/</b> in <b>Safari</b> (this step doesn't work in Chrome/Firefox — iOS only allows it in Safari).</li>
+        <li>Tap the <b>Share</b> icon (square with an upward arrow) at the bottom.</li>
+        <li>Scroll down and tap <b>"Add to Home Screen"</b>.</li>
+        <li>Tap <b>"Add"</b> — KernelKompass now opens from your home screen with its own icon, like any other app.</li>
+      </ol>
+      <ol class="steps tr">
+        <li><b>kernelkompass.de/webapp/</b> adresini <b>Safari</b> ile aç (Chrome/Firefox'ta bu adım çalışmaz, iOS'ta sadece Safari izin verir).</li>
+        <li>Alttaki <b>Paylaş</b> ikonuna (kare + yukarı ok) dokun.</li>
+        <li>Aşağı kaydır, <b>"Ana Ekrana Ekle"</b>'ye dokun.</li>
+        <li><b>"Ekle"</b>'ye bas — KernelKompass artık diğer uygulamalar gibi ana ekranında, kendi simgesiyle açılıyor.</li>
+      </ol>
+      <ol class="steps de">
+        <li>Öffne <b>kernelkompass.de/webapp/</b> in <b>Safari</b> (dieser Schritt funktioniert nicht in Chrome/Firefox — iOS erlaubt dies nur in Safari).</li>
+        <li>Tippe unten auf das <b>Teilen</b>-Symbol (Quadrat mit Pfeil nach oben).</li>
+        <li>Scrolle nach unten und tippe auf <b>"Zum Home-Bildschirm"</b>.</li>
+        <li>Tippe auf <b>"Hinzufügen"</b> — KernelKompass öffnet sich nun mit eigenem Symbol von deinem Startbildschirm aus, wie jede andere App.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ COMMENTS ============ -->
+  <section class="sect" id="yorumlar">
+    <div class="eyebrow"># cat comments.log</div>
+    <h2><span class="en">What are people saying?</span><span class="tr">Kullanıcılar ne diyor?</span><span class="de">Was sagen die Nutzer?</span></h2>
+    <p class="lede en">Approved comments from real users — no account needed to read them.</p>
+    <p class="lede tr">Gerçek kullanıcılardan onaylanmış yorumlar — okumak için hesap gerekmiyor.</p>
+    <p class="lede de">Genehmigte Kommentare echter Nutzer — zum Lesen ist kein Konto nötig.</p>
+
+    <div class="comments-grid" id="kkCommentsGrid">
+      <div class="comments-loading">
+        <span class="en">Loading comments…</span><span class="tr">Yorumlar yükleniyor…</span><span class="de">Kommentare werden geladen…</span>
+      </div>
+    </div>
+
+    <div class="comment-form">
+      <p class="lede en" style="margin-bottom:12px;">Want to leave one yourself? Write it below.</p>
+      <p class="lede tr" style="margin-bottom:12px;">Sen de bir yorum bırakmak ister misin? Aşağıya yaz.</p>
+      <p class="lede de" style="margin-bottom:12px;">Möchtest du selbst einen hinterlassen? Schreib ihn unten hin.</p>
+      <textarea id="kkCommentInput" maxlength="2000" placeholder="..."
+        data-ph-en="Share your experience with KernelKompass…"
+        data-ph-tr="KernelKompass ile ilgili deneyimini paylaş…"
+        data-ph-de="Teile deine Erfahrung mit KernelKompass…"></textarea>
+      <div class="cf-row">
+        <span class="cf-hint">
+          <span class="en">Comments are reviewed before they appear publicly.</span>
+          <span class="tr">Yorumlar herkese açık olmadan önce incelenir.</span>
+          <span class="de">Kommentare werden vor der Veröffentlichung geprüft.</span>
+        </span>
+        <button class="btn btn-primary" id="kkCommentSubmit" onclick="kkSubmitComment()">
+          <span class="en">Send comment</span><span class="tr">Yorumu gönder</span><span class="de">Kommentar senden</span>
+        </button>
+      </div>
+      <div class="comment-login-notice" id="kkCommentLoginNotice">
+        <span class="en">You need to be logged in to comment. <a href="../webapp/">Log in or create a free account →</a></span>
+        <span class="tr">Yorum yapabilmek için giriş yapmış olman gerekiyor. <a href="../webapp/">Giriş yap veya ücretsiz hesap oluştur →</a></span>
+        <span class="de">Um zu kommentieren, musst du angemeldet sein. <a href="../webapp/">Anmelden oder kostenloses Konto erstellen →</a></span>
+      </div>
+      <div class="comment-success" id="kkCommentSuccess">
+        <span class="en">Thanks! Your comment was submitted and will appear here once approved.</span>
+        <span class="tr">Teşekkürler! Yorumun gönderildi, onaylandıktan sonra burada görünecek.</span>
+        <span class="de">Danke! Dein Kommentar wurde gesendet und erscheint hier nach der Freigabe.</span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-foot">
+    <div class="copy">© 2026 KernelKompass — kernelkompass.de</div>
+    <div class="legal-links"><a href="../webapp/impressum.html">Impressum</a></div>
+  </footer>
+
+</div>
+
+<script>
+function kkShowInstall(tab){
+  document.querySelectorAll('.install-tab-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.tab === tab); });
+  document.querySelectorAll('.install-panel').forEach(function(p){ p.classList.toggle('active', p.id === 'install-' + tab); });
+}
+
+// AYAR: backend adresi ortak config.js'den geliyor (window.KK_API_BASE).
+var KK_API_BASE = window.KK_API_BASE;
+
+// -------- Reklam panoları (sol/sağ) --------
+// Sadece dolu slotlar için <img> ekleniyor; boş slotlar için hiçbir şey
+// eklenmiyor — bu yüzden reklam yokken paneller tamamen temiz kalıyor.
+var AD_SLOT_ORDER_LEFT = ['left1', 'left2', 'left3'];
+var AD_SLOT_ORDER_RIGHT = ['right1', 'right2', 'right3'];
+
+function kkLoadAdRails(){
+  var leftEl = document.getElementById('adRailLeft');
+  var rightEl = document.getElementById('adRailRight');
+  if(!leftEl || !rightEl) return;
+  fetch(KK_API_BASE + '/api/ads')
+    .then(function(res){ return res.ok ? res.json() : []; })
+    .then(function(ads){
+      var bySlot = {};
+      (ads || []).forEach(function(a){ bySlot[a.slot] = a; });
+      AD_SLOT_ORDER_LEFT.forEach(function(slot){
+        var ad = bySlot[slot];
+        if(!ad) return;
+        var img = document.createElement('img');
+        img.src = KK_API_BASE + ad.image_url;
+        img.alt = 'Sponsor';
+        img.loading = 'lazy';
+        var box = document.createElement('div');
+        box.className = 'ad-slot';
+        box.appendChild(img);
+        leftEl.appendChild(box);
+      });
+      AD_SLOT_ORDER_RIGHT.forEach(function(slot){
+        var ad = bySlot[slot];
+        if(!ad) return;
+        var img = document.createElement('img');
+        img.src = KK_API_BASE + ad.image_url;
+        img.alt = 'Sponsor';
+        img.loading = 'lazy';
+        var box = document.createElement('div');
+        box.className = 'ad-slot';
+        box.appendChild(img);
+        rightEl.appendChild(box);
+      });
+    })
+    .catch(function(){ /* reklam yüklenemezse sessizce hiçbir şey gösterme */ });
+}
+kkLoadAdRails();
+
+function kkCurrentLang(){
+  return document.body.getAttribute('data-lang') || 'en';
+}
+
+function kkSetLang(lang){
+  if(['en','tr','de'].indexOf(lang) === -1) lang = 'en';
+  document.body.setAttribute('data-lang', lang);
+  document.querySelectorAll('.lang-switch button').forEach(function(b){
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  try{ localStorage.setItem('kkLandingLang', lang); }catch(e){}
+  document.documentElement.setAttribute('lang', lang);
+  var ta = document.getElementById('kkCommentInput');
+  if(ta){ ta.setAttribute('placeholder', ta.getAttribute('data-ph-' + lang) || ''); }
+}
+
+/* ---------- COMMENTS ---------- */
+function kkEscapeHtml(str){
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function kkFormatDate(iso){
+  try{
+    var d = new Date(iso);
+    var lang = kkCurrentLang();
+    var locale = lang === 'de' ? 'de-DE' : (lang === 'tr' ? 'tr-TR' : 'en-US');
+    return d.toLocaleDateString(locale, {year:'numeric', month:'short', day:'numeric'});
+  }catch(e){ return ''; }
+}
+
+function kkInitials(name){
+  if(!name) return '?';
+  return name.trim().charAt(0).toUpperCase();
+}
+
+function kkLoadComments(){
+  var grid = document.getElementById('kkCommentsGrid');
+  fetch(KK_API_BASE + '/api/comments')
+    .then(function(res){
+      if(!res.ok) throw new Error('bad status');
+      return res.json();
+    })
+    .then(function(comments){
+      if(!comments || comments.length === 0){
+        grid.innerHTML =
+          '<div class="comments-empty">' +
+          '<span class="en">No comments yet — be the first!</span>' +
+          '<span class="tr">Henüz yorum yok — ilk sen ol!</span>' +
+          '<span class="de">Noch keine Kommentare — sei der Erste!</span>' +
+          '</div>';
+        return;
+      }
+      grid.innerHTML = comments.map(function(c){
+        var safeUser = kkEscapeHtml(c.author_username || '?');
+        var safeBody = kkEscapeHtml(c.content || '');
+        return (
+          '<div class="comment-card">' +
+            '<div class="c-head">' +
+              '<span class="c-avatar">' + kkEscapeHtml(kkInitials(c.author_username)) + '</span>' +
+              '<span class="c-user">' + safeUser + '</span>' +
+              '<span class="c-date">' + kkFormatDate(c.created_at) + '</span>' +
+            '</div>' +
+            '<p class="c-body">' + safeBody + '</p>' +
+          '</div>'
+        );
+      }).join('');
+    })
+    .catch(function(){
+      grid.innerHTML =
+        '<div class="comments-error">' +
+        '<span class="en">Couldn\'t load comments right now.</span>' +
+        '<span class="tr">Yorumlar şu an yüklenemedi.</span>' +
+        '<span class="de">Kommentare konnten gerade nicht geladen werden.</span>' +
+        '</div>';
+    });
+}
+
+function kkGetToken(){
+  try{ return localStorage.getItem('kk_token'); }catch(e){ return null; }
+}
+
+function kkSubmitComment(){
+  var textarea = document.getElementById('kkCommentInput');
+  var loginNotice = document.getElementById('kkCommentLoginNotice');
+  var success = document.getElementById('kkCommentSuccess');
+  var btn = document.getElementById('kkCommentSubmit');
+  var content = (textarea.value || '').trim();
+
+  loginNotice.classList.remove('show');
+  success.classList.remove('show');
+
+  if(!content){ return; }
+
+  var token = kkGetToken();
+  if(!token){
+    loginNotice.classList.add('show');
+    return;
+  }
+
+  btn.disabled = true;
+  fetch(KK_API_BASE + '/api/comments', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    },
+    body: JSON.stringify({content: content})
+  })
+    .then(function(res){
+      if(res.status === 401){
+        loginNotice.classList.add('show');
+        return null;
+      }
+      if(!res.ok) throw new Error('submit failed');
+      return res.json();
+    })
+    .then(function(data){
+      if(data){
+        textarea.value = '';
+        success.classList.add('show');
+      }
+    })
+    .catch(function(){
+      loginNotice.classList.add('show');
+    })
+    .finally(function(){
+      btn.disabled = false;
+    });
+}
+
+(function(){
+  var saved = null;
+  try{ saved = localStorage.getItem('kkLandingLang'); }catch(e){}
+  kkSetLang(saved && ['en','tr','de'].indexOf(saved) !== -1 ? saved : 'en');
+  kkLoadComments();
+})();
+</script>
+</body>
+</html>
