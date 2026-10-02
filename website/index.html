@@ -6,7 +6,7 @@
 <title>KernelKompass — Free, Interactive Linux &amp; DevOps Workbook</title>
 <meta name="description" content="A completely free, interactive workbook that runs in your browser for anyone who wants to learn Linux and DevOps. No installation, just create an account.">
 <link rel="icon" href="../webapp/icons/icon-192.png">
-<script src="/config.js"></script>
+<script src="../config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -519,7 +519,7 @@ var AD_SLOT_ORDER_RIGHT = ['right1', 'right2', 'right3'];
 function kkLoadAdRails(){
   var leftEl = document.getElementById('adRailLeft');
   var rightEl = document.getElementById('adRailRight');
-  if(!leftEl || !rightEl) return;
+  if(!KK_API_BASE || !leftEl || !rightEl) return;
   fetch(KK_API_BASE + '/api/ads')
     .then(function(res){ return res.ok ? res.json() : []; })
     .then(function(ads){
@@ -690,7 +690,12 @@ function kkSubmitComment(){
   var saved = null;
   try{ saved = localStorage.getItem('kkLandingLang'); }catch(e){}
   kkSetLang(saved && ['en','tr','de'].indexOf(saved) !== -1 ? saved : 'en');
-  kkLoadComments();
+  if(KK_API_BASE){
+    kkLoadComments();
+  } else {
+    // Backend yok (statik demo): yorum bölümünü ve menü bağlantısını gizle
+    document.querySelectorAll('#yorumlar, a[href="#yorumlar"]').forEach(function(el){ el.style.display = 'none'; });
+  }
 })();
 </script>
 </body>

@@ -1,4 +1,4 @@
-const CACHE_NAME = "kernelkompass-linux-v12";
+const CACHE_NAME = "kernelkompass-linux-v13";
 const ASSETS = [
   "./",
   "./index.html",

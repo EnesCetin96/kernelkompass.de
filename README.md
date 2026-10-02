@@ -1,7 +1,16 @@
 # KernelKompass
 
 **A free, multilingual, interactive Linux & DevOps learning platform.**
-🌐 [kernelkompass.de](https://kernelkompass.de)
+🌐 **Live demo:** [enescetin96.github.io/kernelkompass.de](https://enescetin96.github.io/kernelkompass.de/)
+· **Open the app directly:** [/webapp](https://enescetin96.github.io/kernelkompass.de/webapp/)
+
+> **Status (October 2026):** the original production deployment on AWS EC2
+> (`kernelkompass.de`, August–October 2026) has been retired to save costs.
+> The site now runs as a **static demo on GitHub Pages**: the full workbook,
+> terminal simulator, and exam system work without logging in, and notes and
+> progress are kept in your browser. Accounts, cross-device sync, and comments
+> need the backend, which is still in this repo and can be redeployed any time
+> (see "Production deployment" below).
 
 KernelKompass teaches Linux and DevOps fundamentals through a browser-based,
 hands-on workbook: a simulated bash terminal, a virtual file manager, guided
@@ -24,10 +33,15 @@ and Informatik students in Germany, with no local setup required.
   tasks, all fully localized in EN/TR/DE.
 - **Trilingual by design** — English content is always shown; Turkish and
   German act as a toggleable explanation/commentary layer alongside it.
-- **Accounts & sync** — registration, email verification, password reset,
-  and per-user progress/notes stored server-side.
-- **Comment system with admin moderation** — logged-in users can leave
-  comments; an admin approval step keeps the workbook's public pages clean.
+- **Accounts & sync** *(backend required — off in the static demo)* —
+  registration, email verification, password reset, and per-user
+  progress/notes stored server-side.
+- **Comment system with admin moderation** *(backend required — off in the
+  static demo)* — logged-in users can leave comments; an admin approval step
+  keeps the workbook's public pages clean.
+- **Demo mode** — with no backend configured (`KK_API_BASE = null` in
+  `config.js`) the app opens without a login and stores everything in
+  `localStorage`, so it can be hosted on any static host.
 - **Installable PWA** — works offline after the first load via a service
   worker, and can be added to a phone/tablet home screen like a native app.
 
@@ -58,8 +72,11 @@ and Informatik students in Germany, with no local setup required.
                  └───────────────────┘
 ```
 
-All services run as Docker Compose containers on a single AWS EC2 instance
-(Frankfurt, `eu-central-1`), sitting behind Cloudflare (DNS + Flexible SSL).
+In production (August–October 2026) all services ran as Docker Compose
+containers on a single AWS EC2 instance (Frankfurt, `eu-central-1`, `t3.micro`,
+Ubuntu 24.04), sitting behind Cloudflare (DNS + Flexible SSL). That instance has
+since been terminated; the current public demo serves only the two static
+frontends (`website/` and `webapp/`) from GitHub Pages.
 
 ### Tech stack
 
@@ -137,9 +154,14 @@ python3 -m http.server 8080
 ```
 
 Set `window.KK_API_BASE` in `config.js` to point at your backend
-(`http://localhost:8000` for local development).
+(`http://localhost:8000` for local development). Leave it as `null` to run in
+demo mode with no backend at all.
 
 ## ☁️ Production deployment
+
+> Not currently deployed — the steps below are how the stack ran on EC2 and
+> how to bring it back. After deploying, set `window.KK_API_BASE` in
+> `config.js` to the backend's public URL.
 
 The production stack runs as three Docker Compose services (PostgreSQL,
 FastAPI/uvicorn, nginx:alpine) on a single EC2 instance:

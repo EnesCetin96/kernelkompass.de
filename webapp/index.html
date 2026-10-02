@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KernelKompass.Linux</title>
 <link rel="manifest" href="manifest.json">
-<script src="/config.js"></script>
+<script src="../config.js"></script>
 <meta name="theme-color" content="#12160e">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -455,6 +455,11 @@ body.kk-locked .mini-term-toggle, body.kk-locked .mini-term-dock{ display:none !
   align-items:flex-start; justify-content:center; overflow-y:auto; padding:60px 20px 40px;
 }
 body.kk-locked #kkAuthGate{ display:flex;}
+/* Demo modu (backend yok): sunucuya bağlı hesap kontrollerini gizle */
+body.kk-demo #kkQuotaBox,
+body.kk-demo [onclick="kkRefreshQuota()"],
+body.kk-demo [onclick="kkHandleClearServerData()"],
+body.kk-demo [onclick="kkHandleLogout()"]{ display:none;}
 .kk-gate-card{ width:100%; max-width:400px;}
 .kk-gate-brand{ text-align:center; margin-bottom:28px;}
 .kk-gate-brand .prompt{ font-family:var(--mono); font-size:12px; color:var(--teal);}
@@ -637,7 +642,7 @@ body.kk-locked #kkAuthGate{ display:flex;}
       <span class="prompt">user@kernelkompass:~$</span>
       <h1>./kernelkompass<span class="accent">.linux</span></h1>
       <p data-i18n-ui="auth-tagline">Devam etmek için giriş yap ya da ücretsiz bir hesap oluştur.</p>
-      <a href="/" class="kk-gate-back-link" data-i18n-ui="auth-back-link">← kernelkompass.de'ye geri dön</a>
+      <a href="../" class="kk-gate-back-link" data-i18n-ui="auth-back-link">← kernelkompass.de'ye geri dön</a>
     </div>
 
     <div id="kkGateMsg"></div>
@@ -7682,6 +7687,8 @@ if ('serviceWorker' in navigator) {
 
   // -------- AYAR: backend adresi (ortak config.js'den geliyor) --------
   var KK_API_BASE = window.KK_API_BASE;
+  // Backend adresi tanımlı değilse (config.js'de null) demo modu: giriş yok, senkron yok.
+  var KK_DEMO = !KK_API_BASE;
 
   var NOTE_KEYS = ['intro','p0','p1','p2','p3','p4','p5','p6','p7','p8','p9','app','ex','term'];
 
@@ -7967,6 +7974,7 @@ if ('serviceWorker' in navigator) {
 
   window.kkHandleChangeLang = function(lang){
     kkSetLang(lang); // anında uygula, sunucu cevabını beklemeye gerek yok
+    if(KK_DEMO) return;
     kkSetLanguageApi(lang).catch(function(err){
       setStatus('err', 'Dil tercihi kaydedilemedi: ' + (err.message || 'bilinmeyen hata'));
     });
@@ -8215,7 +8223,13 @@ if ('serviceWorker' in navigator) {
   };
 
   var savedToken = lget('kk_token');
-  if(savedToken){
+  if(KK_DEMO){
+    // Backend yok: giriş istemeden aç. isLoggedIn() false kaldığı için
+    // hiçbir senkron isteği atılmaz, her şey localStorage'da kalır.
+    document.body.classList.add('kk-demo');
+    kkUnlockApp({username:'demo', email_verified:true, is_admin:false});
+    setStatus('ok', 'Demo — notes & progress are stored only in this browser');
+  } else if(savedToken){
     kkMe().then(function(user){
       kkUnlockApp(user);
       return kkGetAllData();
