@@ -1,12 +1,12 @@
 # KernelKompass
 
 **A free, multilingual, interactive Linux & DevOps learning platform.**
-🌐 **Live demo:** [enescetin96.github.io/kernelkompass.de](https://enescetin96.github.io/kernelkompass.de/)
-· **Open the app directly:** [/webapp](https://enescetin96.github.io/kernelkompass.de/webapp/)
+🌐 **Live:** [kernelkompass.de](https://kernelkompass.de)
+· **Open the app directly:** [kernelkompass.de/webapp](https://kernelkompass.de/webapp/)
 
 > **Status (October 2026):** the original production deployment on AWS EC2
-> (`kernelkompass.de`, August–October 2026) has been retired to save costs.
-> The site now runs as a **static demo on GitHub Pages**: the full workbook,
+> (August–October 2026) has been retired to save costs. `kernelkompass.de`
+> now serves a **static demo from GitHub Pages**: the full workbook,
 > terminal simulator, and exam system work without logging in, and notes and
 > progress are kept in your browser. Accounts, cross-device sync, and comments
 > need the backend, which is still in this repo and can be redeployed any time
